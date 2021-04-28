@@ -68,9 +68,10 @@ def mainmenu():
     print('\nS I S T E M A   D E   G E S T I Ó N   D E   V A C U N A C I Ó N ')
     print("Selecciona una opción:")
     print("\t1 - Administrar Afiliados")
-    print("\t2 - Administrar Vacunas")
+    print("\t2 - Administrar Lotes de Vacunas")
     print("\t3 - Plan Vacunacion")
-    print("\t4 - salir")
+    print("\t4 - Programacion de Vacunas")
+    print("\t5 - salir")
 
     while True:
         # Mostramos el menu
@@ -84,7 +85,9 @@ def mainmenu():
             menulote()
         elif opcionmenu == "3":
             menuvac()
-        elif opcionmenu == "4":
+        elif opcionmenu == "3":
+            menuvac()
+        elif opcionmenu == "5":
             break
         else:
             print("")
