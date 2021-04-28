@@ -26,7 +26,7 @@ def menuafi():
 def menulote():
     while True:
         # Mostramos el menu
-        print('\nA D M I N I S T R A R  V A C U N A S')
+        print('\nA D M I N I S T R A R  L O T E S  D E  V A C U N A S')
         print("\t1 - Crear lotes")
         print("\t2 - Consultar Lote")
         print("\t3 - Regresar Al Menu Principal")
