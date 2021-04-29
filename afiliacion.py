@@ -9,7 +9,7 @@ def sql_connection():
     # funcion que crea la base de datos
     try:
         con = sqlite3.connect('sisgenvac.db')
-        print("Conexion realizada: DB creada")
+        # print("Conexion realizada: DB creada")
         return con
     except Error:
         print('Se ha producido un error al crear la conexion', Error)
@@ -98,7 +98,7 @@ def leer_info():
         dnac = dianac.isdigit()
         dianac = dianac.rjust(2, "0")
         if not dnac:
-            print("\nEscriba el dia de nacimiento en numeros")
+            print("\nEscriba el dia de nacimiento en dos digitos")
 
     mnac = False
     # bucle para pedir el mes de nacimiento
@@ -118,7 +118,7 @@ def leer_info():
         anac = anonac.isdigit()
         anonac = anonac.rjust(4, "0")
         if not anac:
-            print("\nEscriba el año de nacimiento en numeros")
+            print("\nEscriba el año de nacimiento en numeros AAAA")
 
     nacimiento = dianac + "/" + mesnac + "/" + anonac
     print("nacimiento", nacimiento)
@@ -188,11 +188,10 @@ def cerrar_db(con):
 
 def main():
     con = sql_connection()
-    creartable(con)
-    afiliado = leer_info()
-    insertar_tabla(con, afiliado)
-    update_table(con)
-    consulta(con)
+    #creartable(con)
+    #afiliado = leer_info()
+    #insertar_tabla(con, afiliado)
+   #consulta(con)
     cerrar_db(con)
 
 

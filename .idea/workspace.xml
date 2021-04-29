@@ -37,7 +37,7 @@
       <recent name="G:\Documentos\Proyectos" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.afiliacion">
+  <component name="RunManager" selected="Python.main">
     <configuration name="BDDlotevacuna" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Proyectos" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -145,8 +145,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.afiliacion" />
         <item itemvalue="Python.main" />
+        <item itemvalue="Python.afiliacion" />
         <item itemvalue="Python.lote_vacunas" />
         <item itemvalue="Python.BDDlotevacuna" />
         <item itemvalue="Python.main (1)" />

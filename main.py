@@ -1,4 +1,5 @@
 import afiliacion
+import lote_vacunas
 
 
 def menuafi():
@@ -8,7 +9,6 @@ def menuafi():
         print("\t1 - Crear Afiliado")
         print("\t2 - Actualizar Afiliado")
         print("\t3 - Consultar Afiliado")
-        print("\t4 - Regresar Al Menu Principal")
         print("\t4 - Regresar Al Menu Principal")
         option = input("Seleccione una opcion: ")
         if option == '1':
@@ -27,15 +27,23 @@ def menuafi():
 def menulote():
     while True:
         # Mostramos el menu
-        print('\nA D M I N I S T R A R  L O T E S  D E  V A C U N A S')
+        print('\nA D M I N I S T R A R  V A C U N A S')
         print("\t1 - Crear lotes")
         print("\t2 - Consultar Lote")
         print("\t3 - Regresar Al Menu Principal")
         option = input("Seleccione una opcion: ")
-        if option == '1':
-            print("aca se crea el lote")
-        elif option == '1':
-            print("aca se consulta el lote")
+        if option == "1":
+            # Aca se crea el lote
+            convacunas = lote_vacunas.sql_lotevacunas()
+            lote_vacunas.tabla_vacunas(convacunas)
+            lote = lote_vacunas.info_lote()
+            lote_vacunas.crear_lote(convacunas, lote)
+            convacunas.close()
+        elif option == "2":
+            # Aca se consulta el lote
+            convacunas = lote_vacunas.sql_lotevacunas()
+            lote_vacunas.consultar_lote(convacunas)
+            convacunas.close()
         elif option == "3":
             return
         else:
@@ -69,10 +77,9 @@ def mainmenu():
     print('\nS I S T E M A   D E   G E S T I Ó N   D E   V A C U N A C I Ó N ')
     print("Selecciona una opción:")
     print("\t1 - Administrar Afiliados")
-    print("\t2 - Administrar Lotes de Vacunas")
+    print("\t2 - Administrar Vacunas")
     print("\t3 - Plan Vacunacion")
-    print("\t4 - Programacion de Vacunas")
-    print("\t5 - salir")
+    print("\t4 - salir")
 
     while True:
         # Mostramos el menu
@@ -86,9 +93,7 @@ def mainmenu():
             menulote()
         elif opcionmenu == "3":
             menuvac()
-        elif opcionmenu == "3":
-            menuvac()
-        elif opcionmenu == "5":
+        elif opcionmenu == "4":
             break
         else:
             print("")
