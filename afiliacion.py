@@ -168,7 +168,7 @@ def consulta(con):
     cursorobj.execute(buscar)
     afil_b = cursorobj.fetchall()
     print("+{:-<10}+{:-<15}+{:-<21}+{:-<15}+{:-<10}+{:-<8}+{:-<15}+{:-<15}+{:-<25}+{:-<15}+{:-<15}+".format("", "", "", "","", "", "", "","", "", ""))
-    print("|{:^10}|{:^15}|{:^21}|{:^15}|{:^10}|{:^8}|{:^15}|{:^15}|{:^25}|{:^15}|{:^15}|".format("Documento", "Nombre", "Apellido", "Direccion", "Telefono", "Email", "Ciudad", "Afiliacion","Desafiliacion","Vacunado"))
+    print("|{:^10}|{:^15}|{:^21}|{:^15}|{:^10}|{:^8}|{:^15}|{:^15}|{:^25}|{:^15}|{:^15}|".format("Documento", "Nombre", "Apellido", "Direccion", "Telefono", "Email", "Ciudad","Nacimiento", "Afiliacion","Desafiliacion","Vacunado"))
     print("+{:-<10}+{:-<15}+{:-<21}+{:-<15}+{:-<10}+{:-<8}+{:-<15}+{:-<15}+{:-<25}+{:-<15}+{:-<15}+".format("", "", "", "","", "", "", "","", "", ""))
     for nolote, fabricante, tipovacuna,cantidadrecibida, cantidadusada, dosisnecesarias, temperatura, efectividad,tiempoproteccion, fechavencimiento, imagen in afil_b:
 

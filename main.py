@@ -80,14 +80,14 @@ def mainmenu():
     """
     Función que limpia la pantalla y muestra nuevamente el menu
     """
-    print('\nS I S T E M A   D E   G E S T I Ó N   D E   V A C U N A C I Ó N ')
-    print("Selecciona una opción:")
-    print("\t1 - Administrar Afiliados")
-    print("\t2 - Administrar Vacunas")
-    print("\t3 - Plan Vacunacion")
-    print("\t4 - salir")
-
     while True:
+        print('\nS I S T E M A   D E   G E S T I Ó N   D E   V A C U N A C I Ó N ')
+        print("Selecciona una opción:")
+        print("\t1 - Administrar Afiliados")
+        print("\t2 - Administrar Vacunas")
+        print("\t3 - Plan Vacunacion")
+        print("\t4 - salir")
+
         # Mostramos el menu
 
         # solicituamos una opción al usuario
