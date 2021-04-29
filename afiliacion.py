@@ -64,11 +64,11 @@ def leer_info():
             print("\nEscriba un Apellido Valido")'''
 
     nombre = (input("nombre: "))
-    nombre = nombre.ljust(20)
+
     apellido = (input("apellido: "))
-    apellido = apellido.ljust(20)
+
     direccion = (input("direccion: "))
-    direccion = direccion.ljust(20)
+
     while True:
         try:
             telefono = int(input("Telefono: "))
@@ -88,7 +88,7 @@ def leer_info():
         if not valido:
             print("\nescriba un correo valido")
     ciudad = (input("ciudad"))
-    ciudad = ciudad.ljust(20)
+
 
     dnac = False
     # bucle para pedir el dia de nacimiento
@@ -116,7 +116,6 @@ def leer_info():
         # mensaje para que el usuario sepa que le solicitamos el año de nacimiento
         anonac = (input("Año de Nacimiento YYYY: "))
         anac = anonac.isdigit()
-        anonac = anonac.rjust(4, "0")
         if not anac:
             print("\nEscriba el año de nacimiento en numeros AAAA")
 
@@ -167,29 +166,30 @@ def consulta(con):
     buscar = 'SELECT * FROM afiliados where id= '+c_afilia
     cursorobj.execute(buscar)
     afil_b = cursorobj.fetchall()
-    print("+{:-<10}+{:-<15}+{:-<21}+{:-<15}+{:-<10}+{:-<8}+{:-<15}+{:-<15}+{:-<25}+{:-<15}+{:-<15}+".format("", "", "", "","", "", "", "","", "", ""))
-    print("|{:^10}|{:^15}|{:^21}|{:^15}|{:^10}|{:^8}|{:^15}|{:^15}|{:^25}|{:^15}|{:^15}|".format("Documento", "Nombre", "Apellido", "Direccion", "Telefono", "Email", "Ciudad","Nacimiento", "Afiliacion","Desafiliacion","Vacunado"))
-    print("+{:-<10}+{:-<15}+{:-<21}+{:-<15}+{:-<10}+{:-<8}+{:-<15}+{:-<15}+{:-<25}+{:-<15}+{:-<15}+".format("", "", "", "","", "", "", "","", "", ""))
+    print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<12}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "", "","", "", "", "","", "", ""))
+    print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^12}|{:^25}|{:^20}|{:^10}|{:^10}|{:^15}|{:^10}|".format("Documento", "Nombre", "Apellido", "Direccion", "Telefono", "Email", "Ciudad","Nacimiento", "Afiliacion","Desafiliacion","Vacunado"))
+    print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<12}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "", "","", "", "", "","", "", ""))
     for nolote, fabricante, tipovacuna,cantidadrecibida, cantidadusada, dosisnecesarias, temperatura, efectividad,tiempoproteccion, fechavencimiento, imagen in afil_b:
 
-        print("|{:^10}|{:^15}|{:^21}|{:^15}|{:^10}|{:^8}|{:^15}|{:^15}|{:^25}|{:^15}|{:^15}|".format(nolote, fabricante, tipovacuna,
+        print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^12}|{:^25}|{:^20}|{:^10}|{:^10}|{:^15}|{:^10}|".format(nolote, fabricante, tipovacuna,
                       cantidadrecibida, cantidadusada, dosisnecesarias, temperatura, efectividad,
                       tiempoproteccion, fechavencimiento, imagen))
-    print("+{:-<10}+{:-<15}+{:-<21}+{:-<15}+{:-<10}+{:-<8}+{:-<15}+{:-<15}+{:-<25}+{:-<15}+{:-<15}+".format("", "", "", "","", "", "", "","", "", ""))
+    print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<12}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "", "","", "", "", "","", "", ""))
     con.commit()
 
 
 def cerrar_db(con):
     con.close()
 
-
+"""
 def main():
-    con = sql_afiliado()
+    #con = sql_afiliado()
     #creartable(con)
     #afiliado = leer_info()
     #insertar_tabla(con, afiliado)
-    consulta(con)
-    cerrar_db(con)
+    #consulta(con)
+    #cerrar_db(con)
 
 
 main()
+"""
