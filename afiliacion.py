@@ -161,6 +161,22 @@ def vacunar(con):
     con.commit()
 
 
+def desafiliar(con):
+    """ Funcion que se utiliza para operar en la base de datos"""
+    cursorobj = con.cursor()
+    desafiliado = input("identificacion del usuario a desafiliar: ")
+    f = datetime.now()
+    dia = str(f.day).rjust(2, "0")
+    mes = str(f.month).rjust(2, "0")
+    ano = str(f.year).rjust(2, "0")
+    afiliacion = dia + "/" + mes + "/" + ano
+    print("la fecha de afiliacion es:", afiliacion)
+    actualizar = 'update afiliados SET desafiliacion = "s" where id ='+desafiliado
+    cursorobj.execute(actualizar)
+    print("El afiliado ", vacunado, "fue vacunado")
+    con.commit()
+
+
 def consulta(con):
     cursorobj = con.cursor()
     c_afilia = input("id del afiliado a consultar: ")

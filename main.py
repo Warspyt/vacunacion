@@ -9,7 +9,8 @@ def menuafi():
         print("\t1 - Crear Afiliado")
         print("\t2 - Vacunar Afiliado")
         print("\t3 - Consultar Afiliado")
-        print("\t4 - Regresar Al Menu Principal")
+        print("\t4 - Consultar Afiliado")
+        print("\t5 - Regresar Al Menu Principal")
         option = input("Seleccione una opcion: ")
         if option == '1':
             print('\n')
@@ -27,7 +28,12 @@ def menuafi():
             con = afiliacion.sql_afiliado()
             afiliacion.consulta(con)
             con.close()
-        elif option == "4":
+        elif option == "34":
+            # Aca se desafilia el afiliado y queda con la fecha del momento  de la desafiliacion
+            con = afiliacion.sql_afiliado()
+            afiliacion.desafiliar(con)
+            con.close()
+        elif option == "5":
             return
         else:
             print("")
