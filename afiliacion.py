@@ -151,12 +151,13 @@ def insertar_tabla(con, newafi):
     con.commit()
 
 
-def update_table(con):
+def vacunar(con):
     """ Funcion que se utiliza para operar en la base de datos"""
     cursorobj = con.cursor()
     vacunado = input("identificacion del afiliado vacunado: ")
     actualizar = 'update afiliados SET vacunado = "s" where id ='+vacunado
     cursorobj.execute(actualizar)
+    print("El afiliado ", vacunado, "fue vacunado")
     con.commit()
 
 

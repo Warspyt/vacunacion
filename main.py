@@ -17,7 +17,11 @@ def menuafi():
             afiliado = afiliacion.leer_info()
             afiliacion.insertar_tabla(con, afiliado)
             con.close()
-
+        elif option == "2":
+            # Aca se se vacuna a la gente
+            con = afiliacion.sql_afiliado()
+            afiliacion.vacunar(con)
+            con.close()
         elif option == "3":
             # Aca se consulta el afiliado
             con = afiliacion.sql_afiliado()
