@@ -5,7 +5,7 @@ from sqlite3 import Error
 import re
 
 
-def sql_connection():
+def sql_afiliado():
     # funcion que crea la base de datos
     try:
         con = sqlite3.connect('sisgenvac.db')
@@ -125,7 +125,7 @@ def leer_info():
 
 
 # se actualiza la fecha de afiliacion automaticamente
-
+    f = datetime.now()
     dia = str(f.day).rjust(2, "0")
     mes = str(f.month).rjust(2, "0")
     ano = str(f.year).rjust(2, "0")
@@ -162,23 +162,20 @@ def update_table(con):
 
 
 def consulta(con):
-
-
-
-
     cursorobj = con.cursor()
-    afiliad = input("id del afiliado a consultar: ")
-    buscar = 'SELECT * FROM afiliados where id= '+afiliad
+    c_afilia = input("id del afiliado a consultar: ")
+    buscar = 'SELECT * FROM afiliados where id= '+c_afilia
     cursorobj.execute(buscar)
-    filas = cursorobj.fetchall()
-    print("Vere:  ", len(filas), " filas")
-    for row in filas:
-        print("el tipo de datos de row es:", type(row))
-        identificacion = row[0]
-        nombre = row[1]
-        print(" la info de la tupla es: ", identificacion, " y ", nombre)
+    afil_b = cursorobj.fetchall()
+    print("+{:-<10}+{:-<15}+{:-<21}+{:-<15}+{:-<10}+{:-<8}+{:-<15}+{:-<15}+{:-<25}+{:-<15}+{:-<15}+".format("", "", "", "","", "", "", "","", "", ""))
+    print("|{:^10}|{:^15}|{:^21}|{:^15}|{:^10}|{:^8}|{:^15}|{:^15}|{:^25}|{:^15}|{:^15}|".format("Documento", "Nombre", "Apellido", "Direccion", "Usadas", "Dosis", "Temperatura", "Efectividad","Tiempo de Proteccion","Vencimiento","imagen"))
+    print("+{:-<10}+{:-<15}+{:-<21}+{:-<15}+{:-<10}+{:-<8}+{:-<15}+{:-<15}+{:-<25}+{:-<15}+{:-<15}+".format("", "", "", "","", "", "", "","", "", ""))
+    for nolote, fabricante, tipovacuna,cantidadrecibida, cantidadusada, dosisnecesarias, temperatura, efectividad,tiempoproteccion, fechavencimiento, imagen in afil_b:
 
-        print(row)
+        print("|{:^10}|{:^15}|{:^21}|{:^15}|{:^10}|{:^8}|{:^15}|{:^15}|{:^25}|{:^15}|{:^15}|".format(nolote, fabricante, tipovacuna,
+                      cantidadrecibida, cantidadusada, dosisnecesarias, temperatura, efectividad,
+                      tiempoproteccion, fechavencimiento, imagen))
+    print("+{:-<10}+{:-<15}+{:-<21}+{:-<15}+{:-<10}+{:-<8}+{:-<15}+{:-<15}+{:-<25}+{:-<15}+{:-<15}+".format("", "", "", "","", "", "", "","", "", ""))
     con.commit()
 
 
@@ -187,11 +184,11 @@ def cerrar_db(con):
 
 
 def main():
-    con = sql_connection()
+    con = sql_afiliado()
     #creartable(con)
     #afiliado = leer_info()
     #insertar_tabla(con, afiliado)
-   #consulta(con)
+    consulta(con)
     cerrar_db(con)
 
 

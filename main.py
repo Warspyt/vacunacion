@@ -7,16 +7,22 @@ def menuafi():
         # Mostramos el menu
         print('\nA D M I N I S T R A R  A F I L I A D O S')
         print("\t1 - Crear Afiliado")
-        print("\t2 - Actualizar Afiliado")
+        print("\t2 - Vacunar Afiliado")
         print("\t3 - Consultar Afiliado")
         print("\t4 - Regresar Al Menu Principal")
         option = input("Seleccione una opcion: ")
         if option == '1':
             print('\n')
-
+            con = afiliacion.sql_afiliado()
             afiliado = afiliacion.leer_info()
-            con = afiliacion.sql_connection()
             afiliacion.insertar_tabla(con, afiliado)
+            con.close()
+
+        elif option == "3":
+            # Aca se consulta el afiliado
+            con = afiliacion.sql_afiliado()
+            afiliacion.consulta(con)
+            con.close()
         elif option == "4":
             return
         else:
