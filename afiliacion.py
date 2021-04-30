@@ -171,10 +171,14 @@ def desafiliar(con):
     dia = str(f.day).rjust(2, "0")
     mes = str(f.month).rjust(2, "0")
     ano = str(f.year).rjust(2, "0")
-    afiliacion = dia + "/" + mes + "/" + ano
-    print("la fecha de afiliacion es:", afiliacion)
-    actualizar = 'update afiliados SET desafiliacion = "s" where id ='+desafiliado
-    cursorobj.execute(actualizar)
+    desafiliacion = dia + "/" + mes + "/" + ano
+    print("la fecha de afiliacion es:", desafiliacion)
+    actualizar = 'update afiliados SET desafiliacion = (?)  where id=(?)'
+    cursorobj.execute(actualizar,(desafiliacion,desafiliado))
+
+
+
+
     print("El afiliado ", desafiliado, "fue desafiliado")
     con.commit()
 
