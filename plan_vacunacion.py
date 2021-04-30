@@ -2,8 +2,6 @@ import sqlite3
 from sqlite3 import Error
 import datetime
 # los planes deben meterse manual mente  esto sobra en ese orden de ideas
-
-"""
 p1 = [1, 60, 80, datetime.datetime(2021, 1, 1).strftime("%d/%m/%Y"), datetime.datetime(2022, 1, 1).strftime("%d/%m/%Y")]
 p2 = [2, 50, 59, datetime.datetime(2022, 1, 1).strftime("%d/%m/%Y"), datetime.datetime(2023, 1, 1).strftime("%d/%m/%Y")]
 p3 = [3, 40, 49, datetime.datetime(2023, 1, 1).strftime("%d/%m/%Y"), datetime.datetime(2024, 1, 1).strftime("%d/%m/%Y")]
@@ -13,7 +11,7 @@ p6 = [6, 16, 19, datetime.datetime(2026, 1, 1).strftime("%d/%m/%Y"), datetime.da
 
 
 listaPlanes = [p1,p2,p3,p4,p5,p6]                                                         #No olvidar agregar cada plan nuevo a la lista de planes
-"""
+
 def sql_plan():
     # funcion que crea la base de datos
     try:
@@ -47,9 +45,6 @@ def infoPlanVacunacion():
     print("ERROR: la edad mínima para el plan %d es %d" %(p.idplan,p.edadminima))
   else:
     print("ERROR: la edad máxima para el plan %d es %d" %(p.idplan,p.edadmaxima))
-
-def consultaplan():
-    cursorobj = con.cursor()
 
 def recibirPlan():
   # id = len(listaPlanes)+1 # id es palabra restringida entonces no se puede usar como variable
@@ -107,8 +102,7 @@ def  menuPlan(): # Todo esto esta en el archivo de main, solo es que pongas las 
 def prueba():
   conplan = sql_plan()
   tabla_plan(conplan)
-  #plan = recibirPlan()
-  #crearPlan(conplan, plan)
-  infoPlanVacunacion()
+  plan = recibirPlan()
+  crearPlan(conplan, plan)
 
 prueba()

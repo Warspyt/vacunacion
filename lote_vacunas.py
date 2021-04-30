@@ -158,7 +158,7 @@ def consultar_lote(con):
     listado = cursorObj.fetchall()
     datoslote = []
     for ids in listado:
-        print("-", ids[0])
+        print(" ", ids[0])
         datoslote.append(ids[0])
     c_lote = input("\nNumero de lote a consultar: ")
     # Se verifica que el lote sea un valor numerio y se encuentre dentro de la base de datos
