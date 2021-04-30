@@ -182,17 +182,28 @@ def desafiliar(con):
 def consulta(con):
     cursorobj = con.cursor()
     c_afilia = input("id del afiliado a consultar: ")
-    buscar = 'SELECT * FROM afiliados where id= '+c_afilia
-    cursorobj.execute(buscar)
-    afil_b = cursorobj.fetchall()
+    # Verificar que el id ingresado sea un valor numerico
+    while True:
+        if c_afilia.isdigit():
+            buscar = 'SELECT * FROM afiliados where id= ' + c_afilia
+            cursorobj.execute(buscar)
+            afil_b = cursorobj.fetchall()
+            # Verifiar que el id ingresado se encuentre en la base de datos
+            if len(afil_b) != 0:
+                break
+            else:
+                print("El id " + str(c_afilia) + " no se encuentra en la base de datos")
+        c_afilia = input("Ingrese un id valido: ")
+        
+    
     print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<12}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "", "","", "", "", "","", "", ""))
     print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^12}|{:^25}|{:^20}|{:^10}|{:^10}|{:^15}|{:^10}|".format("Documento", "Nombre", "Apellido", "Direccion", "Telefono", "Email", "Ciudad","Nacimiento", "Afiliacion","Desafiliacion","Vacunado"))
     print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<12}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "", "","", "", "", "","", "", ""))
-    for nolote, fabricante, tipovacuna,cantidadrecibida, cantidadusada, dosisnecesarias, temperatura, efectividad,tiempoproteccion, fechavencimiento, imagen in afil_b:
+    for idaf, nombre, apellido, direccion, telefono, email, ciudad, nacimiento,afiliacion, desafiliacion, vacunado in afil_b:
 
-        print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^12}|{:^25}|{:^20}|{:^10}|{:^10}|{:^15}|{:^10}|".format(nolote, fabricante, tipovacuna,
-                      cantidadrecibida, cantidadusada, dosisnecesarias, temperatura, efectividad,
-                      tiempoproteccion, fechavencimiento, imagen))
+        print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^12}|{:^25}|{:^20}|{:^10}|{:^10}|{:^15}|{:^10}|".format(idaf, nombre, apellido,
+                      direccion, telefono, email, ciudad, nacimiento,
+                      afiliacion, desafiliacion, vacunado))
     print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<12}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "", "","", "", "", "","", "", ""))
     con.commit()
 
