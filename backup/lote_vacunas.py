@@ -124,7 +124,7 @@ def info_lote():
     anoven = input("- año de vencimiento: ")
     # Se verifica que el dato ingresado sea un año coherente para el vencimiento
     while True:
-        if anoven.isdigit() and int(anoven)>2020:
+        if anoven.isdigit() and len(anoven) == 4 and int(anoven)>2020:
             anoven = anoven.rjust(4)
             break
         else:

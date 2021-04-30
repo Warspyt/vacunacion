@@ -4,7 +4,6 @@ import sqlite3
 from sqlite3 import Error
 import re
 
-
 def sql_afiliado():
     # funcion que crea la base de datos
     try:
@@ -90,34 +89,35 @@ def leer_info():
     ciudad = (input("ciudad"))
 
 
-    dnac = False
+    # mensaje para que el usuario sepa que le solicitamos el dia de nacimiento
+    dianac = (input("Dia de Nacimiento DD: "))
     # bucle para pedir el dia de nacimiento
-    while not dnac:
-        # mensaje para que el usuario sepa que le solicitamos el dia de nacimiento
-        dianac = (input("Dia de Nacimiento DD: "))
-        dnac = dianac.isdigit()
-        dianac = dianac.rjust(2, "0")
-        if not dnac:
-            print("\nEscriba el dia de nacimiento en dos digitos")
-
-    mnac = False
+    while True:
+        if dianac.isdigit() and 0<int(dianac)<32:
+            dianac = dianac.rjust(2,"0")
+            break
+        else:
+            dianac = input("\nEscriba el dia de nacimiento en dos digitos")
+            
+    # mensaje para que el usuario sepa que le solicitamos el mes de nacimiento
+    mesnac = (input("Mes de Nacimiento MM: "))
     # bucle para pedir el mes de nacimiento
-    while not mnac:
-        # mensaje para que el usuario sepa que le solicitamos el mes de nacimiento
-        mesnac = (input("Mes de Nacimiento MM: "))
-        mnac = mesnac.isdigit()
-        mesnac = mesnac.rjust(2, "0")
-        if not mnac:
-            print("\nEscriba el mes de nacimiento en numeros entre el 1 y 12")
+    while True:
+        if mesnac.isdigit() and 0<int(mesnac)<13:
+            mesnac = mesnac.rjust(2,"0")
+            break
+        else:
+            mesnac = input("\nEscriba el mes de nacimiento en numeros entre el 1 y 12")
 
-    anac = False
+    # mensaje para que el usuario sepa que le solicitamos el año de nacimiento
+    anonac = (input("Año de Nacimiento YYYY: "))
     # bucle para pedir el año de nacimiento
-    while not anac:
-        # mensaje para que el usuario sepa que le solicitamos el año de nacimiento
-        anonac = (input("Año de Nacimiento YYYY: "))
-        anac = anonac.isdigit()
-        if not anac:
-            print("\nEscriba el año de nacimiento en numeros AAAA")
+    while True:
+        if anonac.isdigit() and len(anonac) == 4:
+            anonac = anonac.rjust(4)
+            break
+        else:
+            anonac = input("\nEscriba el año de nacimiento en numeros AAAA")
 
     nacimiento = dianac + "/" + mesnac + "/" + anonac
     print("nacimiento", nacimiento)
@@ -132,6 +132,8 @@ def leer_info():
     print("la fecha de afiliacion es:", afiliacion)
 
     desafiliacion = " "
+
+    # Por defecto el usuario  ingresa como no  vacunado
     vacunado = "N"
 
     '''salir = False
@@ -169,10 +171,14 @@ def desafiliar(con):
     dia = str(f.day).rjust(2, "0")
     mes = str(f.month).rjust(2, "0")
     ano = str(f.year).rjust(2, "0")
-    afiliacion = dia + "/" + mes + "/" + ano
-    print("la fecha de afiliacion es:", afiliacion)
-    actualizar = 'update afiliados SET desafiliacion = "s" where id ='+desafiliado
-    cursorobj.execute(actualizar)
+    desafiliacion = dia + "/" + mes + "/" + ano
+    print("la fecha de afiliacion es:", desafiliacion)
+    actualizar = 'update afiliados SET desafiliacion = (?)  where id=(?)'
+    cursorobj.execute(actualizar,(desafiliacion,desafiliado))
+
+
+
+
     print("El afiliado ", desafiliado, "fue desafiliado")
     con.commit()
 
@@ -180,17 +186,28 @@ def desafiliar(con):
 def consulta(con):
     cursorobj = con.cursor()
     c_afilia = input("id del afiliado a consultar: ")
-    buscar = 'SELECT * FROM afiliados where id= '+c_afilia
-    cursorobj.execute(buscar)
-    afil_b = cursorobj.fetchall()
+    # Verificar que el id ingresado sea un valor numerico
+    while True:
+        if c_afilia.isdigit():
+            buscar = 'SELECT * FROM afiliados where id= ' + c_afilia
+            cursorobj.execute(buscar)
+            afil_b = cursorobj.fetchall()
+            # Verifiar que el id ingresado se encuentre en la base de datos
+            if len(afil_b) != 0:
+                break
+            else:
+                print("El id " + str(c_afilia) + " no se encuentra en la base de datos")
+        c_afilia = input("Ingrese un id valido: ")
+        
+    
     print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<12}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "", "","", "", "", "","", "", ""))
     print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^12}|{:^25}|{:^20}|{:^10}|{:^10}|{:^15}|{:^10}|".format("Documento", "Nombre", "Apellido", "Direccion", "Telefono", "Email", "Ciudad","Nacimiento", "Afiliacion","Desafiliacion","Vacunado"))
     print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<12}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "", "","", "", "", "","", "", ""))
-    for nolote, fabricante, tipovacuna,cantidadrecibida, cantidadusada, dosisnecesarias, temperatura, efectividad,tiempoproteccion, fechavencimiento, imagen in afil_b:
+    for idaf, nombre, apellido, direccion, telefono, email, ciudad, nacimiento,afiliacion, desafiliacion, vacunado in afil_b:
 
-        print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^12}|{:^25}|{:^20}|{:^10}|{:^10}|{:^15}|{:^10}|".format(nolote, fabricante, tipovacuna,
-                      cantidadrecibida, cantidadusada, dosisnecesarias, temperatura, efectividad,
-                      tiempoproteccion, fechavencimiento, imagen))
+        print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^12}|{:^25}|{:^20}|{:^10}|{:^10}|{:^15}|{:^10}|".format(idaf, nombre, apellido,
+                      direccion, telefono, email, ciudad, nacimiento,
+                      afiliacion, desafiliacion, vacunado))
     print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<12}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "", "","", "", "", "","", "", ""))
     con.commit()
 
