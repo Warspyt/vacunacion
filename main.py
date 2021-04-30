@@ -9,7 +9,7 @@ def menuafi():
         print("\t1 - Crear Afiliado")
         print("\t2 - Vacunar Afiliado")
         print("\t3 - Consultar Afiliado")
-        print("\t4 - Consultar Afiliado")
+        print("\t4 - Cancelar Afiliacion")
         print("\t5 - Regresar Al Menu Principal")
         option = input("Seleccione una opcion: ")
         if option == '1':
