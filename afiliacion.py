@@ -132,13 +132,13 @@ def leer_info():
     print("la fecha de afiliacion es:", afiliacion)
 
     desafiliacion = " "
-    salir = False
+    vacunado = "N"
 
-    salir = False
+    '''salir = False
     while not salir:
         vacunado = (input("fue vacunado?"))
         if vacunado == 'N' or vacunado == 'n':
-            salir = True
+            salir = True'''
     newafi = (ident, nombre, apellido, direccion, telefono, email, ciudad, nacimiento, afiliacion, desafiliacion, vacunado)
     return newafi
 
@@ -173,7 +173,7 @@ def desafiliar(con):
     print("la fecha de afiliacion es:", afiliacion)
     actualizar = 'update afiliados SET desafiliacion = "s" where id ='+desafiliado
     cursorobj.execute(actualizar)
-    print("El afiliado ", vacunado, "fue vacunado")
+    print("El afiliado ", desafiliado, "fue desafiliado")
     con.commit()
 
 

@@ -28,7 +28,7 @@ def menuafi():
             con = afiliacion.sql_afiliado()
             afiliacion.consulta(con)
             con.close()
-        elif option == "34":
+        elif option == "4":
             # Aca se desafilia el afiliado y queda con la fecha del momento  de la desafiliacion
             con = afiliacion.sql_afiliado()
             afiliacion.desafiliar(con)
