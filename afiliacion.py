@@ -132,6 +132,8 @@ def leer_info():
     print("la fecha de afiliacion es:", afiliacion)
 
     desafiliacion = " "
+
+    # Por defecto el usuario  ingresa como no  vacunado
     vacunado = "N"
 
     '''salir = False
