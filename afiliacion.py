@@ -4,6 +4,7 @@ import sqlite3
 from sqlite3 import Error
 import re
 
+
 def sql_afiliado():
     # funcion que crea la base de datos
     try:
@@ -51,7 +52,6 @@ def leer_info():
         name = nombre.isalpha()
         if not name:
             print("\nEscriba un Nombre Valido")
-
     lastname = False
     # bucle para pedir el apellido
     while not lastname:
@@ -87,7 +87,6 @@ def leer_info():
         if not valido:
             print("\nescriba un correo valido")
     ciudad = (input("ciudad"))
-
 
     # mensaje para que el usuario sepa que le solicitamos el dia de nacimiento
     dianac = (input("Dia de Nacimiento DD: "))
@@ -132,15 +131,13 @@ def leer_info():
     print("la fecha de afiliacion es:", afiliacion)
 
     desafiliacion = " "
+    salir = False
 
-    # Por defecto el usuario  ingresa como no  vacunado
-    vacunado = "N"
-
-    '''salir = False
+    salir = False
     while not salir:
         vacunado = (input("fue vacunado?"))
         if vacunado == 'N' or vacunado == 'n':
-            salir = True'''
+            salir = True
     newafi = (ident, nombre, apellido, direccion, telefono, email, ciudad, nacimiento, afiliacion, desafiliacion, vacunado)
     return newafi
 
@@ -171,28 +168,22 @@ def desafiliar(con):
     dia = str(f.day).rjust(2, "0")
     mes = str(f.month).rjust(2, "0")
     ano = str(f.year).rjust(2, "0")
-    desafiliacion = dia + "/" + mes + "/" + ano
-    print("la fecha de afiliacion es:", desafiliacion)
-    actualizar = 'update afiliados SET desafiliacion = (?)  where id=(?)'
-    cursorobj.execute(actualizar,(desafiliacion,desafiliado))
-
-
-
-
-    print("El afiliado ", desafiliado, "fue desafiliado")
+    afiliacion = dia + "/" + mes + "/" + ano
+    print("la fecha de afiliacion es:", afiliacion)
+    actualizar = 'update afiliados SET desafiliacion = "s" where id ='+desafiliado
+    cursorobj.execute(actualizar)
+    print("El afiliado ", vacunado, "fue vacunado")
     con.commit()
 
 
 def consulta(con):
     cursorobj = con.cursor()
     c_afilia = input("id del afiliado a consultar: ")
-    # Verificar que el id ingresado sea un valor numerico
     while True:
         if c_afilia.isdigit():
             buscar = 'SELECT * FROM afiliados where id= ' + c_afilia
             cursorobj.execute(buscar)
             afil_b = cursorobj.fetchall()
-            # Verifiar que el id ingresado se encuentre en la base de datos
             if len(afil_b) != 0:
                 break
             else:
@@ -223,7 +214,5 @@ def main():
     #insertar_tabla(con, afiliado)
     #consulta(con)
     #cerrar_db(con)
-
-
 main()
 """
