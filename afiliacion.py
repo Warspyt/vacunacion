@@ -44,12 +44,12 @@ def leer_info():
         else:
             break
 
-    '''name = False
+    name = False
     # bucle para pedir el nombre
     while not name:
         # mensaje para que el usuario sepa que le solicitamos el nombre
         nombre = (input("Nombre: "))
-        name = nombre.isalpha()
+        name = (nombre.replace(" ", "")).isalpha()
         if not name:
             print("\nEscriba un Nombre Valido")
     lastname = False
@@ -57,14 +57,10 @@ def leer_info():
     while not lastname:
         # mensaje para que el usuario sepa que le solicitamos el nombre
         apellido = (input("Apellido: "))
-        lastname = apellido.isalpha()
+        lastname = (apellido.replace(" ", "")).isalpha()
         apellido = apellido.ljust(20)
         if not lastname:
-            print("\nEscriba un Apellido Valido")'''
-
-    nombre = (input("nombre: "))
-
-    apellido = (input("apellido: "))
+            print("\nEscriba un Apellido Valido")
 
     direccion = (input("direccion: "))
 
