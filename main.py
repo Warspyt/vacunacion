@@ -16,6 +16,7 @@ def menuafi():
         if option == '1':
             print('\n')
             con = afiliacion.sql_afiliado()
+            afiliacion.creartable(con)
             afiliado = afiliacion.leer_info()
             afiliacion.insertar_tabla(con, afiliado)
             con.close()

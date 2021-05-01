@@ -23,7 +23,7 @@ def info_lote():
     nolote = input("Numero de lote: ")
     # Se verifica que el numero de lote sea un valor numerico
     while True:
-        if nolote.isdigit():
+        if nolote.isdigit() and len(nolote) <= 12:
             nolote = nolote.ljust(12)
             break
         else:
@@ -97,7 +97,7 @@ def info_lote():
     cantidadrecibida = input("Cantidad recibida: ")
     # Se verifica que el valor ingresado sea numerico
     while True:
-        if cantidadrecibida.isdigit():
+        if cantidadrecibida.isdigit() and len(cantidadrecibida) <= 6:
             cantidadrecibida = cantidadrecibida.ljust(6)
             break
         else:
