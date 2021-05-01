@@ -2,24 +2,11 @@ import sqlite3
 from sqlite3 import Error
 from datetime import datetime
 from datetime import date
-# los planes deben meterse manual mente  esto sobra en ese orden de ideas
 
-"""
-p1 = [1, 60, 80, datetime.datetime(2021, 1, 1).strftime("%d/%m/%Y"), datetime.datetime(2022, 1, 1).strftime("%d/%m/%Y")]
-p2 = [2, 50, 59, datetime.datetime(2022, 1, 1).strftime("%d/%m/%Y"), datetime.datetime(2023, 1, 1).strftime("%d/%m/%Y")]
-p3 = [3, 40, 49, datetime.datetime(2023, 1, 1).strftime("%d/%m/%Y"), datetime.datetime(2024, 1, 1).strftime("%d/%m/%Y")]
-p4 = [4, 30, 39, datetime.datetime(2024, 1, 1).strftime("%d/%m/%Y"), datetime.datetime(2025, 1, 1).strftime("%d/%m/%Y")]
-p5 = [5, 20, 29, datetime.datetime(2025, 1, 1).strftime("%d/%m/%Y"), datetime.datetime(2026, 1, 1).strftime("%d/%m/%Y")]
-p6 = [6, 16, 19, datetime.datetime(2026, 1, 1).strftime("%d/%m/%Y"), datetime.datetime(2027, 1, 1).strftime("%d/%m/%Y")]
-
-
-listaPlanes = [p1,p2,p3,p4,p5,p6]                                                         #No olvidar agregar cada plan nuevo a la lista de planes
-"""
 def sql_plan():
     # funcion que crea la base de datos
     try:
         conplan = sqlite3.connect('sisgenvac.db')
-        print("Conexion realizada: DB creada")
         return conplan
     except Error:
         print('Se ha producido un error al crear la conexion', Error)
@@ -31,74 +18,133 @@ def tabla_plan(con):
                       edadmax text, fechainicioplan text, fechafinalplan text)""")
     con.commit()
 
-def infoPlanVacunacion():
-  id = int(input("Escriba el id del plan: "))
-  for i in listaPlanes:
-    if i.idplan == id:
-      p=i
-      break
-    else:
-      p=None
-  edad = int(input("Escriba su edad: "))
-  if (p==None):
-    print("ERROR: no existe plan asignado a la id %d en la lista de planes" %(id))
-  elif (edad>=p.edadminima and edad<=p.edadmaxima):
-    print("Su periodo de vacunacion para el plan %d comprende entre %s y %s" %(p.idplan,p.fechainicioplan,p.fechafinplan))
-  elif (edad<p.edadminima):
-    print("ERROR: la edad mínima para el plan %d es %d" %(p.idplan,p.edadminima))
-  else:
-    print("ERROR: la edad máxima para el plan %d es %d" %(p.idplan,p.edadmaxima))
-
 def consultaplan(con):
     cursorObj = con.cursor()
 
-    # Se muestran los lotes existentes en la base de datos
     now= datetime.now()
-    day = now.strftime("%D")
-    print("day:", day)
     dia = now.strftime("%d")
     mes = now.strftime("%m")
     ano = now.strftime("%Y")
-    planactivo = dia + "/" + mes + "/" + ano
-    print(planactivo)
     print("\n           PlANES EXISTENTES\n")
     compara  = 'SELECT *FROM PlanVacunacion  '
     cursorObj.execute(compara)
     listado = cursorObj.fetchall()
-    datoslote = []
     for ids in listado:
-        print("el tipo de datos de row es:", type(ids))
-        print("Plan ", ids[4])
-        datoslote.append(ids[4])
+        #print(ids)
+        # Extraer las fechas de inicio y fin
+        ini = ids[3].split("/")
+        fin = ids[4].split("/")
 
+        # Validacion para mostrar los planes de vacunacion que se encuentran activos
+        if int(ini[2])< int(ano):
+            if int(ano) < int(fin[2]):
+                print(ids)
+            elif int(ano) == int(fin[2]):
+                if int(fin[1]) > int(mes):
+                    print(ids)
+                elif int(fin[1]) == int(mes) and int(fin[2])>= int(dia):
+                    print(ids)
+                   
+        elif int(ini[2])== int(ano):
+            if int(ini[1]) < int(mes):
+                if int(ano) < int(fin[2]):
+                    print(ids)
+                elif int(ano) == int(fin[2]):
+                    if int(fin[1]) > int(mes):
+                        print(ids)
+                    elif int(fin[1]) == int(mes) and int(fin[2])>= int(dia):
+                        print(ids)
+            elif int(ini[1]) == int(mes) and int(ini[2])<= int(dia):
+                if int(ano) < int(fin[2]):
+                    print(ids)
+                elif int(ano) == int(fin[2]):
+                    if int(fin[1]) > int(mes):
+                        print(ids)
+                    elif int(fin[1]) == int(mes) and int(fin[2])>= int(dia):
+                        print(ids)
+                           
 def recibirPlan():
-  # id = len(listaPlanes)+1 # id es palabra restringida entonces no se puede usar como variable
-  # siempre crea plan 7 lo que genera un error debe ser autoincrement ya lo deje  en autoincrement
 
+  emin=0
+  emax=0
+  fini=datetime.now().strftime("%d/%m/%Y")
+  ffin=datetime.now().strftime("%d/%m/%Y")
+  dini=0
+  dfin=0
+  mini=0
+  mfin=0
+  aini=0
+  afin=0
+  while (emin>emax or emin<=0 or emax<=0):
+    emin = input("Escriba la edad minima del plan: ")
+    emax = input("Escriba la edad maxima del plan: ")
+    while True:
+        if emin.isdigit() and emax.isdigit():
+            break
+        else:
+            print("Ingrese un valor numerico: ")
+            emin = input("Escriba la edad minima del plan: ")
+            emax = input("Escriba la edad maxima del plan: ")
+    emin = int(emin)
+    emax = int(emax)
+    if (emin>emax):
+      print("ERROR: la edad minima debe ser mayor a la maxima ingrese datos validos")
+    elif (emin<=0):
+      print("ERROR: la edad minima debe ser mayor a cero ingrese datos validos")
+    elif (emin<=0):
+      print("ERROR: la edad maxima debe ser mayor a cero ingrese datos validos")
+  while (fini>=ffin):
+    while (dini<=0 or dini>31 or mini<=0 or mini>12 or aini<2020 or aini>2050 or dfin<=0 or dfin>31 or mfin<=0 or mfin>12 or afin<2020 or afin>2050):
+      dini = input("Escriba dia de inicio del plan: ")
+      mini = input("Escriba mes de inicio del plan: ")
+      aini = input("Escriba año de inicio del plan: ")
 
-  emin = int(input("Escriba la edad minima del plan: "))
-  emax = int(input("Escriba la edad maxima del plan: "))
-  #print(idp ,"este es  id")
-  if (emin>emax):
-    emax=emin
+      while True:
+          if dini.isdigit() and mini.isdigit() and aini.isdigit():
+              break
+          else:
+              print("Ingrese un valor numerico: ")
+              dini = input("Escriba dia de inicio del plan: ")
+              mini = input("Escriba mes de inicio del plan: ")
+              aini = input("Escriba año de inicio del plan: ")
+      dini = int(dini)
+      mini = int(mini)
+      aini = int(aini)
+      
+      dfin = input("Escriba dia de fin del plan: ")
+      mfin = input("Escriba mes de fin del plan: ")
+      afin = input("Escriba año de fin del plan: ")
 
-      # no las puede hacer iguales debe hacer un except conun print del error que no puede ser mayor
-  dini = int(input("Escriba dia de inicio del plan: "))
-  mini = int(input("Escriba mes de inicio del plan: "))
-  aini = int(input("Escriba año de inicio del plan: "))
-  fini = datetime.datetime(aini, mini, dini).strftime("%d/%m/%Y")
-  dfin = int(input("Escriba dia de fin del plan: "))
-  mfin = int(input("Escriba mes de fin del plan: "))
-  afin = int(input("Escriba año de fin del plan: "))
-  ffin = datetime.datetime(afin, mfin, dfin).strftime("%d/%m/%Y")
-  if (fini>ffin):
-    ffin=fini
-
-      # aca lo mismo no puede igualarse por que si, si digito mal estariamso metioendo info  que no es, si queria dar otra fecha nosotros  la admitimos mal
+      while True:
+          if dfin.isdigit() and mfin.isdigit() and afin.isdigit():
+              break
+          else:
+              print("Ingrese un valor numerico: ")
+              dfin = input("Escriba dia de fin del plan: ")
+              mfin = input("Escriba mes de fin del plan: ")
+              afin = input("Escriba año de fin del plan: ")
+      dfin = int(dfin)
+      mfin = int(mfin)
+      afin = int(afin)
+      
+      if (dini<=0 or dini>31 or dfin<=0 or dfin>31):
+        print("ERROR: el dia inicial y final deben ser un entero entre 1 y 31 ingrese datos validos")
+      elif (mini<=0 or mini>12 or mfin<=0 or mfin>12):
+        print("ERROR: el mes inicial y final deben ser un entero entre 1 y 12 ingrese datos validos")
+      elif (aini<2020 or aini>2050 or afin<2020 or afin>2050):
+        print("ERROR: el año inicial y final deben ser un entero entre 2020 y 2050 ingrese datos validos")
+    fini = datetime(aini, mini, dini).strftime("%d/%m/%Y")
+    ffin = datetime(afin, mfin, dfin).strftime("%d/%m/%Y")
+    if (fini>=ffin):
+        print("ERROR: la fecha inicial debe ser menor a la final ingrese datos validos")
+        dini=0
+        dfin=0
+        mini=0
+        mfin=0
+        aini=0
+        afin=0
   plan =( emin, emax, fini, ffin)
-  #listaPlanes.append(plan) # Ya no es necesario, con otra funcion lo guardas en la base de datos
-  #cada plan se ingresa manual
-  return plan # para que la funcion te guarde los datos recogidos
+  return plan 
 
 def crearPlan(con, plan):
     # Se crea un nuevo plan de vacunacion con la informacion recolectada del usuario
@@ -108,28 +154,12 @@ def crearPlan(con, plan):
     con.commit()
 
 
-def  menuPlan(): # Todo esto esta en el archivo de main, solo es que pongas las funciones alla y listo :)
-  print("1. Crear nuevo plan de vacunación")
-  print("2. Realizar consulta plan de vacunación")
-  print("3. Salir")
-  op = int(input("Escriba la opción que desea ejecutar: "))
-  if (op == 1):
-    crearPlan()
-  elif (op == 2):
-    infoPlanVacunacion()
-  elif (op == 3):
-    quit()
-  else:
-    print("ERROR: Opción incorecta")
-
-# menuPlan()
-# Prueba para crear un plan y guardar los datos en la base de datos
-def prueba():
-  conplan = sql_plan()
-  tabla_plan(conplan)
+#def prueba():
+  #conplan = sql_plan()
+  #tabla_plan(conplan)
   #plan = recibirPlan()
   #crearPlan(conplan, plan)
   #infoPlanVacunacion()
-  consultaplan(conplan)
+  #consultaplan(conplan)
 
-prueba()
+#prueba()

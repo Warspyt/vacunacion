@@ -4,11 +4,12 @@ import sqlite3
 from sqlite3 import Error
 import re
 
+
 def sql_afiliado():
     # funcion que crea la base de datos
     try:
         con = sqlite3.connect('sisgenvac.db')
-        # print("Conexion realizada: DB creada")
+        #print("Conexion realizada: DB creada")
         return con
     except Error:
         print('Se ha producido un error al crear la conexion', Error)
@@ -51,7 +52,6 @@ def leer_info():
         name = nombre.isalpha()
         if not name:
             print("\nEscriba un Nombre Valido")
-
     lastname = False
     # bucle para pedir el apellido
     while not lastname:
@@ -85,9 +85,8 @@ def leer_info():
         email = (input("Correo electronico: "))
         valido = es_correo_valido(email)
         if not valido:
-            print("\nescriba un correo valido")
-    ciudad = (input("ciudad"))
-
+            print("\nescriba un correo valido: ")
+    ciudad = (input("ciudad: "))
 
     # mensaje para que el usuario sepa que le solicitamos el dia de nacimiento
     dianac = (input("Dia de Nacimiento DD: "))
@@ -128,15 +127,17 @@ def leer_info():
     dia = str(f.day).rjust(2, "0")
     mes = str(f.month).rjust(2, "0")
     ano = str(f.year).rjust(2, "0")
-    #afiliacion = dia + "/" + mes + "/" + ano
-    #print("la fecha de afiliacion es:", afiliacion)
-    # Por defecto el usuario  ingresa con el campo vacio
+    afiliacion = dia + "/" + mes + "/" + ano
+    print("la fecha de afiliacion es: ", afiliacion)
+
     desafiliacion = " "
 
     # Por defecto el usuario  ingresa como no  vacunado
     vacunado = "N"
-
+    
     '''salir = False
+
+    salir = False
     while not salir:
         vacunado = (input("fue vacunado?"))
         if vacunado == 'N' or vacunado == 'n':
@@ -157,7 +158,7 @@ def vacunar(con):
     """ Funcion que se utiliza para operar en la base de datos"""
     cursorobj = con.cursor()
     vacunado = input("identificacion del afiliado vacunado: ")
-    actualizar = 'update afiliados SET vacunado = "S" where id ='+vacunado
+    actualizar = 'update afiliados SET vacunado = "s" where id ='+vacunado
     cursorobj.execute(actualizar)
     print("El afiliado ", vacunado, "fue vacunado")
     con.commit()
@@ -172,7 +173,7 @@ def desafiliar(con):
     mes = str(f.month).rjust(2, "0")
     ano = str(f.year).rjust(2, "0")
     desafiliacion = dia + "/" + mes + "/" + ano
-    print("la fecha de afiliacion es:", desafiliacion)
+    print("la fecha de afiliacion es: ", desafiliacion)
     actualizar = 'update afiliados SET desafiliacion = (?)  where id=(?)'
     cursorobj.execute(actualizar,(desafiliacion,desafiliado))
 
@@ -186,13 +187,12 @@ def desafiliar(con):
 def consulta(con):
     cursorobj = con.cursor()
     c_afilia = input("id del afiliado a consultar: ")
-    # Verificar que el id ingresado sea un valor numerico
+    # Verifiar que el id ingresado se encuentre en la base de datos
     while True:
         if c_afilia.isdigit():
             buscar = 'SELECT * FROM afiliados where id= ' + c_afilia
             cursorobj.execute(buscar)
             afil_b = cursorobj.fetchall()
-            # Verifiar que el id ingresado se encuentre en la base de datos
             if len(afil_b) != 0:
                 break
             else:
@@ -200,15 +200,15 @@ def consulta(con):
         c_afilia = input("Ingrese un id valido: ")
         
     
-    print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<12}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "", "","", "", "", "","", "", ""))
-    print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^12}|{:^25}|{:^20}|{:^10}|{:^10}|{:^15}|{:^10}|".format("Documento", "Nombre", "Apellido", "Direccion", "Telefono", "Email", "Ciudad","Nacimiento", "Afiliacion","Desafiliacion","Vacunado"))
-    print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<12}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "", "","", "", "", "","", "", ""))
+    print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<12}+{:-<28}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "", "","", "", "", "","", "", ""))
+    print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^12}|{:^28}|{:^20}|{:^10}|{:^10}|{:^15}|{:^10}|".format("Documento", "Nombre", "Apellido", "Direccion", "Telefono", "Email", "Ciudad","Nacimiento", "Afiliacion","Desafiliacion","Vacunado"))
+    print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<12}+{:-<28}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "", "","", "", "", "","", "", ""))
     for idaf, nombre, apellido, direccion, telefono, email, ciudad, nacimiento,afiliacion, desafiliacion, vacunado in afil_b:
 
-        print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^12}|{:^25}|{:^20}|{:^10}|{:^10}|{:^15}|{:^10}|".format(idaf, nombre, apellido,
+        print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^12}|{:^28}|{:^20}|{:^10}|{:^10}|{:^15}|{:^10}|".format(idaf, nombre, apellido,
                       direccion, telefono, email, ciudad, nacimiento,
                       afiliacion, desafiliacion, vacunado))
-    print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<12}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "", "","", "", "", "","", "", ""))
+    print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<12}+{:-<28}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "", "","", "", "", "","", "", ""))
     con.commit()
 
 
@@ -216,14 +216,12 @@ def cerrar_db(con):
     con.close()
 
 
-def main():
+#def main():
     con = sql_afiliado()
     #creartable(con)
     #afiliado = leer_info()
     #insertar_tabla(con, afiliado)
     #consulta(con)
-    cerrar_db(con)
-
-
-main()
+    #cerrar_db(con)
+#main()
 

@@ -112,7 +112,7 @@ def info_lote():
             diaven = diaven.rjust(2,"0")
             break
         else:
-            diaven = input("Ingrese un dia valido: ")
+            diaven = input("Escriba el dia de nacimiento en dos digitos: ")
     mesven = input("- Mes de vencimiento: ")
     # Se verifica que el dato ingresado sea un mes existente dentro del calendario
     while True:
@@ -120,7 +120,7 @@ def info_lote():
             mesven = mesven.rjust(2,"0")
             break
         else:
-            mesven = input("Ingrese un mes valido: ")
+            mesven = input("Escriba el mes de nacimiento en numeros entre el 1 y 12: ")
     anoven = input("- año de vencimiento: ")
     # Se verifica que el dato ingresado sea un año coherente para el vencimiento
     while True:
@@ -128,7 +128,7 @@ def info_lote():
             anoven = anoven.rjust(4)
             break
         else:
-            anoven = input("Ingrese un año valido: ")
+            anoven = input("Escriba el año de vencimiento en numeros AAAA: ")
     # Se guardan los datos de la fecha en formato (DD/MM/AAAA)
     fechavencimiento = diaven+"/"+mesven+"/"+anoven
     print("Fecha ingresada: " + fechavencimiento)
@@ -158,10 +158,10 @@ def consultar_lote(con):
     listado = cursorObj.fetchall()
     datoslote = []
     for ids in listado:
-        print(" ", ids[0])
+        print("•", ids[0])
         datoslote.append(ids[0])
     c_lote = input("\nNumero de lote a consultar: ")
-    # Se verifica que el lote sea un valor numerio y se encuentre dentro de la base de datos
+    # Se verifica que el lote sea un valor numerico y se encuentre dentro de la base de datos
     while True:
         if c_lote.isdigit() and int(c_lote) in datoslote:
             break
