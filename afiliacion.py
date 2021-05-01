@@ -3,7 +3,7 @@ from datetime import date
 import sqlite3
 from sqlite3 import Error
 import re
-#
+
 
 def sql_afiliado():
     # funcion que crea la base de datos
