@@ -44,7 +44,7 @@ def leer_info():
         else:
             break
 
-    '''name = False
+    name = False
     # bucle para pedir el nombre
     while not name:
         # mensaje para que el usuario sepa que le solicitamos el nombre
@@ -60,11 +60,9 @@ def leer_info():
         lastname = apellido.isalpha()
         apellido = apellido.ljust(20)
         if not lastname:
-            print("\nEscriba un Apellido Valido")'''
+            print("\nEscriba un Apellido Valido")
 
-    nombre = (input("nombre: "))
 
-    apellido = (input("apellido: "))
 
     direccion = (input("direccion: "))
 
@@ -218,7 +216,7 @@ def cerrar_db(con):
 
 #def main():
     con = sql_afiliado()
-    #creartable(con)
+    creartable(con)
     #afiliado = leer_info()
     #insertar_tabla(con, afiliado)
     #consulta(con)
