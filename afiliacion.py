@@ -200,15 +200,15 @@ def consulta(con):
         c_afilia = input("Ingrese un id valido: ")
         
     
-    print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<12}+{:-<28}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "", "","", "", "", "","", "", ""))
-    print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^12}|{:^28}|{:^20}|{:^10}|{:^10}|{:^15}|{:^10}|".format("Documento", "Nombre", "Apellido", "Direccion", "Telefono", "Email", "Ciudad","Nacimiento", "Afiliacion","Desafiliacion","Vacunado"))
-    print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<12}+{:-<28}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "", "","", "", "", "","", "", ""))
+    print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<15}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "", "","", "", "", "","", "", ""))
+    print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^15}|{:^25}|{:^20}|{:^10}|{:^10}|{:^15}|{:^10}|".format("Documento", "Nombre", "Apellido", "Direccion", "Telefono", "Email", "Ciudad","Nacimiento", "Afiliacion","Desafiliacion","Vacunado"))
+    print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<15}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "", "","", "", "", "","", "", ""))
     for idaf, nombre, apellido, direccion, telefono, email, ciudad, nacimiento,afiliacion, desafiliacion, vacunado in afil_b:
 
-        print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^12}|{:^28}|{:^20}|{:^10}|{:^10}|{:^15}|{:^10}|".format(idaf, nombre, apellido,
+        print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^15}|{:^25}|{:^20}|{:^10}|{:^10}|{:^15}|{:^10}|".format(idaf, nombre, apellido,
                       direccion, telefono, email, ciudad, nacimiento,
                       afiliacion, desafiliacion, vacunado))
-    print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<12}+{:-<28}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "", "","", "", "", "","", "", ""))
+    print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<15}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "", "","", "", "", "","", "", ""))
     con.commit()
 
 
