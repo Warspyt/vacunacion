@@ -38,6 +38,11 @@ def leer_info():
     while True:
         try:
             ident = int(input("Número de identificación: "))
+
+            lenid=str(ident)
+
+            if len(lenid) > 13:
+                print("El numero de identificacion no puede tener mas de 12  digitos.")
         except ValueError:
             print("escriba un número de identificacion valido.")
             continue
@@ -53,10 +58,10 @@ def leer_info():
 
 
         name = (nombre.replace(" ", "")).isalpha()
-        nombre = nombre.ljust(20)
+
 
         if not name or len(nombre) > 20:
-            name = False
+
             print("\nEscriba un Nombre Valido")
 
     lastname = False
@@ -68,7 +73,6 @@ def leer_info():
         apellido = apellido.ljust(20)
 
         if not lastname or len(apellido) > 20:
-            lastname = False
             print("\nEscriba un Apellido Valido")
 
     direccion = (input("direccion: "))
