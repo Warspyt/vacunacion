@@ -48,8 +48,7 @@ def leer_info():
         except ValueError:
             print("escriba un número de identificacion valido.")
             continue
-        else:
-            break
+
 
     name = False
     # bucle para pedir el nombre
