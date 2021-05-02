@@ -8,7 +8,7 @@ def menuafi():
         # Mostramos el menu
         print('\nA D M I N I S T R A R  A F I L I A D O S')
         print("\t1 - Crear Afiliado")
-        print("\t2 - Actualizar Afiliado")
+        print("\t2 - VacunarS Afiliado")
         print("\t3 - Consultar Afiliado")
         print("\t4 - Desafiliar Usuario")
         print("\t5 - Regresar Al Menu Principal")
