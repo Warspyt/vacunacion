@@ -104,7 +104,16 @@ def leer_info():
         if not valido or len(email) > 20:
             valido = False
             print("\nescriba un correo valido: ")
-    ciudad = (input("ciudad: "))
+
+    city = False
+    # bucle para pedir la ciudad
+    while not city:
+        # mensaje para que el usuario sepa que le solicitamos la ciudad
+        ciudad = (input("Ciudad: "))
+        city = (ciudad.replace(" ", "")).isalpha()
+        if not city or len(ciudad) > 20:
+            city = False
+            print("\nEscriba ua ciudad Valido")
 
     # mensaje para que el usuario sepa que le solicitamos el dia de nacimiento
     dianac = (input("Dia de Nacimiento DD: "))
