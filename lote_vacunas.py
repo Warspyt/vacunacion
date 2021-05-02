@@ -172,7 +172,6 @@ def consultar_lote(con):
 
     # Verificar la fecha para mostrar los lotes vigentes
     factual = datetime.now().strftime("%Y/%m/%d")
-    vigencia = ""
     
     for ids in listado:
         llote = (ids[9]).split("/")
@@ -207,7 +206,6 @@ def consultar_lote(con):
                       cantidadrecibida, cantidadusada, dosisnecesarias, temperatura, efectividad,
                       tiempoproteccion, fechavencimiento, imagen))
     print("+{:-<10}+{:-<15}+{:-<21}+{:-<15}+{:-<10}+{:-<8}+{:-<15}+{:-<15}+{:-<25}+{:-<15}+{:-<15}+".format("", "", "", "","", "", "", "","", "", ""))
-    print(vigencia)
     con.commit()
 
 
