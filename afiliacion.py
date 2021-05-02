@@ -76,8 +76,14 @@ def leer_info():
     while not adress:
         # mensaje para que el usuario sepa que le solicitamos la direccion y validamso sea alfa numerica isalmun
         direccion = (input("Direccion: "))
-        adress = (direccion.replace(" ", "")).isalnum()
-        direccion = apellido.ljust(20)
+        #adress = (direccion.replace(" ", "")).isalnum()
+
+        dictionary = {'#': "", ' ': '','/': "",'-': ""}
+        transTable = direccion.maketrans(dictionary)
+        adress = direccion.translate(transTable)
+
+
+        direccion = direccion.ljust(20)
         if not adress or len(direccion) > 20:
             adress = False
             print("\nEscriba una Direccion Valido")
@@ -141,7 +147,7 @@ def leer_info():
     anonac = (input("Año de Nacimiento YYYY: "))
     # bucle para pedir el año de nacimiento
     while True:
-        if anonac.isdigit() and len(anonac) == 4 and int(anonac)>2020:
+        if anonac.isdigit() and len(anonac) == 4 and int(anonac)<2021:
             anonac = anonac.rjust(4)
             break
         else:
