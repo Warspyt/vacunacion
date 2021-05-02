@@ -9,7 +9,7 @@ def sql_afiliado():
     # funcion que crea la base de datos
     try:
         con = sqlite3.connect('sisgenvac.db')
-        #print("Conexion realizada: DB creada")
+        # print("Conexion realizada: DB creada")
         return con
     except Error:
         print('Se ha producido un error al crear la conexion', Error)
@@ -39,7 +39,7 @@ def leer_info():
         try:
             ident = int(input("Número de identificación: "))
 
-            lenid=str(ident)
+            lenid = str(ident)
 
             if len(lenid) > 13:
                 print("El numero de identificacion no puede tener mas de 12  digitos.")
@@ -54,14 +54,9 @@ def leer_info():
     while not name:
         # mensaje para que el usuario sepa que le solicitamos el nombre
         nombre = (input("Nombre: "))
-
-
-
         name = (nombre.replace(" ", "")).isalpha()
-
-
         if not name or len(nombre) > 20:
-
+            name = False
             print("\nEscriba un Nombre Valido")
 
     lastname = False
@@ -71,8 +66,8 @@ def leer_info():
         apellido = (input("Apellido: "))
         lastname = (apellido.replace(" ", "")).isalpha()
         apellido = apellido.ljust(20)
-
         if not lastname or len(apellido) > 20:
+            lastname = False
             print("\nEscriba un Apellido Valido")
 
     direccion = (input("direccion: "))
@@ -101,18 +96,18 @@ def leer_info():
     dianac = (input("Dia de Nacimiento DD: "))
     # bucle para pedir el dia de nacimiento
     while True:
-        if dianac.isdigit() and 0<int(dianac)<32:
-            dianac = dianac.rjust(2,"0")
+        if dianac.isdigit() and 0 < int(dianac) < 32:
+            dianac = dianac.rjust(2, "0")
             break
         else:
             dianac = input("\nEscriba el dia de nacimiento en dos digitos: ")
-            
+
     # mensaje para que el usuario sepa que le solicitamos el mes de nacimiento
     mesnac = (input("Mes de Nacimiento MM: "))
     # bucle para pedir el mes de nacimiento
     while True:
-        if mesnac.isdigit() and 0<int(mesnac)<13:
-            mesnac = mesnac.rjust(2,"0")
+        if mesnac.isdigit() and 0 < int(mesnac) < 13:
+            mesnac = mesnac.rjust(2, "0")
             break
         else:
             mesnac = input("\nEscriba el mes de nacimiento en numeros entre el 1 y 12: ")
@@ -143,7 +138,7 @@ def leer_info():
 
     # Por defecto el usuario  ingresa como no  vacunado
     vacunado = "N"
-    
+
     '''salir = False
 
     salir = False
@@ -184,11 +179,7 @@ def desafiliar(con):
     desafiliacion = dia + "/" + mes + "/" + ano
     print("la fecha de afiliacion es: ", desafiliacion)
     actualizar = 'update afiliados SET desafiliacion = (?)  where id=(?)'
-    cursorobj.execute(actualizar,(desafiliacion,desafiliado))
-
-
-
-
+    cursorobj.execute(actualizar, (desafiliacion, desafiliado))
     print("El afiliado ", desafiliado, "fue desafiliado")
     con.commit()
 
@@ -207,17 +198,16 @@ def consulta(con):
             else:
                 print("El id " + str(c_afilia) + " no se encuentra en la base de datos")
         c_afilia = input("Ingrese un id valido: ")
-        
-    
-    print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<15}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "", "","", "", "", "","", "", ""))
-    print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^15}|{:^25}|{:^20}|{:^10}|{:^10}|{:^15}|{:^10}|".format("Documento", "Nombre", "Apellido", "Direccion", "Telefono", "Email", "Ciudad","Nacimiento", "Afiliacion","Desafiliacion","Vacunado"))
-    print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<15}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "", "","", "", "", "","", "", ""))
-    for idaf, nombre, apellido, direccion, telefono, email, ciudad, nacimiento,afiliacion, desafiliacion, vacunado in afil_b:
+
+    print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<15}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "", "", "", "", "", "", "", "", ""))
+    print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^15}|{:^25}|{:^20}|{:^10}|{:^10}|{:^15}|{:^10}|".format("Documento", "Nombre", "Apellido", "Direccion", "Telefono", "Email", "Ciudad", "Nacimiento", "Afiliacion", "Desafiliacion", "Vacunado"))
+    print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<15}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "", "", "", "", "", "", "", "", ""))
+    for idaf, nombre, apellido, direccion, telefono, email, ciudad, nacimiento, afiliacion, desafiliacion, vacunado in afil_b:
 
         print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^15}|{:^25}|{:^20}|{:^10}|{:^10}|{:^15}|{:^10}|".format(idaf, nombre, apellido,
                       direccion, telefono, email, ciudad, nacimiento,
                       afiliacion, desafiliacion, vacunado))
-    print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<15}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "", "","", "", "", "","", "", ""))
+    print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<15}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "", "", "", "", "", "", "", "", ""))
     con.commit()
 
 
@@ -225,12 +215,11 @@ def cerrar_db(con):
     con.close()
 
 
-#def main():
-    con = sql_afiliado()
-    #creartable(con)
-    #afiliado = leer_info()
-    #insertar_tabla(con, afiliado)
-    #consulta(con)
-    #cerrar_db(con)
-#main()
-
+# def main():
+    # con = sql_afiliado()
+    # creartable(con)
+    # afiliado = leer_info()
+    # insertar_tabla(con, afiliado)
+    # consulta(con)
+    # cerrar_db(con)
+# main()
