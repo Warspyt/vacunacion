@@ -43,6 +43,8 @@ def leer_info():
 
             if len(lenid) > 13:
                 print("El numero de identificacion no puede tener mas de 12  digitos.")
+            else:
+                break
         except ValueError:
             print("escriba un número de identificacion valido.")
             continue
@@ -88,11 +90,12 @@ def leer_info():
 
             if len(lentel) > 13:
                 print("El numero de identificacion no puede tener mas de 12  digitos.")
+            else:
+                break
         except ValueError:
             print("Escriba un numero de telefono valido.")
             continue
-        else:
-            break
+
     # variable que indica si el valor es válido
     # inicialmente no lo es
     valido = False
