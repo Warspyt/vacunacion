@@ -77,11 +77,11 @@ def recibirPlan():
   afin=0
 
   # Validar que la edad minima sea menor que la edad maxima
-  while (emin>emax):
+  while (emin>=emax):
     emin = input("Escriba la edad minima del plan: ")
     # Verificar que la edad sea un valor numerico mayor a cero
     while True:
-        if emin.isdigit() and len(emin) <= 3 and emin > 0:
+        if emin.isdigit() and len(emin) <= 3 and int(emin) > 0:
             break
         else:
             print("Ingrese un valor numerico: ")
@@ -89,7 +89,7 @@ def recibirPlan():
     emax = input("Escriba la edad maxima del plan: ")
     # Verificar que la edad sea un valor numerico mayor a cero
     while True:
-        if emax.isdigit() and len(emax) <= 3 and emax > 0:
+        if emax.isdigit() and len(emax) <= 3 and int(emax) > 0:
             break
         else:
             print("Ingrese un valor numerico: ")
