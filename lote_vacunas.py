@@ -30,7 +30,7 @@ def info_lote():
             nolote = input("Ingrese un numero de lote valido: ")            
     
     # Se muestran las opciones de vacunas y se asignan los valores predeterminados a las variables
-    op_fabricante = input("""Fabricante:\n
+    op_fabricante = input("""Seleccione un fabricante:\n
     \t1 - Sinovac
     \t2 - Pfizer
     \t3 - Moderna
@@ -105,14 +105,14 @@ def info_lote():
             
     cantidadusada = 0
 
-    diaven = input("Fecha de vencimiento:\n- Dia de vencimiento: ")
+    diaven = input("Fecha de vencimiento:\n\n- Dia de vencimiento: ")
     # Se verifica que el dato ingresado sea un dia existente dentro del calendario
     while True:
         if diaven.isdigit() and 0<int(diaven)<32:
             diaven = diaven.rjust(2,"0")
             break
         else:
-            diaven = input("Escriba el dia de nacimiento en dos digitos: ")
+            diaven = input("Escriba el dia de vencimiento en dos digitos: ")
     mesven = input("- Mes de vencimiento: ")
     # Se verifica que el dato ingresado sea un mes existente dentro del calendario
     while True:
@@ -120,7 +120,7 @@ def info_lote():
             mesven = mesven.rjust(2,"0")
             break
         else:
-            mesven = input("Escriba el mes de nacimiento en numeros entre el 1 y 12: ")
+            mesven = input("Escriba el mes de vencimiento en numeros entre el 1 y 12: ")
     anoven = input("- año de vencimiento: ")
     # Se verifica que el dato ingresado sea un año coherente para el vencimiento
     while True:

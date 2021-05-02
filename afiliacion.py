@@ -141,7 +141,7 @@ def leer_info():
     anonac = (input("Año de Nacimiento YYYY: "))
     # bucle para pedir el año de nacimiento
     while True:
-        if anonac.isdigit() and len(anonac) == 4:
+        if anonac.isdigit() and len(anonac) == 4 and int(anonac)>2020:
             anonac = anonac.rjust(4)
             break
         else:
