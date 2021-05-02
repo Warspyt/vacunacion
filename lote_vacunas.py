@@ -165,12 +165,20 @@ def consultar_lote(con):
     cursorObj = con.cursor()
 
     # Se muestran los lotes existentes en la base de datos 
-    print("\n           LOTES EXISTENTES\n")
+    print("\n           LOTES VIGENTES\n")
     cursorObj.execute('SELECT * FROM LoteVacunas')
     listado = cursorObj.fetchall()
     datoslote = []
+
+    # Verificar la fecha para mostrar los lotes vigentes
+    factual = datetime.now().strftime("%Y/%m/%d")
+    vigencia = ""
+    
     for ids in listado:
-        print("•", ids[0])
+        llote = (ids[9]).split("/")
+        venlote = datetime(int(llote[2]), int(llote[1]), int(llote[0])).strftime("%Y/%m/%d")
+        if venlote > factual: 
+            print("•", ids[0])
         datoslote.append(ids[0])
     c_lote = input("\nNumero de lote a consultar: ")
     # Se verifica que el lote sea un valor numerico y se encuentre dentro de la base de datos
@@ -183,6 +191,10 @@ def consultar_lote(con):
     # Se busca el lote en la base de datos y se extrae la informacion
     cursorObj.execute('SELECT * FROM LoteVacunas where nolote= ' + c_lote)
     filas = cursorObj.fetchall()
+    lfila = (filas[0][9]).split("/")
+    venfila = datetime(int(lfila[2]), int(lfila[1]), int(lfila[0])).strftime("%Y/%m/%d")
+    if venfila < factual:
+        print("ESTE LOTE NO SE ENCUENTRA VIGENTE\n")
         
     # Se muestra la informacion al usuario en forma de tabla
 
@@ -195,7 +207,7 @@ def consultar_lote(con):
                       cantidadrecibida, cantidadusada, dosisnecesarias, temperatura, efectividad,
                       tiempoproteccion, fechavencimiento, imagen))
     print("+{:-<10}+{:-<15}+{:-<21}+{:-<15}+{:-<10}+{:-<8}+{:-<15}+{:-<15}+{:-<25}+{:-<15}+{:-<15}+".format("", "", "", "","", "", "", "","", "", ""))
-        
+    print(vigencia)
     con.commit()
 
 
