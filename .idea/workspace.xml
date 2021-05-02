@@ -3,9 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="31656571-185a-4cde-8de1-7d5e1041d094" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/afiliacion.py" beforeDir="false" afterPath="$PROJECT_DIR$/afiliacion.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lote_vacunas.py" beforeDir="false" afterPath="$PROJECT_DIR$/lote_vacunas.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sisgenvac.db" beforeDir="false" afterPath="$PROJECT_DIR$/sisgenvac.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProgramacionVacunas.py" beforeDir="false" afterPath="$PROJECT_DIR$/ProgramacionVacunas.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backup/Plan_Vacunacion.py" beforeDir="false" afterPath="$PROJECT_DIR$/backup/Plan_Vacunacion.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backup/afiliacion.py" beforeDir="false" afterPath="$PROJECT_DIR$/backup/afiliacion.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backup/lote_vacunas.py" beforeDir="false" afterPath="$PROJECT_DIR$/backup/lote_vacunas.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backup/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/backup/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -4,6 +4,7 @@ import sqlite3
 from sqlite3 import Error
 import re
 
+
 def sql_afiliado():
     # funcion que crea la base de datos
     try:
@@ -37,45 +38,66 @@ def leer_info():
     while True:
         try:
             ident = int(input("Número de identificación: "))
+
+            lenid = str(ident)
+
+            if len(lenid) > 13:
+                print("El numero de identificacion no puede tener mas de 12  digitos.")
+            else:
+                break
         except ValueError:
             print("escriba un número de identificacion valido.")
             continue
-        else:
-            break
 
-    '''name = False
+
+    name = False
     # bucle para pedir el nombre
     while not name:
         # mensaje para que el usuario sepa que le solicitamos el nombre
         nombre = (input("Nombre: "))
-        name = nombre.isalpha()
-        if not name:
+        name = (nombre.replace(" ", "")).isalpha()
+        if not name or len(nombre) > 20:
+            name = False
             print("\nEscriba un Nombre Valido")
 
     lastname = False
     # bucle para pedir el apellido
     while not lastname:
-        # mensaje para que el usuario sepa que le solicitamos el nombre
+        # mensaje para que el usuario sepa que le solicitamos el apellido
         apellido = (input("Apellido: "))
-        lastname = apellido.isalpha()
+        lastname = (apellido.replace(" ", "")).isalpha()
         apellido = apellido.ljust(20)
-        if not lastname:
-            print("\nEscriba un Apellido Valido")'''
+        if not lastname or len(apellido) > 20:
+            lastname = False
+            print("\nEscriba un Apellido Valido")
 
-    nombre = (input("nombre: "))
-
-    apellido = (input("apellido: "))
-
-    direccion = (input("direccion: "))
+    adress = False
+    # bucle para pedir el apellido
+    while not adress:
+        # mensaje para que el usuario sepa que le solicitamos la direccion y validamso sea alfa numerica isalmun
+        direccion = (input("Direccion: "))
+        #adress = (direccion.replace(" ", "")).isalnum()
+        dictionary = {'#': "", ' ': '','/': "",'-': ""}
+        transTable = direccion.maketrans(dictionary)
+        adress = direccion.translate(transTable)
+        direccion = direccion.ljust(20)
+        if not adress or len(direccion) > 20:
+            adress = False
+            print("\nEscriba una Direccion Valida")
 
     while True:
         try:
             telefono = int(input("Telefono: "))
+            lentel = str(telefono)
+
+            if len(lentel) > 13:
+                print("El numero de telefono no puede tener mas de 12  digitos.")
+            else:
+                break
         except ValueError:
             print("Escriba un numero de telefono valido.")
             continue
-        else:
-            break
+
     # variable que indica si el valor es válido
     # inicialmente no lo es
     valido = False
@@ -84,43 +106,57 @@ def leer_info():
         # mensaje para que el usuario sepa que le solicitamos un correo
         email = (input("Correo electronico: "))
         valido = es_correo_valido(email)
-        if not valido:
-            print("\nescriba un correo valido")
-    ciudad = (input("ciudad"))
+        if not valido or len(email) > 20:
+            valido = False
+            print("\nescriba un correo valido: ")
 
+    city = False
+    # bucle para pedir la ciudad
+    while not city:
+        # mensaje para que el usuario sepa que le solicitamos la ciudad
+        ciudad = (input("Ciudad: "))
+        city = (ciudad.replace(" ", "")).isalpha()
+        if not city or len(ciudad) > 20:
+            city = False
+            print("\nEscriba ua ciudad Valido")
 
     # mensaje para que el usuario sepa que le solicitamos el dia de nacimiento
-    dianac = (input("Dia de Nacimiento DD: "))
-    # bucle para pedir el dia de nacimiento
     while True:
-        if dianac.isdigit() and 0<int(dianac)<32:
-            dianac = dianac.rjust(2,"0")
-            break
-        else:
-            dianac = input("\nEscriba el dia de nacimiento en dos digitos")
-            
-    # mensaje para que el usuario sepa que le solicitamos el mes de nacimiento
-    mesnac = (input("Mes de Nacimiento MM: "))
-    # bucle para pedir el mes de nacimiento
-    while True:
-        if mesnac.isdigit() and 0<int(mesnac)<13:
-            mesnac = mesnac.rjust(2,"0")
-            break
-        else:
-            mesnac = input("\nEscriba el mes de nacimiento en numeros entre el 1 y 12")
 
-    # mensaje para que el usuario sepa que le solicitamos el año de nacimiento
-    anonac = (input("Año de Nacimiento YYYY: "))
-    # bucle para pedir el año de nacimiento
-    while True:
-        if anonac.isdigit() and len(anonac) == 4:
-            anonac = anonac.rjust(4)
+        dianac = input("Fecha de nacimiento:\n\n- Dia de nacimiento: ")
+        # Se verifica que el dato ingresado sea un dia existente dentro del calendario
+        while True:
+            if dianac.isdigit() and 0 < int(dianac) < 32:
+                dianac = dianac.rjust(2, "0")
+                break
+            else:
+                dianac = input("Escriba el dia de nacimiento en dos digitos: ")
+        mesnac = input("- Mes de nacimiento: ")
+        # Se verifica que el dato ingresado sea un mes existente dentro del calendario
+        while True:
+            if mesnac.isdigit() and 0 < int(mesnac) < 13:
+                mesnac = mesnac.rjust(2, "0")
+                break
+            else:
+                mesnac = input("Escriba el mes de nacimiento en numeros entre el 1 y 12: ")
+        anosnac = input("- año de nacimiento: ")
+        # Se verifica que el dato ingresado sea un año coherente para el nacimiento
+        while True:
+            if anosnac.isdigit() and len(anosnac) == 4 and int(anosnac) > 2020:
+                anosnac = anosnac.rjust(4)
+                break
+            else:
+                anosnac = input("Escriba el año de nacimiento en numeros AAAA: ")
+        # Se guardan los datos de la fecha en formato (DD/MM/AAAA)
+        nacimiento = datetime(int(anosnac), int(mesnac), int(dianac)).strftime("%Y/%m/%d")
+        factual = datetime.now().strftime("%Y/%m/%d")
+        # nacimiento = dianac+"/"+mesnac+"/"+anosnac
+        if nacimiento < factual:
+            nacimiento = datetime(int(anosnac), int(mesnac), int(dianac)).strftime("%d/%m/%Y")
             break
         else:
-            anonac = input("\nEscriba el año de nacimiento en numeros AAAA")
-
-    nacimiento = dianac + "/" + mesnac + "/" + anonac
-    print("nacimiento", nacimiento)
+            print("La fecha de nacimiento no es valida: ")
+    print("Fecha ingresada: " + nacimiento)
 
 
 # se actualiza la fecha de afiliacion automaticamente
@@ -129,18 +165,14 @@ def leer_info():
     mes = str(f.month).rjust(2, "0")
     ano = str(f.year).rjust(2, "0")
     afiliacion = dia + "/" + mes + "/" + ano
-    print("la fecha de afiliacion es:", afiliacion)
+    print("la fecha de afiliacion es: ", afiliacion)
 
     desafiliacion = " "
 
     # Por defecto el usuario  ingresa como no  vacunado
     vacunado = "N"
 
-    '''salir = False
-    while not salir:
-        vacunado = (input("fue vacunado?"))
-        if vacunado == 'N' or vacunado == 'n':
-            salir = True'''
+
     newafi = (ident, nombre, apellido, direccion, telefono, email, ciudad, nacimiento, afiliacion, desafiliacion, vacunado)
     return newafi
 
@@ -172,13 +204,9 @@ def desafiliar(con):
     mes = str(f.month).rjust(2, "0")
     ano = str(f.year).rjust(2, "0")
     desafiliacion = dia + "/" + mes + "/" + ano
-    print("la fecha de afiliacion es:", desafiliacion)
+    print("la fecha de afiliacion es: ", desafiliacion)
     actualizar = 'update afiliados SET desafiliacion = (?)  where id=(?)'
-    cursorobj.execute(actualizar,(desafiliacion,desafiliado))
-
-
-
-
+    cursorobj.execute(actualizar, (desafiliacion, desafiliado))
     print("El afiliado ", desafiliado, "fue desafiliado")
     con.commit()
 
@@ -186,44 +214,39 @@ def desafiliar(con):
 def consulta(con):
     cursorobj = con.cursor()
     c_afilia = input("id del afiliado a consultar: ")
-    # Verificar que el id ingresado sea un valor numerico
+    # Verifiar que el id ingresado se encuentre en la base de datos
     while True:
         if c_afilia.isdigit():
             buscar = 'SELECT * FROM afiliados where id= ' + c_afilia
             cursorobj.execute(buscar)
             afil_b = cursorobj.fetchall()
-            # Verifiar que el id ingresado se encuentre en la base de datos
             if len(afil_b) != 0:
                 break
             else:
                 print("El id " + str(c_afilia) + " no se encuentra en la base de datos")
         c_afilia = input("Ingrese un id valido: ")
-        
-    
-    print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<12}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "", "","", "", "", "","", "", ""))
-    print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^12}|{:^25}|{:^20}|{:^10}|{:^10}|{:^15}|{:^10}|".format("Documento", "Nombre", "Apellido", "Direccion", "Telefono", "Email", "Ciudad","Nacimiento", "Afiliacion","Desafiliacion","Vacunado"))
-    print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<12}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "", "","", "", "", "","", "", ""))
-    for idaf, nombre, apellido, direccion, telefono, email, ciudad, nacimiento,afiliacion, desafiliacion, vacunado in afil_b:
 
-        print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^12}|{:^25}|{:^20}|{:^10}|{:^10}|{:^15}|{:^10}|".format(idaf, nombre, apellido,
+    print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<15}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "", "", "", "", "", "", "", "", ""))
+    print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^15}|{:^25}|{:^20}|{:^10}|{:^10}|{:^15}|{:^10}|".format("Documento", "Nombre", "Apellido", "Direccion", "Telefono", "Email", "Ciudad", "Nacimiento", "Afiliacion", "Desafiliacion", "Vacunado"))
+    print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<15}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "", "", "", "", "", "", "", "", ""))
+    for idaf, nombre, apellido, direccion, telefono, email, ciudad, nacimiento, afiliacion, desafiliacion, vacunado in afil_b:
+
+        print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^15}|{:^25}|{:^20}|{:^10}|{:^10}|{:^15}|{:^10}|".format(idaf, nombre, apellido,
                       direccion, telefono, email, ciudad, nacimiento,
                       afiliacion, desafiliacion, vacunado))
-    print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<12}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "", "","", "", "", "","", "", ""))
+    print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<15}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "", "", "", "", "", "", "", "", ""))
     con.commit()
 
 
 def cerrar_db(con):
     con.close()
 
-"""
-def main():
-    #con = sql_afiliado()
-    #creartable(con)
-    #afiliado = leer_info()
-    #insertar_tabla(con, afiliado)
-    #consulta(con)
-    #cerrar_db(con)
 
-
-main()
-"""
+# def main():
+    # con = sql_afiliado()
+    # creartable(con)
+    # afiliado = leer_info()
+    # insertar_tabla(con, afiliado)
+    # consulta(con)
+    # cerrar_db(con)
+# main()

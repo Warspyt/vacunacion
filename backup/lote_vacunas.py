@@ -1,5 +1,7 @@
 import sqlite3
 from sqlite3 import Error
+from datetime import datetime
+from datetime import date
 
 def sql_lotevacunas():
     # Se crea la conexion a la base de datos y se verifica que no ocurra ningun error
@@ -23,14 +25,14 @@ def info_lote():
     nolote = input("Numero de lote: ")
     # Se verifica que el numero de lote sea un valor numerico
     while True:
-        if nolote.isdigit():
+        if nolote.isdigit() and len(nolote) <= 12:
             nolote = nolote.ljust(12)
             break
         else:
             nolote = input("Ingrese un numero de lote valido: ")            
     
     # Se muestran las opciones de vacunas y se asignan los valores predeterminados a las variables
-    op_fabricante = input("""Fabricante:\n
+    op_fabricante = input("""Seleccione un fabricante:\n
     \t1 - Sinovac
     \t2 - Pfizer
     \t3 - Moderna
@@ -97,7 +99,7 @@ def info_lote():
     cantidadrecibida = input("Cantidad recibida: ")
     # Se verifica que el valor ingresado sea numerico
     while True:
-        if cantidadrecibida.isdigit():
+        if cantidadrecibida.isdigit() and len(cantidadrecibida) <= 6:
             cantidadrecibida = cantidadrecibida.ljust(6)
             break
         else:
@@ -105,32 +107,42 @@ def info_lote():
             
     cantidadusada = 0
 
-    diaven = input("Fecha de vencimiento:\n- Dia de vencimiento: ")
-    # Se verifica que el dato ingresado sea un dia existente dentro del calendario
+    # Verificar que la fecha de vencimiento sea posterior a la fecha actual
     while True:
-        if diaven.isdigit() and 0<int(diaven)<32:
-            diaven = diaven.rjust(2,"0")
+
+        diaven = input("Fecha de vencimiento:\n\n- Dia de vencimiento: ")
+        # Se verifica que el dato ingresado sea un dia existente dentro del calendario
+        while True:
+            if diaven.isdigit() and 0<int(diaven)<32:
+                diaven = diaven.rjust(2,"0")
+                break
+            else:
+                diaven = input("Escriba el dia de vencimiento en dos digitos: ")
+        mesven = input("- Mes de vencimiento: ")
+        # Se verifica que el dato ingresado sea un mes existente dentro del calendario
+        while True:
+            if mesven.isdigit() and 0<int(mesven)<13:
+                mesven = mesven.rjust(2,"0")
+                break
+            else:
+                mesven = input("Escriba el mes de vencimiento en numeros entre el 1 y 12: ")
+        anoven = input("- año de vencimiento: ")
+        # Se verifica que el dato ingresado sea un año coherente para el vencimiento
+        while True:
+            if anoven.isdigit() and len(anoven) == 4 and int(anoven)>2020:
+                anoven = anoven.rjust(4)
+                break
+            else:
+                anoven = input("Escriba el año de vencimiento en numeros AAAA: ")
+        # Se guardan los datos de la fecha en formato (DD/MM/AAAA)
+        fechavencimiento = datetime(int(anoven), int(mesven), int(diaven)).strftime("%Y/%m/%d")
+        factual = datetime.now().strftime("%Y/%m/%d")
+        #fechavencimiento = diaven+"/"+mesven+"/"+anoven
+        if fechavencimiento > factual:
+            fechavencimiento = datetime(int(anoven), int(mesven), int(diaven)).strftime("%d/%m/%Y")
             break
         else:
-            diaven = input("Ingrese un dia valido: ")
-    mesven = input("- Mes de vencimiento: ")
-    # Se verifica que el dato ingresado sea un mes existente dentro del calendario
-    while True:
-        if mesven.isdigit() and 0<int(mesven)<13:
-            mesven = mesven.rjust(2,"0")
-            break
-        else:
-            mesven = input("Ingrese un mes valido: ")
-    anoven = input("- año de vencimiento: ")
-    # Se verifica que el dato ingresado sea un año coherente para el vencimiento
-    while True:
-        if anoven.isdigit() and len(anoven) == 4 and int(anoven)>2020:
-            anoven = anoven.rjust(4)
-            break
-        else:
-            anoven = input("Ingrese un año valido: ")
-    # Se guardan los datos de la fecha en formato (DD/MM/AAAA)
-    fechavencimiento = diaven+"/"+mesven+"/"+anoven
+            print("La fecha de vencimiento no es valida: ")
     print("Fecha ingresada: " + fechavencimiento)
     
     imagen = input("Ingrese la ruta de la imagen de una vacuna: ")
@@ -153,15 +165,22 @@ def consultar_lote(con):
     cursorObj = con.cursor()
 
     # Se muestran los lotes existentes en la base de datos 
-    print("\n           LOTES EXISTENTES\n")
+    print("\n           LOTES VIGENTES\n")
     cursorObj.execute('SELECT * FROM LoteVacunas')
     listado = cursorObj.fetchall()
     datoslote = []
+
+    # Verificar la fecha para mostrar los lotes vigentes
+    factual = datetime.now().strftime("%Y/%m/%d")
+    
     for ids in listado:
-        print("-", ids[0])
+        llote = (ids[9]).split("/")
+        venlote = datetime(int(llote[2]), int(llote[1]), int(llote[0])).strftime("%Y/%m/%d")
+        if venlote > factual and ids[3] > ids[4]:
+            print("•", ids[0])
         datoslote.append(ids[0])
     c_lote = input("\nNumero de lote a consultar: ")
-    # Se verifica que el lote sea un valor numerio y se encuentre dentro de la base de datos
+    # Se verifica que el lote sea un valor numerico y se encuentre dentro de la base de datos
     while True:
         if c_lote.isdigit() and int(c_lote) in datoslote:
             break
@@ -171,6 +190,10 @@ def consultar_lote(con):
     # Se busca el lote en la base de datos y se extrae la informacion
     cursorObj.execute('SELECT * FROM LoteVacunas where nolote= ' + c_lote)
     filas = cursorObj.fetchall()
+    lfila = (filas[0][9]).split("/")
+    venfila = datetime(int(lfila[2]), int(lfila[1]), int(lfila[0])).strftime("%Y/%m/%d")
+    if venfila < factual or filas[0][3] <= filas[0][4]:
+        print("ESTE LOTE NO SE ENCUENTRA VIGENTE\n")
         
     # Se muestra la informacion al usuario en forma de tabla
 
@@ -183,7 +206,6 @@ def consultar_lote(con):
                       cantidadrecibida, cantidadusada, dosisnecesarias, temperatura, efectividad,
                       tiempoproteccion, fechavencimiento, imagen))
     print("+{:-<10}+{:-<15}+{:-<21}+{:-<15}+{:-<10}+{:-<8}+{:-<15}+{:-<15}+{:-<25}+{:-<15}+{:-<15}+".format("", "", "", "","", "", "", "","", "", ""))
-        
     con.commit()
 
 
@@ -194,5 +216,5 @@ def consultar_lote(con):
     #crear_lote(convacunas, lote)
     #consultar_lote(convacunas)
     
-#main()
+#main() 
     

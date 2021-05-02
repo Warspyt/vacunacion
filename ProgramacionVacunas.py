@@ -68,6 +68,7 @@ def asignarVacuna(con, info):
                       VALUES (?, ?, ?, ?, ?, ?, ?, ?)""", info)
     con.commit()
 
+
 def menu(con):
     salir=False
     while not salir:

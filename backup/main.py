@@ -1,5 +1,6 @@
 import afiliacion
 import lote_vacunas
+import plan_vacunacion
 
 
 def menuafi():
@@ -7,14 +8,15 @@ def menuafi():
         # Mostramos el menu
         print('\nA D M I N I S T R A R  A F I L I A D O S')
         print("\t1 - Crear Afiliado")
-        print("\t2 - Vacunar Afiliado")
+        print("\t2 - VacunarS Afiliado")
         print("\t3 - Consultar Afiliado")
-        print("\t4 - Cancelar Afiliacion")
+        print("\t4 - Desafiliar Usuario")
         print("\t5 - Regresar Al Menu Principal")
         option = input("Seleccione una opcion: ")
         if option == '1':
             print('\n')
             con = afiliacion.sql_afiliado()
+            afiliacion.creartable(con)
             afiliado = afiliacion.leer_info()
             afiliacion.insertar_tabla(con, afiliado)
             con.close()
@@ -76,9 +78,17 @@ def menuvac():
         print("\t3 - Regresar Al Menu Principal")
         option = input("Seleccione una opcion: ")
         if option == '1':
-            print("aca se crea el plan")
-        elif option == '1':
-            print("aca se consulta el plan")
+            # Aca se crea el plan
+            conplan = plan_vacunacion.sql_plan()
+            plan_vacunacion.tabla_plan(conplan)
+            plan = plan_vacunacion.recibirPlan()
+            plan_vacunacion.crearPlan(conplan, plan)
+            conplan.close()
+        elif option == '2':
+            # Aca se consulta el plan
+            conplan = Plan_Vacunacion.sql_plan()
+            plan_vacunacion.consultaplan(conplan)
+            conplan.close()
         elif option == "3":
             return
         else:
@@ -96,10 +106,10 @@ def mainmenu():
         print("\t1 - Administrar Afiliados")
         print("\t2 - Administrar Vacunas")
         print("\t3 - Plan Vacunacion")
-        print("\t4 - salir")
+        print("\t4 - Programa Vacunacion")
+        print("\t5 - salir")
 
         # Mostramos el menu
-
         # solicituamos una opción al usuario
         opcionmenu = input("Seleccione una opcion:  ")
 
@@ -110,6 +120,8 @@ def mainmenu():
         elif opcionmenu == "3":
             menuvac()
         elif opcionmenu == "4":
+            print("Modulo en desarrollo")
+        elif opcionmenu == "5":
             break
         else:
             print("")
