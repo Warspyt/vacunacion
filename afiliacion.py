@@ -162,13 +162,7 @@ def leer_info():
     # Por defecto el usuario  ingresa como no  vacunado
     vacunado = "N"
 
-    '''salir = False
 
-    salir = False
-    while not salir:
-        vacunado = (input("fue vacunado?"))
-        if vacunado == 'N' or vacunado == 'n':
-            salir = True'''
     newafi = (ident, nombre, apellido, direccion, telefono, email, ciudad, nacimiento, afiliacion, desafiliacion, vacunado)
     return newafi
 
