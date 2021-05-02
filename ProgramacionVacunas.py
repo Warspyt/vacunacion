@@ -60,6 +60,7 @@ def infoCita(con):
     infcita = (noid, nombre, apellido, ciudad, nolote, fabricante, fechaprogramada, horaprogramada)
     return infcita
 
+
 def asignarVacuna(con, info):
     # Se asigna la cita para la vacuna con la informacion del usuario y la vacuna
     cursorObj = con.cursor()
