@@ -176,7 +176,7 @@ def consultar_lote(con):
     for ids in listado:
         llote = (ids[9]).split("/")
         venlote = datetime(int(llote[2]), int(llote[1]), int(llote[0])).strftime("%Y/%m/%d")
-        if venlote > factual or ids[3] > ids[4]: 
+        if venlote > factual and ids[3] > ids[4]:
             print("•", ids[0])
         datoslote.append(ids[0])
     c_lote = input("\nNumero de lote a consultar: ")
@@ -192,7 +192,7 @@ def consultar_lote(con):
     filas = cursorObj.fetchall()
     lfila = (filas[0][9]).split("/")
     venfila = datetime(int(lfila[2]), int(lfila[1]), int(lfila[0])).strftime("%Y/%m/%d")
-    if venfila < factual or filas[3] <= filas[4]:
+    if venfila < factual or filas[0][3] <= filas[0][4]:
         print("ESTE LOTE NO SE ENCUENTRA VIGENTE\n")
         
     # Se muestra la informacion al usuario en forma de tabla

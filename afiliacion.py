@@ -91,7 +91,7 @@ def leer_info():
             lentel = str(telefono)
 
             if len(lentel) > 13:
-                print("El numero de identificacion no puede tener mas de 12  digitos.")
+                print("El numero de telefono no puede tener mas de 12  digitos.")
             else:
                 break
         except ValueError:
@@ -121,37 +121,42 @@ def leer_info():
             print("\nEscriba ua ciudad Valido")
 
     # mensaje para que el usuario sepa que le solicitamos el dia de nacimiento
-    dianac = (input("Dia de Nacimiento DD: "))
-    # bucle para pedir el dia de nacimiento
     while True:
-        if dianac.isdigit() and 0 < int(dianac) < 32:
-            dianac = dianac.rjust(2, "0")
+
+        dianac = input("Fecha de nacimiento:\n\n- Dia de nacimiento: ")
+        # Se verifica que el dato ingresado sea un dia existente dentro del calendario
+        while True:
+            if dianac.isdigit() and 0 < int(dianac) < 32:
+                dianac = dianac.rjust(2, "0")
+                break
+            else:
+                dianac = input("Escriba el dia de nacimiento en dos digitos: ")
+        mesnac = input("- Mes de nacimiento: ")
+        # Se verifica que el dato ingresado sea un mes existente dentro del calendario
+        while True:
+            if mesnac.isdigit() and 0 < int(mesnac) < 13:
+                mesnac = mesnac.rjust(2, "0")
+                break
+            else:
+                mesnac = input("Escriba el mes de nacimiento en numeros entre el 1 y 12: ")
+        anosnac = input("- año de nacimiento: ")
+        # Se verifica que el dato ingresado sea un año coherente para el nacimiento
+        while True:
+            if anosnac.isdigit() and len(anosnac) == 4 and int(anosnac) > 2020:
+                anosnac = anosnac.rjust(4)
+                break
+            else:
+                anosnac = input("Escriba el año de nacimiento en numeros AAAA: ")
+        # Se guardan los datos de la fecha en formato (DD/MM/AAAA)
+        nacimiento = datetime(int(anosnac), int(mesnac), int(dianac)).strftime("%Y/%m/%d")
+        factual = datetime.now().strftime("%Y/%m/%d")
+        # nacimiento = dianac+"/"+mesnac+"/"+anosnac
+        if nacimiento < factual:
+            nacimiento = datetime(int(anosnac), int(mesnac), int(dianac)).strftime("%d/%m/%Y")
             break
         else:
-            dianac = input("\nEscriba el dia de nacimiento en dos digitos: ")
-
-    # mensaje para que el usuario sepa que le solicitamos el mes de nacimiento
-    mesnac = (input("Mes de Nacimiento MM: "))
-    # bucle para pedir el mes de nacimiento
-    while True:
-        if mesnac.isdigit() and 0 < int(mesnac) < 13:
-            mesnac = mesnac.rjust(2, "0")
-            break
-        else:
-            mesnac = input("\nEscriba el mes de nacimiento en numeros entre el 1 y 12: ")
-
-    # mensaje para que el usuario sepa que le solicitamos el año de nacimiento
-    anonac = (input("Año de Nacimiento YYYY: "))
-    # bucle para pedir el año de nacimiento
-    while True:
-        if anonac.isdigit() and len(anonac) == 4 and int(anonac)<2021:
-            anonac = anonac.rjust(4)
-            break
-        else:
-            anonac = input("\nEscriba el año de nacimiento en numeros AAAA: ")
-
-    nacimiento = dianac + "/" + mesnac + "/" + anonac
-    print("nacimiento", nacimiento)
+            print("La fecha de nacimiento no es valida: ")
+    print("Fecha ingresada: " + nacimiento)
 
 
 # se actualiza la fecha de afiliacion automaticamente
