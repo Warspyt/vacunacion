@@ -1,5 +1,7 @@
 import sqlite3
 from sqlite3 import Error
+from datetime import datetime
+from datetime import date
 
 def sql_lotevacunas():
     # Se crea la conexion a la base de datos y se verifica que no ocurra ningun error
@@ -105,32 +107,42 @@ def info_lote():
             
     cantidadusada = 0
 
-    diaven = input("Fecha de vencimiento:\n\n- Dia de vencimiento: ")
-    # Se verifica que el dato ingresado sea un dia existente dentro del calendario
+    # Verificar que la fecha de vencimiento sea posterior a la fecha actual
     while True:
-        if diaven.isdigit() and 0<int(diaven)<32:
-            diaven = diaven.rjust(2,"0")
+
+        diaven = input("Fecha de vencimiento:\n\n- Dia de vencimiento: ")
+        # Se verifica que el dato ingresado sea un dia existente dentro del calendario
+        while True:
+            if diaven.isdigit() and 0<int(diaven)<32:
+                diaven = diaven.rjust(2,"0")
+                break
+            else:
+                diaven = input("Escriba el dia de vencimiento en dos digitos: ")
+        mesven = input("- Mes de vencimiento: ")
+        # Se verifica que el dato ingresado sea un mes existente dentro del calendario
+        while True:
+            if mesven.isdigit() and 0<int(mesven)<13:
+                mesven = mesven.rjust(2,"0")
+                break
+            else:
+                mesven = input("Escriba el mes de vencimiento en numeros entre el 1 y 12: ")
+        anoven = input("- año de vencimiento: ")
+        # Se verifica que el dato ingresado sea un año coherente para el vencimiento
+        while True:
+            if anoven.isdigit() and len(anoven) == 4 and int(anoven)>2020:
+                anoven = anoven.rjust(4)
+                break
+            else:
+                anoven = input("Escriba el año de vencimiento en numeros AAAA: ")
+        # Se guardan los datos de la fecha en formato (DD/MM/AAAA)
+        fechavencimiento = datetime(int(anoven), int(mesven), int(diaven)).strftime("%Y/%m/%d")
+        factual = datetime.now().strftime("%Y/%m/%d")
+        #fechavencimiento = diaven+"/"+mesven+"/"+anoven
+        if fechavencimiento > factual:
+            fechavencimiento = datetime(int(anoven), int(mesven), int(diaven)).strftime("%d/%m/%Y")
             break
         else:
-            diaven = input("Escriba el dia de vencimiento en dos digitos: ")
-    mesven = input("- Mes de vencimiento: ")
-    # Se verifica que el dato ingresado sea un mes existente dentro del calendario
-    while True:
-        if mesven.isdigit() and 0<int(mesven)<13:
-            mesven = mesven.rjust(2,"0")
-            break
-        else:
-            mesven = input("Escriba el mes de vencimiento en numeros entre el 1 y 12: ")
-    anoven = input("- año de vencimiento: ")
-    # Se verifica que el dato ingresado sea un año coherente para el vencimiento
-    while True:
-        if anoven.isdigit() and len(anoven) == 4 and int(anoven)>2020:
-            anoven = anoven.rjust(4)
-            break
-        else:
-            anoven = input("Escriba el año de vencimiento en numeros AAAA: ")
-    # Se guardan los datos de la fecha en formato (DD/MM/AAAA)
-    fechavencimiento = diaven+"/"+mesven+"/"+anoven
+            print("La fecha de vencimiento no es valida: ")
     print("Fecha ingresada: " + fechavencimiento)
     
     imagen = input("Ingrese la ruta de la imagen de una vacuna: ")
@@ -194,5 +206,5 @@ def consultar_lote(con):
     #crear_lote(convacunas, lote)
     #consultar_lote(convacunas)
     
-#main()
+#main() 
     
