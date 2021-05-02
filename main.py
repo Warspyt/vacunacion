@@ -1,6 +1,6 @@
 import afiliacion
 import lote_vacunas
-import Plan_Vacunacion
+import plan_vacunacion
 
 
 def menuafi():
