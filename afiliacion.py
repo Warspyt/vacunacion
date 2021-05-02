@@ -46,7 +46,8 @@ def leer_info():
         except ValueError:
             print("escriba un número de identificacion valido.")
             continue
-
+        else:
+            break
 
     name = False
     # bucle para pedir el nombre
@@ -90,7 +91,8 @@ def leer_info():
         except ValueError:
             print("Escriba un numero de telefono valido.")
             continue
-        
+        else:
+            break
     # variable que indica si el valor es válido
     # inicialmente no lo es
     valido = False
