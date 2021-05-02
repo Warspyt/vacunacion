@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="31656571-185a-4cde-8de1-7d5e1041d094" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/afiliacion.py" beforeDir="false" afterPath="$PROJECT_DIR$/afiliacion.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sisgenvac.db" beforeDir="false" afterPath="$PROJECT_DIR$/sisgenvac.db" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -302,7 +300,14 @@
       <option name="project" value="LOCAL" />
       <updated>1619920436554</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="valida la direccion elimandocaracteres  como #,- y espacios">
+      <created>1619923560292</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1619923560292</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -318,6 +323,7 @@
     <MESSAGE value="validaciones ciudad" />
     <MESSAGE value="validacion telefono y  id" />
     <MESSAGE value="se corrige textos de  lotes y fechas" />
-    <option name="LAST_COMMIT_MESSAGE" value="se corrige textos de  lotes y fechas" />
+    <MESSAGE value="valida la direccion elimandocaracteres  como #,- y espacios" />
+    <option name="LAST_COMMIT_MESSAGE" value="valida la direccion elimandocaracteres  como #,- y espacios" />
   </component>
 </project>

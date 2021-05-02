@@ -77,16 +77,13 @@ def leer_info():
         # mensaje para que el usuario sepa que le solicitamos la direccion y validamso sea alfa numerica isalmun
         direccion = (input("Direccion: "))
         #adress = (direccion.replace(" ", "")).isalnum()
-
         dictionary = {'#': "", ' ': '','/': "",'-': ""}
         transTable = direccion.maketrans(dictionary)
         adress = direccion.translate(transTable)
-
-
         direccion = direccion.ljust(20)
         if not adress or len(direccion) > 20:
             adress = False
-            print("\nEscriba una Direccion Valido")
+            print("\nEscriba una Direccion Valida")
 
     while True:
         try:
