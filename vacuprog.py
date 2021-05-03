@@ -43,8 +43,16 @@ def lote_v(con):
         else:
             c_plan = input("Ingrese un numero de plan valido: ")
 
-    # Se busca el lote en la base de datos y se extrae la informacion
-    cursorObj.execute('SELECT * FROM afiliados where vacunado= ' + c_plan)
+    cursorObj = con.cursor()
+
+    sql = "SELECT * FROM afiliados WHERE vacunado ='N'"
+
+    mycursor.execute(sql)
+
+    myresult = cursorObj.fetchall()
+
+    for x in myresult:
+      print(x)
 con = sql_vac()
 lote_v(con)
 
