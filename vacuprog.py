@@ -20,7 +20,7 @@ def sql_vac():
 def lote_v(con):
     cursorObj = con.cursor()
 
-    # Se muestran los lotes existentes en la base de datos
+    # Se muestran los Planes vigentes en la base de datos
     print("\n           PLANES VIGENTES\n")
     cursorObj.execute('SELECT * FROM PlanVacunacion')
     listado = cursorObj.fetchall()
@@ -34,25 +34,39 @@ def lote_v(con):
         venplan = datetime(int(lplan[2]), int(lplan[1]), int(lplan[0])).strftime("%Y/%m/%d")
         if venplan > factual:
             print("•", ids[0],"para afiliados entre ",ids[1] ," y ", ids[2], "años")
-        datosplan.append(ids[0])
-    c_plan = input("\nIngrese el numero de lote a programar: ")
-    # Se verifica que el lote sea un valor numerico y se encuentre dentro de la base de datos
+            datosplan.append(ids[0])
+    c_plan = input("\nIngrese el numero de plan a programar: ")
+    # Se verifica que el plan sea un valor numerico y se encuentre dentro de la base de datos
     while True:
         if c_plan.isdigit() and int(c_plan) in datosplan:
             break
         else:
-            c_plan = input("Ingrese un numero de plan valido: ")
+            c_plan = input("Ingrese un numero de plan vigente: ")
 
-    cursorObj = con.cursor()
+    cursorObj.execute('SELECT * FROM PlanVacunacion where idplan= ' + c_plan)
+    planselect = cursorObj.fetchall()
+    eminplan = int(planselect[0][1])
+    emaxplan = int(planselect[0][2])
 
-    sql = "SELECT * FROM afiliados WHERE vacunado ='N'"
+    # Se busca el plan en la base de datos y se extrae la informacion
+    cursorObj.execute("SELECT * FROM afiliados where vacunado= 'N'")
+    novacunados = cursorObj.fetchall()
+    edadvalida = []
+    for edad in novacunados:
+        # Calcular edad
+        nacimiento = novacunados[0][7].split("/")
+        now= datetime.now()
+        dia = now.strftime("%d")
+        mes = now.strftime("%m")
+        ano = now.strftime("%Y")
 
-    mycursor.execute(sql)
-
-    myresult = cursorObj.fetchall()
-
-    for x in myresult:
-      print(x)
+        dano = (int(ano) - int(nacimiento[2]))*365
+        dmes = (int(mes) - int(nacimiento[1]))*30
+        ddia = int(dia) - int(nacimiento[0])
+        edad = (dano + dmes + ddia)//365
+        if eminplan <= edad <= emaxplan:
+            edadvalida.append(novacunados[0][0])
+    print(edadvalida)
 con = sql_vac()
 lote_v(con)
 
