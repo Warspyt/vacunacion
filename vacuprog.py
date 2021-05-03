@@ -51,10 +51,11 @@ def lote_v(con):
     # Se busca el plan en la base de datos y se extrae la informacion
     cursorObj.execute("SELECT * FROM afiliados where vacunado= 'N'")
     novacunados = cursorObj.fetchall()
+    print(novacunados)
     edadvalida = []
     for edad in novacunados:
         # Calcular edad
-        nacimiento = novacunados[0][7].split("/")
+        nacimiento = edad[7].split("/")
         now= datetime.now()
         dia = now.strftime("%d")
         mes = now.strftime("%m")
@@ -63,9 +64,9 @@ def lote_v(con):
         dano = (int(ano) - int(nacimiento[2]))*365
         dmes = (int(mes) - int(nacimiento[1]))*30
         ddia = int(dia) - int(nacimiento[0])
-        edad = (dano + dmes + ddia)//365
-        if eminplan <= edad <= emaxplan:
-            edadvalida.append(novacunados[0][0])
+        edadaf = (dano + dmes + ddia)//365
+        if eminplan <= edadaf <= emaxplan:
+            edadvalida.append(edad[0])
     print(edadvalida)
 con = sql_vac()
 lote_v(con)
