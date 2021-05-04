@@ -10,10 +10,12 @@ def sql_vac():
         prog = sqlite3.connect('sisgenvac.db')
         return prog
     except Error:
-    cursorObj = con.cursor()
+        print(Error)
+    
     
     
  def lote_v (con):
+    cursorObj = con.cursor()
     while True:
 
         diaprog = input("Fecha de inicio del agendamiento de citas:\n\n- Dia de inicio: ")
