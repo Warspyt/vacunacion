@@ -118,7 +118,7 @@ def leer_info():
         city = (ciudad.replace(" ", "")).isalpha()
         if not city or len(ciudad) > 20:
             city = False
-            print("\nEscriba ua ciudad Valido")
+            print("\nEscriba una ciudad Valida")
 
     # mensaje para que el usuario sepa que le solicitamos el dia de nacimiento
     while True:
