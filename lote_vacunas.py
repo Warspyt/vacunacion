@@ -201,11 +201,11 @@ def consultar_lote(con):
     print("+{:-<10}+{:-<15}+{:-<21}+{:-<15}+{:-<10}+{:-<8}+{:-<15}+{:-<15}+{:-<25}+{:-<15}+{:-<15}+".format("", "", "", "","", "", "", "","", "", ""))
     print("|{:^10}|{:^15}|{:^21}|{:^15}|{:^10}|{:^8}|{:^15}|{:^15}|{:^25}|{:^15}|{:^15}|".format("lote", "Fabricante", "Tipo de vacuna", "Recibidas", "Usadas", "Dosis", "Temperatura", "Efectividad","Tiempo de Proteccion","Vencimiento","imagen"))
     print("+{:-<10}+{:-<15}+{:-<21}+{:-<15}+{:-<10}+{:-<8}+{:-<15}+{:-<15}+{:-<25}+{:-<15}+{:-<15}+".format("", "", "", "","", "", "", "","", "", ""))
-    for nolote, fabricante, tipovacuna,cantidadrecibida, cantidadusada, dosisnecesarias, temperatura, efectividad,tiempoproteccion, fechavencimiento, imagen in filas:
+    for nolote, fabricante, tipovacuna,cantidadrecibida, cantidadusada, dosisnecesarias, temperatura, efectividad,tiempoproteccion, fechavencimiento, imagen,reserva in filas:
 
         print("|{:^10}|{:^15}|{:^21}|{:^15}|{:^10}|{:^8}|{:^15}|{:^15}|{:^25}|{:^15}|{:^15}|".format(nolote, fabricante, tipovacuna,
                       cantidadrecibida, cantidadusada, dosisnecesarias, temperatura, efectividad,
-                      tiempoproteccion, fechavencimiento, imagen))
+                      tiempoproteccion, fechavencimiento, imagen,reserva))
     print("+{:-<10}+{:-<15}+{:-<21}+{:-<15}+{:-<10}+{:-<8}+{:-<15}+{:-<15}+{:-<25}+{:-<15}+{:-<15}+".format("", "", "", "","", "", "", "","", "", ""))
     con.commit()
 

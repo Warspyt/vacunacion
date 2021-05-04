@@ -1,7 +1,7 @@
 import afiliacion
 import lote_vacunas
 import plan_vacunacion
-import vacuprog
+#import vacuprog
 
 
 def menuafi():
@@ -122,7 +122,7 @@ def mainmenu():
             menuvac()
         elif opcionmenu == "4":
             conplan = sql_vac()
-            vacuprog.lote_v(conplan)
+
             conplan.close()
         elif opcionmenu == "5":
             break

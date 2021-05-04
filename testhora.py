@@ -81,7 +81,7 @@ def lote_v(con):
     print("Fecha ingresada: ", fecha1, type(fecha1))
 
 
-    newdate = fecha1 + timedelta(minutes=30)
+    newdate = fecha1 + timedelta(hours=1)
     print("hora mas  30 minutos:",newdate)
     a = 1
     while a < 10:
