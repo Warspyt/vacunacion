@@ -5,16 +5,17 @@ from datetime import date
 import lote_vacunas
 
 def sql_vac():
-    # Se crea la conexion a la base de datos y se verifica que no ocurra ningun error
+    # funcion que crea la base de datos
     try:
-        prog = sqlite3.connect('sisgenvac.db')
-        return prog
+        con = sqlite3.connect('sisgenvac.db')
+        # print("Conexion realizada: DB creada")
+        return con
     except Error:
-        print(Error)
+        print('Se ha producido un error al crear la conexion', Error)
     
     
     
- def lote_v (con):
+def lote_v (con):
     cursorObj = con.cursor()
     while True:
 
@@ -102,5 +103,5 @@ def sql_vac():
     print(edadvalida)
  '''   
 con = sql_vac()
-lote_v(con)
+
 

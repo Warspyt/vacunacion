@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="31656571-185a-4cde-8de1-7d5e1041d094" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/afiliacion.py" beforeDir="false" afterPath="$PROJECT_DIR$/afiliacion.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sisgenvac.db" beforeDir="false" afterPath="$PROJECT_DIR$/sisgenvac.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vacuprog.py" beforeDir="false" afterPath="$PROJECT_DIR$/vacuprog.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -52,8 +52,8 @@
       <recent name="G:\Documentos\Proyectos" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.vacuprog">
-    <configuration name="afiliacion" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python.clase 0305">
+    <configuration name="clase 0305" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -65,7 +65,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/afiliacion.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/clase 0305.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -160,11 +160,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.clase 0305" />
         <item itemvalue="Python.vacuprog" />
         <item itemvalue="Python.main" />
         <item itemvalue="Python.lote_vacunas" />
         <item itemvalue="Python.scratch" />
-        <item itemvalue="Python.afiliacion" />
       </list>
     </recent_temporary>
   </component>
