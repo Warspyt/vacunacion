@@ -16,7 +16,7 @@ def tabla_vacunas(con):
     # Se crea una tabla para el lote de vacunas verificando que no exista aun
     cursorObj.execute("""CREATE TABLE IF NOT EXISTS LoteVacunas(nolote integer PRIMARY KEY, fabricante text,
                       tipovacuna text, cantidadrecibida integer, cantidadusada integer, dosisnecesarias integer,
-                      temperatura text, efectividad text, tiempoproteccion text, fechavencimiento text, imagen text)""")
+                      temperatura text, efectividad text, tiempoproteccion text, fechavencimiento text, imagen text, reserva integer)""")
     con.commit()
 
 def info_lote():
@@ -106,6 +106,7 @@ def info_lote():
             cantidadrecibida = input("Ingrese una cantidad valida: ")
             
     cantidadusada = 0
+    reserva = 0
 
     # Verificar que la fecha de vencimiento sea posterior a la fecha actual
     while True:
@@ -149,7 +150,7 @@ def info_lote():
     print("Funcion de imagen en desarrollo, proximamente mas funcional...")
     
     #Se guardan los datos del lote creado
-    lote = (nolote, fabricante, tipovacuna, cantidadrecibida, cantidadusada, dosisnecesarias, temperatura, efectividad, tiempoproteccion, fechavencimiento, imagen)
+    lote = (nolote, fabricante, tipovacuna, cantidadrecibida, cantidadusada, dosisnecesarias, temperatura, efectividad, tiempoproteccion, fechavencimiento, imagen, reserva)
     return lote
 
 def crear_lote(con, lote):
@@ -157,8 +158,8 @@ def crear_lote(con, lote):
     cursorObj = con.cursor()
     cursorObj.execute("""INSERT INTO LoteVacunas(nolote, fabricante, tipovacuna,
                       cantidadrecibida, cantidadusada, dosisnecesarias, temperatura, efectividad,
-                      tiempoproteccion, fechavencimiento, imagen)
-                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""", lote)
+                      tiempoproteccion, fechavencimiento, imagen, reserva)
+                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""", lote)
     con.commit()
 
 def consultar_lote(con):
@@ -176,7 +177,7 @@ def consultar_lote(con):
     for ids in listado:
         llote = (ids[9]).split("/")
         venlote = datetime(int(llote[2]), int(llote[1]), int(llote[0])).strftime("%Y/%m/%d")
-        if venlote > factual and ids[3] > ids[4]:
+        if venlote > factual and ids[3] > ids[4]: 
             print("•", ids[0])
         datoslote.append(ids[0])
     c_lote = input("\nNumero de lote a consultar: ")
@@ -208,13 +209,12 @@ def consultar_lote(con):
     print("+{:-<10}+{:-<15}+{:-<21}+{:-<15}+{:-<10}+{:-<8}+{:-<15}+{:-<15}+{:-<25}+{:-<15}+{:-<15}+".format("", "", "", "","", "", "", "","", "", ""))
     con.commit()
 
-
 #def main():
     #convacunas = sql_lotevacunas()
     #tabla_vacunas(convacunas)
     #lote = info_lote()
     #crear_lote(convacunas, lote)
-    #consultar_lote(convacunas)
+    #consultar_lote(convacunas)'zzzzzz''
     
 #main() 
     
