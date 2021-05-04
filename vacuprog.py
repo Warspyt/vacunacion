@@ -5,8 +5,15 @@ from datetime import date
 import lote_vacunas
 
 def sql_vac():
+    # Se crea la conexion a la base de datos y se verifica que no ocurra ningun error
+    try:
+        prog = sqlite3.connect('sisgenvac.db')
+        return prog
+    except Error:
     cursorObj = con.cursor()
     
+    
+ def lote_v (con):
     while True:
 
         diaprog = input("Fecha de inicio del agendamiento de citas:\n\n- Dia de inicio: ")
