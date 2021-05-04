@@ -16,7 +16,7 @@ def sql_lotevacunas():
 def avencer(con):
     cursorObj = con.cursor()
     # Se muestran los lotes existentes en la base de datos
-    cursorObj.execute('SELECT * FROM LoteVacunas ORDER BY fechavencimiento')
+    cursorObj.execute('SELECT * FROM LoteVacunas ORDER BY fechavencimiento DESC')
     listado = cursorObj.fetchall()
     # Verificar la fecha para mostrar los lotes vigentes
     factual = datetime.now().strftime("%Y/%m/%d")
@@ -26,7 +26,7 @@ def avencer(con):
         venlote = datetime(int(llote[2]), int(llote[1]), int(llote[0])).strftime("%Y/%m/%d")
         if venlote > factual and ids[3] > ids[4]:
             disponible= ids[3]- ids[4]
-            print("Lote: ",ids[0] ,"recibidas: ", ids[3],"usadas: ", ids[4],"disponibles" ,disponible)
+            print("Lote: ",ids[0] ,"recibidas: ", ids[3],"usadas: ", ids[4],"disponibles" ,disponible, "vence en ;" , ids[9])
 
   #   SELECT * FROM( SELECT * FROM  db ORDER BY  sale_date  DESC  )   WHERE   rownum <= 10
 
