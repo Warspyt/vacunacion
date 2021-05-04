@@ -28,7 +28,7 @@ def avencer(con):
             disponible= ids[3]- ids[4]
             print("Lote: ",ids[0] ,"recibidas: ", ids[3],"usadas: ", ids[4],"disponibles" ,disponible, "vence en ;" , ids[9])
 
-  #   SELECT * FROM( SELECT * FROM  db ORDER BY  sale_date  DESC  )   WHERE   rownum <= 10
+  #   SELECT * FROM( SELECT * FROM  afliados ORDER BY  nacimineto  DESC  )   WHERE   rownum <= 10
 
 
 

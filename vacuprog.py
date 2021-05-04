@@ -101,5 +101,6 @@ def lote_v (con):
                 candidatos.append(edad[0])
     print(candidatos)   
 con = sql_vac()
+lote_v(con)
 
 

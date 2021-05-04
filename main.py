@@ -87,7 +87,7 @@ def menuvac():
             conplan.close()
         elif option == '2':
             # Aca se consulta el plan
-            conplan = Plan_Vacunacion.sql_plan()
+            conplan = plan_vacunacion.sql_plan()
             plan_vacunacion.consultaplan(conplan)
             conplan.close()
         elif option == "3":
