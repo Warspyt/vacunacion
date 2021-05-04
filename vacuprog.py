@@ -54,6 +54,7 @@ def lote_v (con):
         else:
             print("La fecha de inicio no es valida: ")
     print("Fecha ingresada: " + fechaprog)
+
     
     # Se extraen los Planes vigentes en la base de datos
     cursorObj.execute('SELECT * FROM PlanVacunacion')
