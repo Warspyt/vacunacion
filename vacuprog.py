@@ -17,6 +17,7 @@ def sql_vac():
     
 def lote_v (con):
     cursorObj = con.cursor()
+    
     while True:
 
         diaprog = input("Fecha de inicio del agendamiento de citas:\n\n- Dia de inicio: ")
@@ -47,18 +48,17 @@ def lote_v (con):
         fechaprog1 = datetime(int(anoprog), int(mesprog), int(diaprog)).strftime("%Y/%m/%d")
         factual = datetime.now().strftime("%Y/%m/%d")
         #fechavencimiento = diaven+"/"+mesven+"/"+anoven
-        if fechaprog1 > factual:
+        if fechaprog1 >= factual:
             fechaprog = datetime(int(anoprog), int(mesprog), int(diaprog)).strftime("%d/%m/%Y")
             break
         else:
             print("La fecha de inicio no es valida: ")
     print("Fecha ingresada: " + fechaprog)
-
-    # Se muestran los Planes vigentes en la base de datos
-    print("\n           PLANES VIGENTES\n")
+    
+    # Se extraen los Planes vigentes en la base de datos
     cursorObj.execute('SELECT * FROM PlanVacunacion')
     listado = cursorObj.fetchall()
-    datosplan = []
+    planesvigentes = []
 
     # Verificar la fecha para mostrar los planes vigentes a la fecha programada
 
@@ -66,42 +66,40 @@ def lote_v (con):
         lplan = (ids[4]).split("/")
         venplan = datetime(int(lplan[2]), int(lplan[1]), int(lplan[0])).strftime("%Y/%m/%d")
         if venplan > fechaprog1:
-            print("•", ids[0],"para afiliados entre ",ids[1] ," y ", ids[2], "años")
-            datosplan.append(ids[0])
-'''
-    c_plan = input("\nIngrese el numero de plan a programar: ")
-    # Se verifica que el plan sea un valor numerico y se encuentre dentro de la base de datos
-    while True:
-        if c_plan.isdigit() and int(c_plan) in datosplan:
-            break
-        else:
-            c_plan = input("Ingrese un numero de plan vigente: ")
+            #print("•", ids[0],"para afiliados entre ",ids[1] ," y ", ids[2], "años")
+            iplan = (ids[3]).split("/")
+            iniplan = datetime(int(iplan[2]), int(iplan[1]), int(iplan[0])).strftime("%Y/%m/%d")
+            planesvigentes.append((ids[0], iniplan))
+    planesvigentes.sort(key = lambda x : x[1])
+    #print(planesvigentes)
 
-    cursorObj.execute('SELECT * FROM PlanVacunacion where idplan= ' + c_plan)
-    planselect = cursorObj.fetchall()
-    eminplan = int(planselect[0][1])
-    emaxplan = int(planselect[0][2])
+    candidatos = []
+    for rec in planesvigentes:
 
-    # Se busca el plan en la base de datos y se extrae la informacion
-    cursorObj.execute("SELECT * FROM afiliados where vacunado= 'N'")
-    novacunados = cursorObj.fetchall()
-    edadvalida = []
-    for edad in novacunados:
-        # Calcular edad
-        nacimiento = edad[7].split("/")
-        now= datetime.now()
-        dia = now.strftime("%d")
-        mes = now.strftime("%m")
-        ano = now.strftime("%Y")
+        cursorObj.execute('SELECT * FROM PlanVacunacion where idplan= ' + str(rec[0]))
+        planselect = cursorObj.fetchall()
+        eminplan = int(planselect[0][1])
+        emaxplan = int(planselect[0][2])
 
-        dano = (int(ano) - int(nacimiento[2]))*365
-        dmes = (int(mes) - int(nacimiento[1]))*30
-        ddia = int(dia) - int(nacimiento[0])
-        edadaf = (dano + dmes + ddia)//365
-        if eminplan <= edadaf <= emaxplan:
-            edadvalida.append(edad[0])
-    print(edadvalida)
- '''   
+        # Se busca el plan en la base de datos y se extrae la informacion
+        cursorObj.execute("SELECT * FROM afiliados where vacunado= 'N'")
+        novacunados = cursorObj.fetchall()
+        
+        for edad in novacunados:
+            # Calcular edad
+            nacimiento = edad[7].split("/")
+            now= datetime.now()
+            dia = now.strftime("%d")
+            mes = now.strftime("%m")
+            ano = now.strftime("%Y")
+
+            dano = (int(ano) - int(nacimiento[2]))*365
+            dmes = (int(mes) - int(nacimiento[1]))*30
+            ddia = int(dia) - int(nacimiento[0])
+            edadaf = (dano + dmes + ddia)//365
+            if eminplan <= edadaf <= emaxplan and edad[0] not in candidatos:
+                candidatos.append(edad[0])
+    print(candidatos)   
 con = sql_vac()
 
 
