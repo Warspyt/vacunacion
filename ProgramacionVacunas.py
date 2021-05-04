@@ -2,6 +2,7 @@ import sqlite3
 from sqlite3 import Error
 from datetime import datetime
 from datetime import date
+from datetime import timedelta
 import afiliacion
 import lote_vacunas
 
@@ -21,46 +22,6 @@ def tabla_prog(con):
                       fechaprogramada text, horaprogramada text)""")
     con.commit()
 
-def infoCita(con):
-    
-    cursorobj = con.cursor()
-    noid = input("id del afiliado: ")
-    # Se verifica que el id sea un valor numerico y se encuentre dentro de la base de datos
-    while True:
-        if noid.isdigit():
-            cursorobj.execute('SELECT * FROM afiliados where id= ' + noid)
-            afil_b = cursorobj.fetchall()
-            if len(afil_b) != 0:
-                break
-            else:
-                print("El id " + str(noid) + " no se encuentra en la base de datos")
-        noid = input("Ingrese un id valido: ")
-    nombre = afil_b[0][1]
-    apellido = afil_b[0][2]
-    ciudad = afil_b[0][6]
-
-    # Calcular edad
-    nacimiento = afil_b[0][7].split("/")
-    now= datetime.now()
-    dia = now.strftime("%d")
-    mes = now.strftime("%m")
-    ano = now.strftime("%Y")
-
-    dano = (int(ano) - int(nacimiento[2]))*365
-    dmes = (int(mes) - int(nacimiento[1]))*30
-    ddia = int(dia) - int(nacimiento[0])
-    edad = (dano + dmes + ddia)//365
-    # cuadrar
-    cursorobj.execute('SELECT * FROM LoteVacunas')
-    lotes = cursorobj.fetchall()
-    nolote = "probando"
-    fabricante = "probando"
-    fechaprogramada = "probando"
-    horaprogramada = "probando"
-    infcita = (noid, nombre, apellido, ciudad, nolote, fabricante, fechaprogramada, horaprogramada)
-    return infcita
-
-
 def asignarVacuna(con, info):
     # Se asigna la cita para la vacuna con la informacion del usuario y la vacuna
     cursorObj = con.cursor()
@@ -69,8 +30,188 @@ def asignarVacuna(con, info):
                       VALUES (?, ?, ?, ?, ?, ?, ?, ?)""", info)
     con.commit()
 
+def infoCita(con):
+    
+    cursorObj = con.cursor()
+    
+    while True:
 
-def menu(con):
+        diaprog = input("Fecha de inicio del agendamiento de citas:\n\n- Dia de inicio: ")
+        # Se verifica que el dato ingresado sea un dia existente dentro del calendario
+        while True:
+            if diaprog.isdigit() and 0<int(diaprog)<32:
+                diaprog = diaprog.rjust(2,"0")
+                break
+            else:
+                diaprog = input("Escriba el dia de inicio en dos digitos: ")
+        mesprog = input("- Mes de inicio: ")
+        # Se verifica que el dato ingresado sea un mes existente dentro del calendario
+        while True:
+            if mesprog.isdigit() and 0<int(mesprog)<13:
+                mesprog = mesprog.rjust(2,"0")
+                break
+            else:
+                mesprog = input("Escriba el mes de inicio en numeros entre el 1 y 12: ")
+        anoprog = input("- año de inicio: ")
+        # Se verifica que el dato ingresado sea un año coherente para el vencimiento
+        while True:
+            if anoprog.isdigit() and len(anoprog) == 4 and int(anoprog)>2020:
+                anoprog = anoprog.rjust(4)
+                break
+            else:
+                anoprog = input("Escriba el año de inicio en numeros AAAA: ")
+        hourprog = input("- Hora de inicio: ")
+        while True:
+             if hourprog.isdigit() and 0 < int(hourprog) < 25:
+                 hourprog = hourprog.rjust(2)
+                 break
+             else:
+                hourprog = input("Escriba la hora de inicio en numeros entre el 1 y 24: ")
+        minprog = input("- minutos de inicio: ")
+        while True:
+            if minprog.isdigit() and 0 < int(minprog) < 61:
+                minprog = minprog.rjust(2)
+                break
+            else:
+                minprog = input("Escriba los minutos de inicio en numeros entre el 1 y 60: ")
+        # Se guardan los datos de la fecha en formato (DD/MM/AAAA)
+        fechaprog1 = datetime(int(anoprog), int(mesprog), int(diaprog), int(hourprog), int(minprog)).strftime("%Y/%m/%d %H:%M")
+        factual = datetime.now().strftime("%Y/%m/%d %H:%M")
+        #fechavencimiento = diaven+"/"+mesven+"/"+anoven
+        if fechaprog1 >= factual:
+            fechaprog = datetime(int(anoprog), int(mesprog), int(diaprog), int(hourprog), int(minprog)).strftime("%d/%m/%Y %H:%M")
+            break
+        else:
+            print("La fecha de inicio no es valida: ")
+    print("Fecha y hora ingresada: " + fechaprog)
+    
+    # Se muestran los lotes existentes en la base de datos
+    cursorObj.execute('SELECT * FROM LoteVacunas ORDER BY fechavencimiento')
+    listado = cursorObj.fetchall()
+    # Verificar la fecha para mostrar los lotes vigentes
+    lotesvigentes = []
+    totalvacunas = 0
+    for ids in listado:
+        llote = (ids[9]).split("/")
+        venlote = datetime(int(llote[2]), int(llote[1]), int(llote[0])).strftime("%Y/%m/%d")
+        if venlote > fechaprog1 and ids[3] > ids[4] + ids[11]:
+            disponible = ids[3]- ids[4] - ids[11] 
+            totalvacunas += disponible
+            lotesvigentes.append([ids[0], venlote, disponible])
+    lotesvigentes.sort(key=lambda x: x[1])
+    print(lotesvigentes)
+    print(totalvacunas)
+    
+    # totalvacunas = totalvacunas 
+    # ordenlotes = lotesvigentes
+    
+    # Se extraen los Planes vigentes en la base de datos
+    cursorObj.execute('SELECT * FROM PlanVacunacion')
+    listado = cursorObj.fetchall()
+    planesvigentes = []
+
+    # Verificar la fecha para mostrar los planes vigentes a la fecha programada
+
+    for ids in listado:
+        lplan = (ids[4]).split("/")
+        venplan = datetime(int(lplan[2]), int(lplan[1]), int(lplan[0])).strftime("%Y/%m/%d")
+        iplan = (ids[3]).split("/")
+        iniplan = datetime(int(iplan[2]), int(iplan[1]), int(iplan[0])).strftime("%Y/%m/%d")
+        if venplan > fechaprog1 > iniplan:
+            planesvigentes.append((ids[0], iniplan, venplan))
+    planesvigentes.sort(key = lambda x : x[1])
+
+    candidatos = []
+    candporplan = []
+    for rec in planesvigentes:
+        if len(candidatos) < totalvacunas:
+
+            cursorObj.execute('SELECT * FROM PlanVacunacion where idplan= ' + str(rec[0]))
+            planselect = cursorObj.fetchall()
+            eminplan = int(planselect[0][1])
+            emaxplan = int(planselect[0][2])
+
+            # Se busca el plan en la base de datos y se extrae la informacion
+            cursorObj.execute("SELECT * FROM afiliados where vacunado= 'N'")
+            novacunados = cursorObj.fetchall()
+        
+            edadvalida = []
+            for edad in novacunados:
+                if len(candidatos) < totalvacunas:
+                    # Calcular edad
+                    nacimiento = edad[7].split("/")
+                    now= datetime.now()
+                    dia = now.strftime("%d")
+                    mes = now.strftime("%m")
+                    ano = now.strftime("%Y")
+
+                    dano = (int(ano) - int(nacimiento[2]))*365
+                    dmes = (int(mes) - int(nacimiento[1]))*30
+                    ddia = int(dia) - int(nacimiento[0])
+                    edadaf = (dano + dmes + ddia)//365
+                    if eminplan <= edadaf <= emaxplan and edad[0] not in candidatos:
+                        candidatos.append(edad[0])
+                        edadvalida.append(edad[0])
+                else:
+                    break
+            candporplan.append(edadvalida)
+        else:
+            break
+    print(candporplan)
+
+    # Establecer primera fecha
+    if fechaprog1 < planesvigentes[0][1]:
+        ultimafecha = planesvigentes[0][1]
+    else:
+        ultimafecha = fechaprog1
+    
+    for asignar in range(0, len(planesvigentes)):
+        if totalvacunas > 0:
+            if ultimafecha < planesvigentes[asignar][1]:
+                 ultimafecha = planesvigentes[asignar][1]
+            for cita in candporplan[asignar]:
+                print(cita)
+                print(planesvigentes[asignar])
+                
+                if ultimafecha <= planesvigentes[asignar][2] and totalvacunas > 0:
+                    cursorObj.execute("SELECT * FROM afiliados where id= " + str(cita))
+                    af = cursorObj.fetchall()[0]
+                    # Asignar cita
+                    noid = af[0]
+                    nombre = af[1]
+                    apellido = af[2]
+                    ciudad = af[6]
+                    # agregar media hora luego de la hora y fehca asignada
+                    fechaprogramada = ultimafecha[8:10] + ultimafecha[4:8] + ultimafecha[:4]
+                    horaprogramada = ultimafecha[11:]
+                    ultimafecha = (datetime.strptime(ultimafecha, '%Y/%m/%d %H:%M') + timedelta(minutes = 30)).strftime('%Y/%m/%d %H:%M')
+
+                    print(lotesvigentes)
+                    while True:
+                        if ultimafecha < lotesvigentes[0][1] and lotesvigentes[0][2] > 0:
+                            cursorObj.execute("SELECT * FROM LoteVacunas where nolote= " + str(lotesvigentes[0][0]))
+                            lot = cursorObj.fetchall()[0]
+                            nolote = lotesvigentes[0][0]
+                            fabricante = lot[1]
+                            lotesvigentes[0][2] -= 1
+                            totalvacunas -= 1
+                            resv = str(lot[11] + 1)
+                            cursorObj.execute('update LoteVacunas SET reserva = ' + resv + ' where nolote = ' + str(lotesvigentes[0][0]))
+                            break
+                        else:
+                            lotesvigentes.pop(0)
+                        if len(lotesvigentes) == 0 or totalvacunas == 0:
+                            break
+                    infcita = (noid, nombre, apellido, ciudad, nolote, fabricante, fechaprogramada, horaprogramada)
+                    asignarVacuna(con, infcita)
+
+                else:
+                    # Se sigue con los afiliados del siguiente plan
+                    break
+        else:
+            break
+
+def menu(con): # depronto sirver para la consulta
     salir=False
     while not salir:
         opc=(input('''  Menú de programación de citas
@@ -115,10 +256,9 @@ def menu(con):
         if (opc=='4'):
             salirInterno=True
 
-#def main():
-    #prog = sql_prog()
-    #tabla_prog(prog)
-    #info = infoCita(prog)
-    #asignarVacuna(prog, info)
+def main():
+    prog = sql_prog()
+    tabla_prog(prog)
+    info = infoCita(prog)
     
-#main()
+main()
