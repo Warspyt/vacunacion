@@ -185,7 +185,7 @@ def crearPlan(con, plan):
   #conplan = sql_plan()
   #tabla_plan(conplan)
   #plan = recibirPlan()
-  #crearPlan(conplan, plan)
+#crearPlan(conplan, plan)
   #infoPlanVacunacion()
   #consultaplan(conplan)
 

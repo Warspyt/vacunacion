@@ -9,8 +9,8 @@ import lote_vacunas
 def sql_prog():
     # Se crea la conexion a la base de datos y se verifica que no ocurra ningun error
     try:
-        prog = sqlite3.connect('sisgenvac.db')
-        return prog
+        progplan = sqlite3.connect('sisgenvac.db')
+        return progplan
     except Error:
         print(Error)
 
@@ -69,11 +69,11 @@ def infoCita(con):
                 hourprog = input("Escriba la hora de inicio en numeros entre el 1 y 24: ")
         minprog = input("- minutos de inicio: ")
         while True:
-            if minprog.isdigit() and 0 < int(minprog) < 61:
+            if minprog.isdigit() and 0 <= int(minprog) < 60:
                 minprog = minprog.rjust(2)
                 break
             else:
-                minprog = input("Escriba los minutos de inicio en numeros entre el 1 y 60: ")
+                minprog = input("Escriba los minutos de inicio en numeros entre el 0 y 59: ")
         # Se guardan los datos de la fecha en formato (DD/MM/AAAA)
         fechaprog1 = datetime(int(anoprog), int(mesprog), int(diaprog), int(hourprog), int(minprog)).strftime("%Y/%m/%d %H:%M")
         factual = datetime.now().strftime("%Y/%m/%d %H:%M")
@@ -184,7 +184,7 @@ def infoCita(con):
                     # agregar media hora luego de la hora y fehca asignada
                     fechaprogramada = ultimafecha[8:10] + ultimafecha[4:8] + ultimafecha[:4]
                     horaprogramada = ultimafecha[11:]
-                    ultimafecha = (datetime.strptime(ultimafecha, '%Y/%m/%d %H:%M') + timedelta(minutes = 30)).strftime('%Y/%m/%d %H:%M')
+                    ultimafecha = (datetime.strptime(ultimafecha, '%Y/%m/%d %H:%M') + timedelta(hours = 1)).strftime('%Y/%m/%d %H:%M')
 
                     print(lotesvigentes)
                     while True:
@@ -256,9 +256,9 @@ def menu(con): # depronto sirver para la consulta
         if (opc=='4'):
             salirInterno=True
 
-def main():
-    prog = sql_prog()
-    tabla_prog(prog)
-    info = infoCita(prog)
+#def main():
+   # progplan = sql_prog()
+   # tabla_prog(progplan)
+   # info = infoCita(progplan)
     
-main()
+#main()

@@ -1,7 +1,7 @@
 import afiliacion
 import lote_vacunas
 import plan_vacunacion
-#import vacuprog
+import ProgramacionVacunas
 
 
 def menuafi():
@@ -73,9 +73,9 @@ def menulote():
 def menuvac():
     while True:
         # Mostramos el menu
-        print('\nP L A N  V A C U N A C I O N')
-        print("\t1 - Crear Plan")
-        print("\t2 - Consultar Plan")
+        print('\nP R O G R A M A C I O N   D E   V A C U N A C I O N')
+        print("\t1 - Crear Programa de Vacunacion")
+        print("\t2 - Consultar programa de vacunacion")
         print("\t3 - Regresar Al Menu Principal")
         option = input("Seleccione una opcion: ")
         if option == '1':
@@ -88,6 +88,40 @@ def menuvac():
         elif option == '2':
             # Aca se consulta el plan
             conplan = plan_vacunacion.sql_plan()
+            plan_vacunacion.consultaplan(conplan)
+            conplan.close()
+        elif option == "3":
+            return
+        else:
+            print("")
+            input("No has pulsado ninguna opción correcta...\npulsa una tecla para continuar")
+
+
+
+def provac():
+    while True:
+        # Mostramos el menu
+        print('\nP L A N  V A C U N A C I O N')
+        print("\t1 - Crear Programacion")
+        print("\t2 - Consultar Plan")
+        print("\t3 - Regresar Al Menu Principal")
+        option = input("Seleccione una opcion: ")
+        if option == '1':
+            # Aca se crea el plan
+            progplan = ProgramacionVacunas.sql_prog()
+            ProgramacionVacunas.tabla_prog(progplan)
+
+            prog = ProgramacionVacunas.infoCita(progplan)
+            plan_vacunacion.crearPlan(progplan, prog)
+            crearPlan(con, plan)
+            progplan.close()
+
+
+
+        elif option == '2':
+            # Aca se consulta el plan
+            conplan = plan_vacunacion.sql_plan()
+
             plan_vacunacion.consultaplan(conplan)
             conplan.close()
         elif option == "3":
@@ -121,9 +155,7 @@ def mainmenu():
         elif opcionmenu == "3":
             menuvac()
         elif opcionmenu == "4":
-            conplan = sql_vac()
-
-            conplan.close()
+            provac()
         elif opcionmenu == "5":
             break
         else:
