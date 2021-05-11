@@ -42,7 +42,6 @@ def menuafi():
             print("")
             input("No has pulsado ninguna opción correcta...\npulsa una tecla para continuar")
 
-
 def menulote():
     while True:
         # Mostramos el menu
@@ -73,9 +72,9 @@ def menulote():
 def menuvac():
     while True:
         # Mostramos el menu
-        print('\nP R O G R A M A C I O N   D E   V A C U N A C I O N')
-        print("\t1 - Crear Programa de Vacunacion")
-        print("\t2 - Consultar programa de vacunacion")
+        print('\nP L A N  V A C U N A C I O N')
+        print("\t1 - Crear Plan")
+        print("\t2 - Consultar Plan")
         print("\t3 - Regresar Al Menu Principal")
         option = input("Seleccione una opcion: ")
         if option == '1':
@@ -96,40 +95,38 @@ def menuvac():
             print("")
             input("No has pulsado ninguna opción correcta...\npulsa una tecla para continuar")
 
-
-
 def provac():
     while True:
         # Mostramos el menu
-        print('\nP L A N  V A C U N A C I O N')
+        print('\nP R O G R A M A  V A C U N A C I O N')
         print("\t1 - Crear Programacion")
-        print("\t2 - Consultar Plan")
-        print("\t3 - Regresar Al Menu Principal")
+        print("\t2 - Consultar Agenda")
+        print("\t3 - Consulta Individual")
+        print("\t4 - Regresar Al Menu Principal")
         option = input("Seleccione una opcion: ")
         if option == '1':
-            # Aca se crea el plan
+            # Aca se crea la agendacion de citas
             progplan = ProgramacionVacunas.sql_prog()
             ProgramacionVacunas.tabla_prog(progplan)
-
-            prog = ProgramacionVacunas.infoCita(progplan)
-            plan_vacunacion.crearPlan(progplan, prog)
-            crearPlan(con, plan)
+            ProgramacionVacunas.infoCita(progplan)
             progplan.close()
 
-
-
         elif option == '2':
-            # Aca se consulta el plan
-            conplan = plan_vacunacion.sql_plan()
-
-            plan_vacunacion.consultaplan(conplan)
-            conplan.close()
+            # Aca se consulta la agenda completa
+            progplan = ProgramacionVacunas.sql_prog()
+            ProgramacionVacunas.agenda(progplan)
+            progplan.close()
+            
         elif option == "3":
+            # Aca se consulta la cita por identificacion del afiliado
+            progplan = ProgramacionVacunas.sql_prog()
+            ProgramacionVacunas.consulta_individual(progplan)
+            progplan.close()
             return
         else:
             print("")
             input("No has pulsado ninguna opción correcta...\npulsa una tecla para continuar")
-
+            
 
 def mainmenu():
     """
@@ -144,7 +141,9 @@ def mainmenu():
         print("\t4 - Programa Vacunacion")
         print("\t5 - salir")
 
+    
         # Mostramos el menu
+
         # solicituamos una opción al usuario
         opcionmenu = input("Seleccione una opcion:  ")
 
