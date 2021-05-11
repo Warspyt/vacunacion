@@ -9,8 +9,8 @@ import lote_vacunas
 def sql_prog():
     # Se crea la conexion a la base de datos y se verifica que no ocurra ningun error
     try:
-        progplan = sqlite3.connect('sisgenvac.db')
-        return progplan
+        prog = sqlite3.connect('sisgenvac.db')
+        return prog
     except Error:
         print(Error)
 
@@ -18,16 +18,17 @@ def tabla_prog(con):
     cursorObj = con.cursor()
     # Se crea una tabla para la programacion de vacunas verificando que no exista aun
     cursorObj.execute("""CREATE TABLE IF NOT EXISTS ProgramacionVacunas(noid integer, nombre text,
-                      apellido text, ciudadvacunacion text,nolote integer, fabricante text,
-                      fechaprogramada text, horaprogramada text)""")
+                      apellido text, ciudadvacunacion text,direccion text, telefono integer, email text,
+                      nolote integer, fabricante text, fechaprogramada text, horaprogramada text, fechaorden text)""")
     con.commit()
 
 def asignarVacuna(con, info):
     # Se asigna la cita para la vacuna con la informacion del usuario y la vacuna
     cursorObj = con.cursor()
     cursorObj.execute("""INSERT INTO ProgramacionVacunas(noid, nombre, apellido,
-                      ciudadvacunacion, nolote, fabricante, fechaprogramada, horaprogramada)
-                      VALUES (?, ?, ?, ?, ?, ?, ?, ?)""", info)
+                      ciudadvacunacion, direccion, telefono, email, nolote, fabricante,
+                      fechaprogramada, horaprogramada, fechaorden)
+                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""", info)
     con.commit()
 
 def infoCita(con):
@@ -101,6 +102,7 @@ def infoCita(con):
     lotesvigentes.sort(key=lambda x: x[1])
     print(lotesvigentes)
     print(totalvacunas)
+
     
     # totalvacunas = totalvacunas 
     # ordenlotes = lotesvigentes
@@ -181,8 +183,12 @@ def infoCita(con):
                     nombre = af[1]
                     apellido = af[2]
                     ciudad = af[6]
-                    # agregar media hora luego de la hora y fehca asignada
+                    direccion = af[3]
+                    telefono = af[4]
+                    email = af[5]
+                    # agregar una hora luego de la hora y fecha asignada
                     fechaprogramada = ultimafecha[8:10] + ultimafecha[4:8] + ultimafecha[:4]
+                    fechaorden = ultimafecha
                     horaprogramada = ultimafecha[11:]
                     ultimafecha = (datetime.strptime(ultimafecha, '%Y/%m/%d %H:%M') + timedelta(hours = 1)).strftime('%Y/%m/%d %H:%M')
 
@@ -202,7 +208,7 @@ def infoCita(con):
                             lotesvigentes.pop(0)
                         if len(lotesvigentes) == 0 or totalvacunas == 0:
                             break
-                    infcita = (noid, nombre, apellido, ciudad, nolote, fabricante, fechaprogramada, horaprogramada)
+                    infcita = (noid, nombre, apellido, ciudad, direccion, telefono, email, nolote, fabricante, fechaprogramada, horaprogramada, fechaorden)
                     asignarVacuna(con, infcita)
 
                 else:
@@ -211,54 +217,102 @@ def infoCita(con):
         else:
             break
 
-def menu(con): # depronto sirver para la consulta
-    salir=False
-    while not salir:
-        opc=(input('''  Menú de programación de citas
-                        1.Tipo de identificación del afiliado
-                        2.Número de identificación del afiliado
-                        3.Ciudad de vacunación
-                        4.Salir
+def consulta_individual(con):
+    cursorObj = con.cursor()
+    conafi = input("\nNumero de identificacion del afiliado: ")
+    # Verifiar que la identificacion ingresada se encuentre en la base de datos
+    while True:
+        if conafi.isdigit():
+            buscar = 'SELECT * FROM ProgramacionVacunas where noid= ' + conafi
+            cursorObj.execute(buscar)
+            afil_b = cursorObj.fetchall()
+            if len(afil_b) != 0:
+                afil_b = afil_b[0]
+                break
+            else:
+                print("El id " + str(conafi) + " no se encuentra en la base de datos")
+        conafi = input("Ingrese un id valido: ")
+    print("\n                    PROGRAMACION DE VACUNA")
+    print("\n➸ Identificacion:", afil_b[0])
+    print("➸ Nombre:", afil_b[1])
+    print("➸ Apellido:", afil_b[2])
+    print("➸ Direccion:", afil_b[4])
+    print("➸ Telefono:", afil_b[5])
+    print("➸ Correo:", afil_b[6])
+    print("➸ Ciudad de vacunacion:", afil_b[3])
+    print("➸ Vacuna:", afil_b[8])
+    print("➸ Fecha y hora programada:", afil_b[9], "a las", afil_b[10])
 
-                        Ingrese su opción: '''))
-        if (opc=='1'):
-            salirInterno=False
-            while not salirInterno:
-                opcInterna=(input('''  Tipo de identificación del afiliado
-                        1.Cédula de ciudadanía
-                        2.Tarjeta de identidad
-                        3.Salir
-
-                        Ingrese su opción: '''))
-                if (opcInterna=='1'):
-                    print("Usted ha seleccionado la opción: Cédula de ciudadanía")
-                    salirInterno=True
-                elif (opcInterna=='2'):
-                    print("Usted ha seleccionado la opción: Tarjeta de identidad")
-                    salirInterno=True
-                elif (opcInterna=='3'):
-                    salirInterno=True
-
-        if (opc=='2'):
-            salirInterno=False
-            while not salirInterno:
-                opcInterna=(input('''  Ingrese el número de identificación del afiliado: '''))
-                opcInterna=opcInterna.ljust(12)
-                salirInterno=True
-
-        if (opc=='3'):
-            salirInterno=False
-            while not salirInterno:
-                opcInterna=(input('''  Ingrese la ciudad de vacunación para el afiliado: '''))
-                opcInterna=opcInterna.ljust(20)
-                salirInterno=True
-
-        if (opc=='4'):
-            salirInterno=True
+def agenda(con):
+    cursorObj = con.cursor()
+    print("Seleccione el campo por el que desea organizar la agenda:\n ")
+    print("1  - Identificacion")
+    print("2  - Nombre")
+    print("3  - Apellido")
+    print("4  - Direccion")
+    print("5  - Telefono")
+    print("6  - Correo")
+    print("7  - Ciudad de vacunacion")
+    print("8  - Vacuna")
+    print("9  - Fecha de programacion y hora programada\n")
+    campo = input("Ingrese una opcion: ")
+    while True:
+        if campo.isdigit() and 0 < int(campo) < 10:
+            break
+        else:
+            campo = input("Seleccione una opcion valida: ")
+    if campo == "1":
+        order = "noid"
+        guia = "IDENTIFICACION"
+    elif campo == "2":
+        order = "nombre"
+        guia = "NOMBRE"
+    elif campo == "3":
+        order = "apellido"
+        guia = "APELLIDO"
+    elif campo == "4":
+        order = "direccion"
+        guia = "DIRECCION"
+    elif campo == "5":
+        order = "telefono"
+        guia = "TELEFONO"
+    elif campo == "6":
+        order = "email"
+        guia = "CORREO"
+    elif campo == "7":
+        order = "ciudadvacunacion"
+        guia = "CIUDAD DE VACUNACION"
+    elif campo == "8":
+        order = "fabricante"
+        guia = "VACUNA"
+    elif campo == "9":
+        order = "fechaorden"
+        guia = "FECHA PROGRAMADA"
+        
+    # Organizar la agenda
+    cursorObj.execute('SELECT * FROM ProgramacionVacunas ORDER BY ' + order + ' ASC')
+    mostrar = cursorObj.fetchall()
+    print("\n           AGENDACION DE CITAS POR " +  guia + "\n")
+    counter = 1
+    for item in mostrar:
+        print("\n                    PACIENTE " + str(counter))
+        print("\n➸ Identificacion:", item[0])
+        print("➸ Nombre:", item[1])
+        print("➸ Apellido:", item[2])
+        print("➸ Direccion:", item[4])
+        print("➸ Telefono:", item[5])
+        print("➸ Correo:", item[6])
+        print("➸ Ciudad de vacunacion:", item[3])
+        print("➸ Vacuna:", item[8])
+        print("➸ Fecha y hora programada:", item[9], "a las", item[10])
+        counter += 1
+     
+    
 
 #def main():
-   # progplan = sql_prog()
-   # tabla_prog(progplan)
-   # info = infoCita(progplan)
+    #prog = sql_prog()
+    #tabla_prog(prog)
+    #infoCita(prog)
+    #agenda(prog)
     
 #main()
