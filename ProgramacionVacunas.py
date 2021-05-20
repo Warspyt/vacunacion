@@ -100,8 +100,8 @@ def infoCita(con):
             totalvacunas += disponible
             lotesvigentes.append([ids[0], venlote, disponible])
     lotesvigentes.sort(key=lambda x: x[1])
-    print(lotesvigentes)
-    print(totalvacunas)
+    #print(lotesvigentes)
+    #print(totalvacunas)
 
     
     # totalvacunas = totalvacunas 
@@ -159,7 +159,7 @@ def infoCita(con):
             candporplan.append(edadvalida)
         else:
             break
-    print(candporplan)
+    #print(candporplan)
 
     # Establecer primera fecha
     if fechaprog1 < planesvigentes[0][1]:
@@ -172,8 +172,8 @@ def infoCita(con):
             if ultimafecha < planesvigentes[asignar][1]:
                  ultimafecha = planesvigentes[asignar][1]
             for cita in candporplan[asignar]:
-                print(cita)
-                print(planesvigentes[asignar])
+                #print(cita)
+                #print(planesvigentes[asignar])
                 
                 if ultimafecha <= planesvigentes[asignar][2] and totalvacunas > 0:
                     cursorObj.execute("SELECT * FROM afiliados where id= " + str(cita))
@@ -192,7 +192,7 @@ def infoCita(con):
                     horaprogramada = ultimafecha[11:]
                     ultimafecha = (datetime.strptime(ultimafecha, '%Y/%m/%d %H:%M') + timedelta(hours = 1)).strftime('%Y/%m/%d %H:%M')
 
-                    print(lotesvigentes)
+                    #print(lotesvigentes)
                     while True:
                         if ultimafecha < lotesvigentes[0][1] and lotesvigentes[0][2] > 0:
                             cursorObj.execute("SELECT * FROM LoteVacunas where nolote= " + str(lotesvigentes[0][0]))
@@ -306,8 +306,45 @@ def agenda(con):
         print("➸ Vacuna:", item[8])
         print("➸ Fecha y hora programada:", item[9], "a las", item[10])
         counter += 1
-     
-    
+        print("+{:-<12}+{:-<20}+{:-<20}+{:-<20}+{:-<20}+{:-<20}+{:-<20}+{:-<10}+{:-<12}+{:-<17}+{:-<10}+".format("",
+                                                                                                                 "", "",
+                                                                                                                 "", "",
+                                                                                                                 "", "",
+                                                                                                                 "", "",
+                                                                                                                 "",""))
+        print("|{:^12}|{:^20}|{:^20}|{:^20}|{:^20}|{:^20}|{:^20}|{:^10}|{:^12}|{:^17}|{:^10}|".format("Documento",
+                                                                                                      "Nombre",
+                                                                                                      "Apellido",
+                                                                                                      "Ciudad",
+                                                                                                      "Direccion",
+                                                                                                      "Telefono", "Correo",
+                                                                                                      "Lote",
+                                                                                                      "Vacuna",
+                                                                                                      "Fecha Vacunacion", "Hora"))
+        print("+{:-<12}+{:-<20}+{:-<20}+{:-<20}+{:-<20}+{:-<20}+{:-<20}+{:-<10}+{:-<12}+{:-<17}+{:-<10}+".format("",
+                                                                                                                 "", "",
+                                                                                                                 "", "",
+                                                                                                                 "", "",
+                                                                                                                 "", "",
+                                                                                                                 "",""))
+        for idaf, nombre, apellido, direccion, telefono, email, ciudad, nacimiento, afiliacion, desafiliacion, vacunado,test in mostrar:
+            print("|{:^12}|{:^20}|{:^20}|{:^20}|{:^20}|{:^20}|{:^20}|{:^10}|{:^12}|{:^17}|{:^10}|".format(idaf, nombre,
+                                                                                                          apellido,
+                                                                                                          direccion,
+                                                                                                          telefono,
+                                                                                                          email, ciudad,
+                                                                                                          nacimiento,
+                                                                                                          afiliacion,
+                                                                                                          desafiliacion,
+                                                                                                          vacunado))
+        print("+{:-<12}+{:-<20}+{:-<20}+{:-<20}+{:-<20}+{:-<20}+{:-<20}+{:-<10}+{:-<12}+{:-<17}+{:-<10}+".format("", "",
+                                                                                                                 "", "",
+                                                                                                                 "", "",
+                                                                                                                 "", "",
+                                                                                                                 "", "",
+                                                                                                                 "",""))
+
+        con.commit()
 
 #def main():
     #prog = sql_prog()

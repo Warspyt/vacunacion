@@ -142,7 +142,7 @@ def leer_info():
         anosnac = input("- año de nacimiento: ")
         # Se verifica que el dato ingresado sea un año coherente para el nacimiento
         while True:
-            if anosnac.isdigit() and len(anosnac) == 4 and int(anosnac) > 2020:
+            if anosnac.isdigit() and len(anosnac) == 4 and int(anosnac) < 2020:
                 anosnac = anosnac.rjust(4)
                 break
             else:

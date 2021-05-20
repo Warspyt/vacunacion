@@ -30,7 +30,7 @@ def consultaplan(con):
     cursorObj.execute(compara)
     listado = cursorObj.fetchall()
     for ids in listado:
-        #print(ids)
+        # print(ids)
         # Extraer las fechas de inicio y fin
         ini = ids[3].split("/")
         fin = ids[4].split("/")
@@ -39,29 +39,42 @@ def consultaplan(con):
         if int(ini[2])< int(ano):
             if int(ano) < int(fin[2]):
                 print(ids)
+
+
             elif int(ano) == int(fin[2]):
                 if int(fin[1]) > int(mes):
                     print(ids)
+
                 elif int(fin[1]) == int(mes) and int(fin[2])>= int(dia):
                     print(ids)
+
+
                    
         elif int(ini[2])== int(ano):
             if int(ini[1]) < int(mes):
                 if int(ano) < int(fin[2]):
                     print(ids)
+
                 elif int(ano) == int(fin[2]):
                     if int(fin[1]) > int(mes):
                         print(ids)
+
                     elif int(fin[1]) == int(mes) and int(fin[2])>= int(dia):
                         print(ids)
+
+
             elif int(ini[1]) == int(mes) and int(ini[2])<= int(dia):
                 if int(ano) < int(fin[2]):
                     print(ids)
+
                 elif int(ano) == int(fin[2]):
                     if int(fin[1]) > int(mes):
                         print(ids)
+
                     elif int(fin[1]) == int(mes) and int(fin[2])>= int(dia):
                         print(ids)
+
+
                            
 def recibirPlan():
 
@@ -109,7 +122,7 @@ def recibirPlan():
           if dini.isdigit() and 0 < int(dini) <= 31:
               break
           else:
-              print("Ingrese un valor numerico: ")
+              print("Ingrese un valor correcto: ")
               dini = input("Escriba dia de inicio del plan: ")
               
       mini = input("Escriba mes de inicio del plan: ")
@@ -117,7 +130,7 @@ def recibirPlan():
           if mini.isdigit() and 0 < int(mini) <= 12:
               break
           else:
-              print("Ingrese un valor numerico: ")
+              print("Ingrese un valor correcto: ")
               mini = input("Escriba mes de inicio del plan: ")
 
       
@@ -126,7 +139,7 @@ def recibirPlan():
           if aini.isdigit() and 2020 < int(aini) <= 2050:
               break
           else:
-              print("Ingrese un valor numerico: ")
+              print("Ingrese un valor correcto: ")
               aini = input("Escriba año de inicio del plan: ")
       dini = int(dini)
       mini = int(mini)
