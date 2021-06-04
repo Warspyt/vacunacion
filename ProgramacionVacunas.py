@@ -100,9 +100,18 @@ def infoCita(con):
             totalvacunas += disponible
             lotesvigentes.append([ids[0], venlote, disponible])
     lotesvigentes.sort(key=lambda x: x[1])
-    #print(lotesvigentes)
-    #print(totalvacunas)
+    print(lotesvigentes)
+    print(totalvacunas)
 
+    # Si no hay lotes vigentes o no hay vacunas no se continua
+
+    if len(lotesvigentes) == 0:
+        print("No hay lotes vigentes a la fecha")
+        return
+
+    elif totalvacunas <= 0:
+        print("No hay vacunas a la fecha")
+        return
     
     # totalvacunas = totalvacunas 
     # ordenlotes = lotesvigentes
@@ -122,6 +131,11 @@ def infoCita(con):
         if venplan > fechaprog1 > iniplan:
             planesvigentes.append((ids[0], iniplan, venplan))
     planesvigentes.sort(key = lambda x : x[1])
+
+    print(planesvigentes)
+    if len(planesvigentes) == 0:
+        print("No hay planes de vacunacion vigentes a la fecha")
+        return
 
     candidatos = []
     candporplan = []
@@ -159,7 +173,11 @@ def infoCita(con):
             candporplan.append(edadvalida)
         else:
             break
-    #print(candporplan)
+    print(candporplan)
+    if len(candporplan) == 0:
+        print("No hay afiliados dentro de los planes vigentes sin cita de vacunacion a la fecha")
+        return
+    
 
     # Establecer primera fecha
     if fechaprog1 < planesvigentes[0][1]:
@@ -172,8 +190,8 @@ def infoCita(con):
             if ultimafecha < planesvigentes[asignar][1]:
                  ultimafecha = planesvigentes[asignar][1]
             for cita in candporplan[asignar]:
-                #print(cita)
-                #print(planesvigentes[asignar])
+                print(cita)
+                print(planesvigentes[asignar])
                 
                 if ultimafecha <= planesvigentes[asignar][2] and totalvacunas > 0:
                     cursorObj.execute("SELECT * FROM afiliados where id= " + str(cita))
@@ -192,7 +210,7 @@ def infoCita(con):
                     horaprogramada = ultimafecha[11:]
                     ultimafecha = (datetime.strptime(ultimafecha, '%Y/%m/%d %H:%M') + timedelta(hours = 1)).strftime('%Y/%m/%d %H:%M')
 
-                    #print(lotesvigentes)
+                    print(lotesvigentes)
                     while True:
                         if ultimafecha < lotesvigentes[0][1] and lotesvigentes[0][2] > 0:
                             cursorObj.execute("SELECT * FROM LoteVacunas where nolote= " + str(lotesvigentes[0][0]))
@@ -292,8 +310,8 @@ def agenda(con):
     # Organizar la agenda
     cursorObj.execute('SELECT * FROM ProgramacionVacunas ORDER BY ' + order + ' ASC')
     mostrar = cursorObj.fetchall()
-    print("\n           AGENDACION DE CITAS POR " +  guia + "\n")
-    counter = 1
+    print("\AGENDACION DE CITAS POR " +  guia + "\n")
+    '''counter = 1
     for item in mostrar:
         print("\n                    PACIENTE " + str(counter))
         print("\n➸ Identificacion:", item[0])
@@ -305,14 +323,16 @@ def agenda(con):
         print("➸ Ciudad de vacunacion:", item[3])
         print("➸ Vacuna:", item[8])
         print("➸ Fecha y hora programada:", item[9], "a las", item[10])
-        counter += 1
-        print("+{:-<12}+{:-<20}+{:-<20}+{:-<20}+{:-<20}+{:-<20}+{:-<20}+{:-<10}+{:-<12}+{:-<17}+{:-<10}+".format("",
-                                                                                                                 "", "",
-                                                                                                                 "", "",
-                                                                                                                 "", "",
-                                                                                                                 "", "",
-                                                                                                                 "",""))
-        print("|{:^12}|{:^20}|{:^20}|{:^20}|{:^20}|{:^20}|{:^20}|{:^10}|{:^12}|{:^17}|{:^10}|".format("Documento",
+        counter += 1'''
+
+    # Con tabla
+    print("+{:-<12}+{:-<20}+{:-<20}+{:-<20}+{:-<20}+{:-<20}+{:-<20}+{:-<10}+{:-<12}+{:-<17}+{:-<10}+".format("",
+                                                                                                                "", "",
+                                                                                                                "", "",
+                                                                                                                "", "",
+                                                                                                                "", "",
+                                                                                                                "",""))
+    print("|{:^12}|{:^20}|{:^20}|{:^20}|{:^20}|{:^20}|{:^20}|{:^10}|{:^12}|{:^17}|{:^10}|".format("Documento",
                                                                                                       "Nombre",
                                                                                                       "Apellido",
                                                                                                       "Ciudad",
@@ -321,14 +341,14 @@ def agenda(con):
                                                                                                       "Lote",
                                                                                                       "Vacuna",
                                                                                                       "Fecha Vacunacion", "Hora"))
-        print("+{:-<12}+{:-<20}+{:-<20}+{:-<20}+{:-<20}+{:-<20}+{:-<20}+{:-<10}+{:-<12}+{:-<17}+{:-<10}+".format("",
-                                                                                                                 "", "",
-                                                                                                                 "", "",
-                                                                                                                 "", "",
-                                                                                                                 "", "",
-                                                                                                                 "",""))
-        for idaf, nombre, apellido, direccion, telefono, email, ciudad, nacimiento, afiliacion, desafiliacion, vacunado,test in mostrar:
-            print("|{:^12}|{:^20}|{:^20}|{:^20}|{:^20}|{:^20}|{:^20}|{:^10}|{:^12}|{:^17}|{:^10}|".format(idaf, nombre,
+    print("+{:-<12}+{:-<20}+{:-<20}+{:-<20}+{:-<20}+{:-<20}+{:-<20}+{:-<10}+{:-<12}+{:-<17}+{:-<10}+".format("",
+                                                                                                                "", "",
+                                                                                                                "", "",
+                                                                                                                "", "",
+                                                                                                                "", "",
+                                                                                                                "",""))
+    for idaf, nombre, apellido, direccion, telefono, email, ciudad, nacimiento, afiliacion, desafiliacion, vacunado,test in mostrar:
+        print("|{:^12}|{:^20}|{:^20}|{:^20}|{:^20}|{:^20}|{:^20}|{:^10}|{:^12}|{:^17}|{:^10}|".format(idaf, nombre,
                                                                                                           apellido,
                                                                                                           direccion,
                                                                                                           telefono,
@@ -337,14 +357,16 @@ def agenda(con):
                                                                                                           afiliacion,
                                                                                                           desafiliacion,
                                                                                                           vacunado))
-        print("+{:-<12}+{:-<20}+{:-<20}+{:-<20}+{:-<20}+{:-<20}+{:-<20}+{:-<10}+{:-<12}+{:-<17}+{:-<10}+".format("", "",
+    print("+{:-<12}+{:-<20}+{:-<20}+{:-<20}+{:-<20}+{:-<20}+{:-<20}+{:-<10}+{:-<12}+{:-<17}+{:-<10}+".format("", "",
                                                                                                                  "", "",
                                                                                                                  "", "",
                                                                                                                  "", "",
                                                                                                                  "", "",
                                                                                                                  "",""))
 
-        con.commit()
+    con.commit()
+     
+    
 
 #def main():
     #prog = sql_prog()
