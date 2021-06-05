@@ -390,11 +390,11 @@ def agenda(con):
      
     
 
-def main():
-    prog = sql_prog()
-    tabla_prog(prog)
-    infoCita(prog)
+#def main():
+    #prog = sql_prog()
+    #tabla_prog(prog)
+    #infoCita(prog)
     #agenda(prog)
     
-main()
+#main()
     
