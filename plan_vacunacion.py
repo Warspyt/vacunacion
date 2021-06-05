@@ -25,7 +25,7 @@ def consultaplan(con):
     dia = now.strftime("%d")
     mes = now.strftime("%m")
     ano = now.strftime("%Y")
-    print("\n           PlANES EXISTENTES\n")
+    print("\n           PlANES ACTIVOS EXISTENTES\n")
     compara  = 'SELECT *FROM PlanVacunacion  '
     cursorObj.execute(compara)
     listado = cursorObj.fetchall()
