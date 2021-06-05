@@ -32,7 +32,7 @@ def consultaplan(con):
 
     # Planes a mostrar
     vigentes = []
-    
+
     for ids in listado:
         #print(ids)
         # Extraer las fechas de inicio y fin
@@ -67,8 +67,16 @@ def consultaplan(con):
                     elif int(fin[1]) == int(mes) and int(fin[2])>= int(dia):
                         vigentes.append(ids)
 
-    for plan in vigentes:
-        print(plan)
+
+        print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<15}+".format("", "", "", "", ""))
+        print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^15}|".format("Plan", "Edad Minima", "Edad Maxima", "Fecha Inicio",
+                                                            "Fecha Final"))
+        print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<15}+".format("", "", "", "", ""))
+
+
+        for idPlan, Emin, Emax, inicio, fin in vigentes:
+            print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^15}|".format(idPlan, Emin, Emax, inicio, fin))
+            print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<15}+".format("", "","", "", ""))
                            
 def recibirPlan():
 
