@@ -34,6 +34,12 @@ def asignarVacuna(con, info):
 def infoCita(con):
     
     cursorObj = con.cursor()
+
+    cursorObj.execute('SELECT * FROM ProgramacionVacunas')
+    ultimoregistro = cursorObj.fetchall()[-1]
+    ultfechares = ultimoregistro[9]
+    ulthorares = ultimoregistro[10]
+    ultimoreg = datetime(int(ultfechares[6:10]), int(ultfechares[3:5]), int(ultfechares[:2]), int(ulthorares[:2]), int(ulthorares[3:5])).strftime("%Y/%m/%d %H:%M")
     
     while True:
 
@@ -79,7 +85,7 @@ def infoCita(con):
         fechaprog1 = datetime(int(anoprog), int(mesprog), int(diaprog), int(hourprog), int(minprog)).strftime("%Y/%m/%d %H:%M")
         factual = datetime.now().strftime("%Y/%m/%d %H:%M")
         #fechavencimiento = diaven+"/"+mesven+"/"+anoven
-        if fechaprog1 >= factual:
+        if fechaprog1 >= factual and fechaprog1 >= ultimoreg:
             fechaprog = datetime(int(anoprog), int(mesprog), int(diaprog), int(hourprog), int(minprog)).strftime("%d/%m/%Y %H:%M")
             break
         else:
@@ -100,7 +106,10 @@ def infoCita(con):
             totalvacunas += disponible
             lotesvigentes.append([ids[0], venlote, disponible])
     lotesvigentes.sort(key=lambda x: x[1])
+
+    print("lotes vigentes")
     print(lotesvigentes)
+    print("total vacunas")
     print(totalvacunas)
 
     # Si no hay lotes vigentes o no hay vacunas no se continua
@@ -132,11 +141,22 @@ def infoCita(con):
             planesvigentes.append((ids[0], iniplan, venplan))
     planesvigentes.sort(key = lambda x : x[1])
 
+    print("planes vigentes")
     print(planesvigentes)
     if len(planesvigentes) == 0:
         print("No hay planes de vacunacion vigentes a la fecha")
         return
 
+
+    # Verificacion en la agenda existente
+
+    cursorObj.execute("SELECT * FROM ProgramacionVacunas")
+    inscritos = cursorObj.fetchall()
+    agendaExistente = []
+    
+    for ins in inscritos:
+        agendaExistente.append(ins[0])
+    
     candidatos = []
     candporplan = []
     for rec in planesvigentes:
@@ -165,7 +185,7 @@ def infoCita(con):
                     dmes = (int(mes) - int(nacimiento[1]))*30
                     ddia = int(dia) - int(nacimiento[0])
                     edadaf = (dano + dmes + ddia)//365
-                    if eminplan <= edadaf <= emaxplan and edad[0] not in candidatos:
+                    if eminplan <= edadaf <= emaxplan and edad[0] not in candidatos and edad[0] not in agendaExistente:
                         candidatos.append(edad[0])
                         edadvalida.append(edad[0])
                 else:
@@ -173,6 +193,8 @@ def infoCita(con):
             candporplan.append(edadvalida)
         else:
             break
+
+    print("candidatos por plan")
     print(candporplan)
     if len(candporplan) == 0:
         print("No hay afiliados dentro de los planes vigentes sin cita de vacunacion a la fecha")
@@ -190,8 +212,8 @@ def infoCita(con):
             if ultimafecha < planesvigentes[asignar][1]:
                  ultimafecha = planesvigentes[asignar][1]
             for cita in candporplan[asignar]:
-                print(cita)
-                print(planesvigentes[asignar])
+                #print(cita)
+                #print(planesvigentes[asignar])
                 
                 if ultimafecha <= planesvigentes[asignar][2] and totalvacunas > 0:
                     cursorObj.execute("SELECT * FROM afiliados where id= " + str(cita))
@@ -210,7 +232,7 @@ def infoCita(con):
                     horaprogramada = ultimafecha[11:]
                     ultimafecha = (datetime.strptime(ultimafecha, '%Y/%m/%d %H:%M') + timedelta(hours = 1)).strftime('%Y/%m/%d %H:%M')
 
-                    print(lotesvigentes)
+                    # print(lotesvigentes)
                     while True:
                         if ultimafecha < lotesvigentes[0][1] and lotesvigentes[0][2] > 0:
                             cursorObj.execute("SELECT * FROM LoteVacunas where nolote= " + str(lotesvigentes[0][0]))
@@ -368,10 +390,11 @@ def agenda(con):
      
     
 
-#def main():
-    #prog = sql_prog()
-    #tabla_prog(prog)
-    #infoCita(prog)
+def main():
+    prog = sql_prog()
+    tabla_prog(prog)
+    infoCita(prog)
     #agenda(prog)
     
-#main()
+main()
+    
