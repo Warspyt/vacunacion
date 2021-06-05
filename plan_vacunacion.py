@@ -3,7 +3,6 @@ from sqlite3 import Error
 from datetime import datetime
 from datetime import date
 
-
 def sql_plan():
     # funcion que crea la base de datos
     try:
@@ -33,7 +32,7 @@ def consultaplan(con):
 
     # Planes a mostrar
     vigentes = []
-
+    
     for ids in listado:
         #print(ids)
         # Extraer las fechas de inicio y fin
@@ -67,7 +66,6 @@ def consultaplan(con):
                         vigentes.append(ids)
                     elif int(fin[1]) == int(mes) and int(fin[2])>= int(dia):
                         vigentes.append(ids)
-
 
     print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<15}+".format("", "", "", "", ""))
     print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^15}|".format("Plan", "Edad Minima", "Edad Maxima", "Fecha Inicio",
@@ -189,7 +187,7 @@ def recibirPlan():
     print("Fecha de finalizacion ingresada: " + ffin)
 
   plan = (emin, emax, fini, ffin)
-  return plan  
+  return plan 
 
 def crearPlan(con, plan):
     # Se crea un nuevo plan de vacunacion con la informacion recolectada del usuario
