@@ -3,6 +3,7 @@ from sqlite3 import Error
 from datetime import datetime
 from datetime import date
 
+
 def sql_plan():
     # funcion que crea la base de datos
     try:
