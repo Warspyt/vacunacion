@@ -123,6 +123,8 @@ def provac():
             ProgramacionVacunas.consulta_individual(progplan)
             progplan.close()
             return
+        elif option == "4":
+            return
         else:
             print("")
             input("No has pulsado ninguna opción correcta...\npulsa una tecla para continuar")
