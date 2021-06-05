@@ -68,15 +68,15 @@ def consultaplan(con):
                         vigentes.append(ids)
 
 
-        print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<15}+".format("", "", "", "", ""))
-        print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^15}|".format("Plan", "Edad Minima", "Edad Maxima", "Fecha Inicio",
+    print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<15}+".format("", "", "", "", ""))
+    print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^15}|".format("Plan", "Edad Minima", "Edad Maxima", "Fecha Inicio",
                                                             "Fecha Final"))
-        print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<15}+".format("", "", "", "", ""))
+    print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<15}+".format("", "", "", "", ""))
 
 
-        for idPlan, Emin, Emax, inicio, fin in vigentes:
-            print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^15}|".format(idPlan, Emin, Emax, inicio, fin))
-            print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<15}+".format("", "","", "", ""))
+    for idPlan, Emin, Emax, inicio, fin in vigentes:
+        print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^15}|".format(idPlan, Emin, Emax, inicio, fin))
+        print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<15}+".format("", "","", "", ""))
                            
 def recibirPlan():
 
