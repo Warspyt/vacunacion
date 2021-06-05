@@ -83,14 +83,6 @@ def recibirPlan():
 
   emin=0
   emax=0
-  fini = datetime.now().strftime("%d/%m/%Y")
-  ffin = datetime.now().strftime("%d/%m/%Y")
-  dini=0
-  dfin=0
-  mini=0
-  mfin=0
-  aini=0
-  afin=0
 
   # Validar que la edad minima sea menor que la edad maxima
   while (emin >= emax):
@@ -118,77 +110,86 @@ def recibirPlan():
       print("ERROR: la edad minima debe ser mayor a cero ingrese datos validos")
     elif (emin<=0):
       print("ERROR: la edad maxima debe ser mayor a cero ingrese datos validos")
-      
-  while (fini >= ffin):
-      dini = input("Escriba dia de inicio del plan: ")
-      while True:
-          if dini.isdigit() and 0 < int(dini) <= 31:
-              break
-          else:
-              print("Ingrese un valor correcto: ")
-              dini = input("Escriba dia de inicio del plan: ")
-              
-      mini = input("Escriba mes de inicio del plan: ")
-      while True:
-          if mini.isdigit() and 0 < int(mini) <= 12:
-              break
-          else:
-              print("Ingrese un valor correcto: ")
-              mini = input("Escriba mes de inicio del plan: ")
 
-      
-      aini = input("Escriba año de inicio del plan: ")
-      while True:
-          if aini.isdigit() and 2020 < int(aini) <= 2050:
-              break
-          else:
-              print("Ingrese un valor correcto: ")
-              aini = input("Escriba año de inicio del plan: ")
-      dini = int(dini)
-      mini = int(mini)
-      aini = int(aini)
-      
-      dfin = input("Escriba dia de fin del plan: ")
-      while True:
-          if dfin.isdigit() and 0 < int(dfin) <= 31:
-              break
-          else:
-              print("Ingrese un valor numerico: ")
-              dfin = input("Escriba dia de fin del plan: ")
-              
-      mfin = input("Escriba mes de fin del plan: ")
-      while True:
-          if mfin.isdigit() and 0 < int(mfin) <= 12:
-              break
-          else:
-              print("Ingrese un valor numerico: ")
-              mfin = input("Escriba mes de fin del plan: ")
-              
-      afin = input("Escriba año de fin del plan: ")
-      while True:
-          if afin.isdigit() and 2020 < int(afin) <= 2050:
-              break
-          else:
-              print("Ingrese un valor numerico: ")
-              afin = input("Escriba año de fin del plan: ")
-              
-      dfin = int(dfin)
-      mfin = int(mfin)
-      afin = int(afin)
-      
-      fini = datetime(aini, mini, dini).strftime("%d/%m/%Y")
-      ffin = datetime(afin, mfin, dfin).strftime("%d/%m/%Y")
-      print(fini,ffin)
-      if (fini >= ffin):
-        print("ERROR: la fecha inicial debe ser menor a la final ingrese datos validos")
-        dini=0
-        dfin=0
-        mini=0
-        mfin=0
-        aini=0
-        afin=0
+
+# Verificar que la fecha de inicio sea posterior a la fecha actual
+    while True:
+
+        dini = input("Fecha de inicio del plan:\n\n- Dia de inicio: ")
+        # Se verifica que el dato ingresado sea un dia existente dentro del calendario
+        while True:
+            if dini.isdigit() and 0<int(dini)<32:
+                dini = dini.rjust(2,"0")
+                break
+            else:
+                dini = input("Escriba el dia de inicio en dos digitos: ")
+        mini = input("- Mes de inicio: ")
+        # Se verifica que el dato ingresado sea un mes existente dentro del calendario
+        while True:
+            if mini.isdigit() and 0<int(mini)<13:
+                mini = mini.rjust(2,"0")
+                break
+            else:
+                mini = input("Escriba el mes de inicio en numeros entre el 1 y 12: ")
+        aini = input("- año de inicio: ")
+        # Se verifica que el dato ingresado sea un año coherente para el vencimiento
+        while True:
+            if aini.isdigit() and len(aini) == 4 and int(aini)>2020:
+                aini = aini.rjust(4)
+                break
+            else:
+                aini = input("Escriba el año de inicio en numeros AAAA: ")
+        # Se guardan los datos de la fecha en formato (DD/MM/AAAA)
+        fini = datetime(int(aini), int(mini), int(dini)).strftime("%Y/%m/%d")
+        factual = datetime.now().strftime("%Y/%m/%d")
+        #fechavencimiento = diaven+"/"+mesven+"/"+anoven
+        if fini > factual:
+            fini = datetime(int(aini), int(mini), int(dini)).strftime("%d/%m/%Y")
+            break
+        else:
+            print("La fecha de inicio del plan no es valida: ")
+    print("Fecha de inicio ingresada: " + fini)
+
+# Verificar que la fecha de fin sea posterior a la fecha actual y a la fecha de inicio
+    while True:
+
+        dfin = input("Fecha de finalizacion del plan:\n\n- Dia de finalizacion: ")
+        # Se verifica que el dato ingresado sea un dia existente dentro del calendario
+        while True:
+            if dfin.isdigit() and 0<int(dfin)<32:
+                dfin = dfin.rjust(2,"0")
+                break
+            else:
+                dfin = input("Escriba el dia de finalizacion en dos digitos: ")
+        mfin = input("- Mes de finalizacion: ")
+        # Se verifica que el dato ingresado sea un mes existente dentro del calendario
+        while True:
+            if mfin.isdigit() and 0<int(mfin)<13:
+                mfin = mfin.rjust(2,"0")
+                break
+            else:
+                mini = input("Escriba el mes de finalizacion en numeros entre el 1 y 12: ")
+        afin = input("- año de finalizacion: ")
+        # Se verifica que el dato ingresado sea un año coherente para el vencimiento
+        while True:
+            if afin.isdigit() and len(afin) == 4 and int(afin)>2020:
+                afin = afin.rjust(4)
+                break
+            else:
+                afin = input("Escriba el año de finalizacion en numeros AAAA: ")
+        # Se guardan los datos de la fecha en formato (DD/MM/AAAA)
+        ffin = datetime(int(afin), int(mfin), int(dfin)).strftime("%Y/%m/%d")
+        factual = datetime.now().strftime("%Y/%m/%d")
+        #fechavencimiento = diaven+"/"+mesven+"/"+anoven
+        if ffin > factual and ffin > fini:
+            ffin = datetime(int(afin), int(mfin), int(dfin)).strftime("%d/%m/%Y")
+            break
+        else:
+            print("La fecha de finalizacion del plan no es valida: ")
+    print("Fecha de finalizacion ingresada: " + ffin)
+
   plan = (emin, emax, fini, ffin)
-  return plan 
+  return plan  
 
 def crearPlan(con, plan):
     # Se crea un nuevo plan de vacunacion con la informacion recolectada del usuario
