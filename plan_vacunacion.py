@@ -29,8 +29,12 @@ def consultaplan(con):
     compara  = 'SELECT *FROM PlanVacunacion  '
     cursorObj.execute(compara)
     listado = cursorObj.fetchall()
+
+    # Planes a mostrar
+    vigentes = []
+    
     for ids in listado:
-        # print(ids)
+        #print(ids)
         # Extraer las fechas de inicio y fin
         ini = ids[3].split("/")
         fin = ids[4].split("/")
@@ -38,43 +42,33 @@ def consultaplan(con):
         # Validacion para mostrar los planes de vacunacion que se encuentran activos
         if int(ini[2])< int(ano):
             if int(ano) < int(fin[2]):
-                print(ids)
-
-
+                vigentes.append(ids)
             elif int(ano) == int(fin[2]):
                 if int(fin[1]) > int(mes):
-                    print(ids)
-
+                    vigentes.append(ids)
                 elif int(fin[1]) == int(mes) and int(fin[2])>= int(dia):
-                    print(ids)
-
-
+                    vigentes.append(ids)
                    
         elif int(ini[2])== int(ano):
             if int(ini[1]) < int(mes):
                 if int(ano) < int(fin[2]):
-                    print(ids)
-
+                    vigentes.append(ids)
                 elif int(ano) == int(fin[2]):
                     if int(fin[1]) > int(mes):
-                        print(ids)
-
+                        vigentes.append(ids)
                     elif int(fin[1]) == int(mes) and int(fin[2])>= int(dia):
-                        print(ids)
-
-
+                        vigentes.append(ids)
             elif int(ini[1]) == int(mes) and int(ini[2])<= int(dia):
                 if int(ano) < int(fin[2]):
-                    print(ids)
-
+                    vigentes.append(ids)
                 elif int(ano) == int(fin[2]):
                     if int(fin[1]) > int(mes):
-                        print(ids)
-
+                        vigentes.append(ids)
                     elif int(fin[1]) == int(mes) and int(fin[2])>= int(dia):
-                        print(ids)
+                        vigentes.append(ids)
 
-
+    for plan in vigentes:
+        print(plan)
                            
 def recibirPlan():
 
@@ -90,7 +84,7 @@ def recibirPlan():
   afin=0
 
   # Validar que la edad minima sea menor que la edad maxima
-  while (emin>=emax):
+  while (emin >= emax):
     emin = input("Escriba la edad minima del plan: ")
     # Verificar que la edad sea un valor numerico mayor a cero
     while True:
@@ -175,7 +169,8 @@ def recibirPlan():
       
       fini = datetime(aini, mini, dini).strftime("%d/%m/%Y")
       ffin = datetime(afin, mfin, dfin).strftime("%d/%m/%Y")
-      if (fini>=ffin):
+      print(fini,ffin)
+      if (fini >= ffin):
         print("ERROR: la fecha inicial debe ser menor a la final ingrese datos validos")
         dini=0
         dfin=0
@@ -184,7 +179,7 @@ def recibirPlan():
         aini=0
         afin=0
   plan = (emin, emax, fini, ffin)
-  return plan  
+  return plan 
 
 def crearPlan(con, plan):
     # Se crea un nuevo plan de vacunacion con la informacion recolectada del usuario
@@ -198,7 +193,7 @@ def crearPlan(con, plan):
   #conplan = sql_plan()
   #tabla_plan(conplan)
   #plan = recibirPlan()
-#crearPlan(conplan, plan)
+  #crearPlan(conplan, plan)
   #infoPlanVacunacion()
   #consultaplan(conplan)
 
