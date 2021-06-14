@@ -337,7 +337,7 @@ def agenda(con):
     # Organizar la agenda
     cursorObj.execute('SELECT * FROM ProgramacionVacunas ORDER BY ' + order + ' ASC')
     mostrar = cursorObj.fetchall()
-    print("\AGENDACION DE CITAS POR " +  guia + "\n")
+    print("\nAGENDACION DE CITAS POR " +  guia + "\n")
     '''counter = 1
     for item in mostrar:
         print("\n                    PACIENTE " + str(counter))
