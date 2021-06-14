@@ -36,10 +36,12 @@ def infoCita(con):
     cursorObj = con.cursor()
 
     cursorObj.execute('SELECT * FROM ProgramacionVacunas')
-    ultimoregistro = cursorObj.fetchall()[-1]
-    ultfechares = ultimoregistro[9]
-    ulthorares = ultimoregistro[10]
-    ultimoreg = datetime(int(ultfechares[6:10]), int(ultfechares[3:5]), int(ultfechares[:2]), int(ulthorares[:2]), int(ulthorares[3:5])).strftime("%Y/%m/%d %H:%M")
+    ultimoregistro = cursorObj.fetchall()
+    if len(ultimoregistro) != 0:
+        ultimoregistro = ultimoregistro[-1]
+        ultfechares = ultimoregistro[9]
+        ulthorares = ultimoregistro[10]
+        ultimoreg = datetime(int(ultfechares[6:10]), int(ultfechares[3:5]), int(ultfechares[:2]), int(ulthorares[:2]), int(ulthorares[3:5])).strftime("%Y/%m/%d %H:%M")
     
     while True:
 
@@ -84,6 +86,9 @@ def infoCita(con):
         # Se guardan los datos de la fecha en formato (DD/MM/AAAA)
         fechaprog1 = datetime(int(anoprog), int(mesprog), int(diaprog), int(hourprog), int(minprog)).strftime("%Y/%m/%d %H:%M")
         factual = datetime.now().strftime("%Y/%m/%d %H:%M")
+        if len(ultimoregistro) == 0:
+            ultimoreg = factual
+            
         #fechavencimiento = diaven+"/"+mesven+"/"+anoven
         if fechaprog1 >= factual and fechaprog1 >= ultimoreg:
             fechaprog = datetime(int(anoprog), int(mesprog), int(diaprog), int(hourprog), int(minprog)).strftime("%d/%m/%Y %H:%M")
