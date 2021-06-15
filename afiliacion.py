@@ -188,11 +188,20 @@ def insertar_tabla(con, newafi):
 def vacunar(con):
     """ Funcion que se utiliza para operar en la base de datos"""
     cursorobj = con.cursor()
-    vacunado = input("identificacion del afiliado vacunado: ")
-    actualizar = 'update afiliados SET vacunado = "S" where id ='+vacunado
-    cursorobj.execute(actualizar)
-    print("El afiliado ", vacunado, "fue vacunado")
-    con.commit()
+    vacunado = input("identificacion del afiliado : ")
+    print("\t1 - Registrar Vacunacion del  afiliado")
+    print("\t2 - Volver al Menu  Anterior")
+    option = input("Seleccione una opcion: ")
+    if option == '1':
+        actualizar = 'update afiliados SET vacunado = "S" where id ='+vacunado
+        cursorobj.execute(actualizar)
+        print("El afiliado ", vacunado, "fue vacunado")
+        con.commit()
+    elif option == "2":
+        return
+    else:
+        print("")
+        input("No has pulsado ninguna opción correcta...\npulsa una tecla para continuar")
 
 
 def desafiliar(con):
