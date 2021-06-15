@@ -5,6 +5,9 @@ import ProgramacionVacunas
 
 
 def menuafi():
+    con = afiliacion.sql_afiliado()
+    afiliacion.creartable(con)
+    con.close()
     while True:
         # Mostramos el menu
         print('\nA D M I N I S T R A R  A F I L I A D O S')
@@ -17,7 +20,6 @@ def menuafi():
         if option == '1':
             print('\n')
             con = afiliacion.sql_afiliado()
-            afiliacion.creartable(con)
             afiliado = afiliacion.leer_info()
             afiliacion.insertar_tabla(con, afiliado)
             con.close()
@@ -43,6 +45,9 @@ def menuafi():
             input("No has pulsado ninguna opción correcta...\npulsa una tecla para continuar")
 
 def menulote():
+    convacunas = lote_vacunas.sql_lotevacunas()
+    lote_vacunas.tabla_vacunas(convacunas)
+    convacunas.close()
     while True:
         # Mostramos el menu
         print('\nA D M I N I S T R A R  V A C U N A S')
@@ -53,7 +58,6 @@ def menulote():
         if option == "1":
             # Aca se crea el lote
             convacunas = lote_vacunas.sql_lotevacunas()
-            lote_vacunas.tabla_vacunas(convacunas)
             lote = lote_vacunas.info_lote()
             lote_vacunas.crear_lote(convacunas, lote)
             convacunas.close()
@@ -70,6 +74,9 @@ def menulote():
 
 
 def menuvac():
+    conplan = plan_vacunacion.sql_plan()
+    plan_vacunacion.tabla_plan(conplan)
+    conplan.close()
     while True:
         # Mostramos el menu
         print('\nP L A N  V A C U N A C I O N')
@@ -80,7 +87,6 @@ def menuvac():
         if option == '1':
             # Aca se crea el plan
             conplan = plan_vacunacion.sql_plan()
-            plan_vacunacion.tabla_plan(conplan)
             plan = plan_vacunacion.recibirPlan()
             plan_vacunacion.crearPlan(conplan, plan)
             conplan.close()
@@ -96,6 +102,9 @@ def menuvac():
             input("No has pulsado ninguna opción correcta...\npulsa una tecla para continuar")
 
 def provac():
+    progplan = ProgramacionVacunas.sql_prog()
+    ProgramacionVacunas.tabla_prog(progplan)
+    progplan.close()
     while True:
         # Mostramos el menu
         print('\nP R O G R A M A  V A C U N A C I O N')
@@ -107,7 +116,6 @@ def provac():
         if option == '1':
             # Aca se crea la agendacion de citas
             progplan = ProgramacionVacunas.sql_prog()
-            ProgramacionVacunas.tabla_prog(progplan)
             ProgramacionVacunas.infoCita(progplan)
             progplan.close()
 
