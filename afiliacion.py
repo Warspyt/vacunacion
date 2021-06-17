@@ -184,19 +184,40 @@ def insertar_tabla(con, newafi):
     afiliacion,desafiliacion,vacunado) VALUES(?, ?, ?, ?,?,?,?, ?, ?, ?,?)''', newafi)
     con.commit()
 
-
 def vacunar(con):
     """ Funcion que se utiliza para operar en la base de datos"""
     cursorobj = con.cursor()
-    vacunado = input("identificacion del afiliado : ")
+    while True:
+        try:
+            ident = int(input("Número de identificación: "))
+
+            lenid = str(ident)
+
+            if len(lenid) > 13:
+                print("El numero de identificacion no puede tener mas de 12  digitos.")
+            else:
+                break
+        except ValueError:
+            print("escriba un número de identificacion valido.")
+            continue
+    vacunado=str(ident)
     print("\t1 - Registrar Vacunacion del  afiliado")
     print("\t2 - Volver al Menu  Anterior")
     option = input("Seleccione una opcion: ")
     if option == '1':
-        actualizar = 'update afiliados SET vacunado = "S" where id ='+vacunado
-        cursorobj.execute(actualizar)
-        print("El afiliado ", vacunado, "fue vacunado")
-        con.commit()
+        sql = 'SELECT vacunado FROM afiliados WHERE id ='+vacunado
+        cursorobj.execute(sql)
+        registros = cursorobj.fetchall()
+
+        if 'S' not in registros[0]:
+            actualizar = 'update afiliados SET vacunado = "S" where id =' + vacunado
+            cursorobj.execute(actualizar)
+            print("El afiliado ", vacunado, "fue vacunado")
+            con.commit()
+
+        else:
+            print(" El afiliado ya se encuentra vacunado")
+
     elif option == "2":
         return
     else:
