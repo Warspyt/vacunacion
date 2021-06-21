@@ -180,7 +180,13 @@ def consultar_lote(con):
         if venlote > factual and ids[3] > ids[4]: 
             print("•", ids[0])
         datoslote.append(ids[0])
+
+    if len(datoslote) == 0:
+        print("En este momento no hay lotes vigentes.")
+        return
+    
     c_lote = input("\nNumero de lote a consultar: ")
+
     # Se verifica que el lote sea un valor numerico y se encuentre dentro de la base de datos
     while True:
         if c_lote.isdigit() and int(c_lote) in datoslote:
@@ -201,11 +207,11 @@ def consultar_lote(con):
     print("+{:-<10}+{:-<15}+{:-<21}+{:-<15}+{:-<10}+{:-<8}+{:-<15}+{:-<15}+{:-<25}+{:-<15}+{:-<15}+".format("", "", "", "","", "", "", "","", "", ""))
     print("|{:^10}|{:^15}|{:^21}|{:^15}|{:^10}|{:^8}|{:^15}|{:^15}|{:^25}|{:^15}|{:^15}|".format("lote", "Fabricante", "Tipo de vacuna", "Recibidas", "Usadas", "Dosis", "Temperatura", "Efectividad","Tiempo de Proteccion","Vencimiento","imagen"))
     print("+{:-<10}+{:-<15}+{:-<21}+{:-<15}+{:-<10}+{:-<8}+{:-<15}+{:-<15}+{:-<25}+{:-<15}+{:-<15}+".format("", "", "", "","", "", "", "","", "", ""))
-    for nolote, fabricante, tipovacuna,cantidadrecibida, cantidadusada, dosisnecesarias, temperatura, efectividad,tiempoproteccion, fechavencimiento, imagen,reserva in filas:
+    for nolote, fabricante, tipovacuna,cantidadrecibida, cantidadusada, dosisnecesarias, temperatura, efectividad,tiempoproteccion, fechavencimiento, imagen, reserva in filas:
 
         print("|{:^10}|{:^15}|{:^21}|{:^15}|{:^10}|{:^8}|{:^15}|{:^15}|{:^25}|{:^15}|{:^15}|".format(nolote, fabricante, tipovacuna,
                       cantidadrecibida, cantidadusada, dosisnecesarias, temperatura, efectividad,
-                      tiempoproteccion, fechavencimiento, imagen,reserva))
+                      tiempoproteccion, fechavencimiento, imagen, reserva))
     print("+{:-<10}+{:-<15}+{:-<21}+{:-<15}+{:-<10}+{:-<8}+{:-<15}+{:-<15}+{:-<25}+{:-<15}+{:-<15}+".format("", "", "", "","", "", "", "","", "", ""))
     con.commit()
 
