@@ -196,7 +196,13 @@ def vacunar(con):
             cursorobj.execute(buscar)
             afil_b = cursorobj.fetchall()
             if len(afil_b) != 0:
-                break
+                # Verificar que el afiliado no este vacunado
+                if afil_b[0][10] == 'S':
+                    print("El afiliado ya se encuentra vacunado")
+                    return
+                else:
+                    break
+                
             else:
                 print("El id " + str(ident) + " no se encuentra en la base de datos")
                 
