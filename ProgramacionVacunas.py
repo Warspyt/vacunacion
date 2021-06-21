@@ -112,11 +112,6 @@ def infoCita(con):
             lotesvigentes.append([ids[0], venlote, disponible])
     lotesvigentes.sort(key=lambda x: x[1])
 
-    print("lotes vigentes")
-    print(lotesvigentes)
-    print("total vacunas")
-    print(totalvacunas)
-
     # Si no hay lotes vigentes o no hay vacunas no se continua
 
     if len(lotesvigentes) == 0:
@@ -146,8 +141,6 @@ def infoCita(con):
             planesvigentes.append((ids[0], iniplan, venplan))
     planesvigentes.sort(key = lambda x : x[1])
 
-    print("planes vigentes")
-    print(planesvigentes)
     if len(planesvigentes) == 0:
         print("No hay planes de vacunacion vigentes a la fecha")
         return
@@ -199,9 +192,7 @@ def infoCita(con):
         else:
             break
 
-    print("candidatos por plan")
-    print(candporplan)
-    if len(candporplan) == 0:
+    if not any(candporplan):
         print("No hay afiliados dentro de los planes vigentes sin cita de vacunacion a la fecha")
         return
     
@@ -217,8 +208,6 @@ def infoCita(con):
             if ultimafecha < planesvigentes[asignar][1]:
                  ultimafecha = planesvigentes[asignar][1]
             for cita in candporplan[asignar]:
-                #print(cita)
-                #print(planesvigentes[asignar])
                 
                 if ultimafecha <= planesvigentes[asignar][2] and totalvacunas > 0:
                     cursorObj.execute("SELECT * FROM afiliados where id= " + str(cita))
@@ -237,7 +226,7 @@ def infoCita(con):
                     horaprogramada = ultimafecha[11:]
                     ultimafecha = (datetime.strptime(ultimafecha, '%Y/%m/%d %H:%M') + timedelta(hours = 1)).strftime('%Y/%m/%d %H:%M')
 
-                    # print(lotesvigentes)
+
                     while True:
                         if ultimafecha < lotesvigentes[0][1] and lotesvigentes[0][2] > 0:
                             cursorObj.execute("SELECT * FROM LoteVacunas where nolote= " + str(lotesvigentes[0][0]))
@@ -261,6 +250,7 @@ def infoCita(con):
                     break
         else:
             break
+    print("\nLa agendacion se citas se genero con exito!!\n")
 
 def consulta_individual(con):
     cursorObj = con.cursor()
