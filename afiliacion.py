@@ -9,7 +9,6 @@ def sql_afiliado():
     # funcion que crea la base de datos
     try:
         con = sqlite3.connect('sisgenvac.db')
-        # print("Conexion realizada: DB creada")
         return con
     except Error:
         print('Se ha producido un error al crear la conexion', Error)
@@ -38,8 +37,7 @@ def leer_info():
     while True:
         try:
             ident = int(input("Número de identificación: "))
-
-            lenid = str(ident)
+            lenid=str(ident)
 
             if len(lenid) > 13:
                 print("El numero de identificacion no puede tener mas de 12  digitos.")
@@ -49,21 +47,21 @@ def leer_info():
             print("escriba un número de identificacion valido.")
             continue
 
-
     name = False
     # bucle para pedir el nombre
     while not name:
         # mensaje para que el usuario sepa que le solicitamos el nombre
         nombre = (input("Nombre: "))
         name = (nombre.replace(" ", "")).isalpha()
+        nombre = nombre.ljust(20)
         if not name or len(nombre) > 20:
             name = False
             print("\nEscriba un Nombre Valido")
-
+            
     lastname = False
     # bucle para pedir el apellido
     while not lastname:
-        # mensaje para que el usuario sepa que le solicitamos el apellido
+        # mensaje para que el usuario sepa que le solicitamos el nombre
         apellido = (input("Apellido: "))
         lastname = (apellido.replace(" ", "")).isalpha()
         apellido = apellido.ljust(20)
@@ -91,13 +89,12 @@ def leer_info():
             lentel = str(telefono)
 
             if len(lentel) > 13:
-                print("El numero de telefono no puede tener mas de 12  digitos.")
+                print("El numero de identificacion no puede tener mas de 12  digitos.")
             else:
                 break
         except ValueError:
             print("Escriba un numero de telefono valido.")
             continue
-
     # variable que indica si el valor es válido
     # inicialmente no lo es
     valido = False
@@ -106,8 +103,7 @@ def leer_info():
         # mensaje para que el usuario sepa que le solicitamos un correo
         email = (input("Correo electronico: "))
         valido = es_correo_valido(email)
-        if not valido or len(email) > 20:
-            valido = False
+        if not valido:
             print("\nescriba un correo valido: ")
 
     city = False
@@ -142,7 +138,7 @@ def leer_info():
         anosnac = input("- año de nacimiento: ")
         # Se verifica que el dato ingresado sea un año coherente para el nacimiento
         while True:
-            if anosnac.isdigit() and len(anosnac) == 4 and int(anosnac) < 2020:
+            if anosnac.isdigit() and len(anosnac) == 4:
                 anosnac = anosnac.rjust(4)
                 break
             else:
@@ -171,8 +167,7 @@ def leer_info():
 
     # Por defecto el usuario  ingresa como no  vacunado
     vacunado = "N"
-
-
+    
     newafi = (ident, nombre, apellido, direccion, telefono, email, ciudad, nacimiento, afiliacion, desafiliacion, vacunado)
     return newafi
 
@@ -184,9 +179,17 @@ def insertar_tabla(con, newafi):
     afiliacion,desafiliacion,vacunado) VALUES(?, ?, ?, ?,?,?,?, ?, ?, ?,?)''', newafi)
     con.commit()
 
+
 def vacunar(con):
     """ Funcion que se utiliza para operar en la base de datos"""
     cursorobj = con.cursor()
+    try:
+        cursorobj.execute('SELECT * FROM afiliados where vacunado = "N"')
+        total = cursorobj.fetchall()[0]
+    except:
+        print("\nNo hay usuarios que no se encuentren vacunados en este momento.")
+        return
+        
     ident = input("id del afiliado a consultar: ")
     # Verifiar que el id ingresado se encuentre en la base de datos
     while True:
@@ -205,7 +208,7 @@ def vacunar(con):
                 
             else:
                 print("El id " + str(ident) + " no se encuentra en la base de datos")
-                return
+                
         if len(ident) > 13:
                 print("El numero de identificacion no puede tener mas de 12 digitos.")
         ident = input("Ingrese un id valido: ")
@@ -238,6 +241,14 @@ def vacunar(con):
 def desafiliar(con):
     """ Funcion que se utiliza para operar en la base de datos"""
     cursorobj = con.cursor()
+    
+    try:
+        cursorobj.execute('SELECT * FROM afiliados')
+        total = cursorobj.fetchall()[0]
+    except:
+        print("\nNo hay usuarios registrados en este momento.")
+        return
+    
     desafiliado = input("identificacion del usuario a desafiliar: ")
     # Verifiar que el id ingresado se encuentre en la base de datos
     while True:
@@ -252,7 +263,7 @@ def desafiliar(con):
             return
         if len(desafiliado) > 13:
                 print("El numero de identificacion no puede tener mas de 12 digitos.")
-        ident = input("Ingrese un id valido: ")
+        desafiliado = input("Ingrese un id valido: ")
     f = datetime.now()
     dia = str(f.day).rjust(2, "0")
     mes = str(f.month).rjust(2, "0")
@@ -267,6 +278,13 @@ def desafiliar(con):
 
 def consulta(con):
     cursorobj = con.cursor()
+    try:
+        cursorobj.execute('SELECT * FROM afiliados')
+        total = cursorobj.fetchall()[0]
+    except:
+        print("\nNo hay usuarios registrados en este momento.")
+        return
+    
     c_afilia = input("id del afiliado a consultar: ")
     # Verifiar que el id ingresado se encuentre en la base de datos
     while True:
@@ -278,18 +296,18 @@ def consulta(con):
                 break
             else:
                 print("El id " + str(c_afilia) + " no se encuentra en la base de datos")
-            return
+        c_afilia = input("Ingrese un id valido: ")
+        
+    
+    print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<12}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "", "","", "", "", "","", "", ""))
+    print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^12}|{:^25}|{:^20}|{:^10}|{:^10}|{:^15}|{:^10}|".format("Documento", "Nombre", "Apellido", "Direccion", "Telefono", "Email", "Ciudad","Nacimiento", "Afiliacion","Desafiliacion","Vacunado"))
+    print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<12}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "", "","", "", "", "","", "", ""))
+    for idaf, nombre, apellido, direccion, telefono, email, ciudad, nacimiento,afiliacion, desafiliacion, vacunado in afil_b:
 
-
-    print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<15}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "", "", "", "", "", "", "", "", ""))
-    print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^15}|{:^25}|{:^20}|{:^10}|{:^10}|{:^15}|{:^10}|".format("Documento", "Nombre", "Apellido", "Direccion", "Telefono", "Email", "Ciudad", "Nacimiento", "Afiliacion", "Desafiliacion", "Vacunado"))
-    print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<15}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "", "", "", "", "", "", "", "", ""))
-    for idaf, nombre, apellido, direccion, telefono, email, ciudad, nacimiento, afiliacion, desafiliacion, vacunado in afil_b:
-
-        print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^15}|{:^25}|{:^20}|{:^10}|{:^10}|{:^15}|{:^10}|".format(idaf, nombre, apellido,
+        print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^12}|{:^25}|{:^20}|{:^10}|{:^10}|{:^15}|{:^10}|".format(idaf, nombre, apellido,
                       direccion, telefono, email, ciudad, nacimiento,
                       afiliacion, desafiliacion, vacunado))
-    print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<15}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "", "", "", "", "", "", "", "", ""))
+    print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<12}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "", "","", "", "", "","", "", ""))
     con.commit()
 
 
@@ -297,11 +315,11 @@ def cerrar_db(con):
     con.close()
 
 
-# def main():
-    # con = sql_afiliado()
-    # creartable(con)
-    # afiliado = leer_info()
-    # insertar_tabla(con, afiliado)
-    # consulta(con)
-    # cerrar_db(con)
-# main()
+#def main():
+    #con = sql_afiliado()
+    #creartable(con)
+    #afiliado = leer_info()
+    #insertar_tabla(con, afiliado)
+    #consulta(con)
+    #cerrar_db(con)
+#main()
