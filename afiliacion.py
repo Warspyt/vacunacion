@@ -187,19 +187,23 @@ def insertar_tabla(con, newafi):
 def vacunar(con):
     """ Funcion que se utiliza para operar en la base de datos"""
     cursorobj = con.cursor()
+    ident = input("id del afiliado a consultar: ")
+    # Verifiar que el id ingresado se encuentre en la base de datos
     while True:
-        try:
-            ident = int(input("Número de identificación: "))
+        if ident.isdigit() and len(ident) < 13:
 
-            lenid = str(ident)
-
-            if len(lenid) > 13:
-                print("El numero de identificacion no puede tener mas de 12  digitos.")
-            else:
+            buscar = 'SELECT * FROM afiliados where id= ' + ident
+            cursorobj.execute(buscar)
+            afil_b = cursorobj.fetchall()
+            if len(afil_b) != 0:
                 break
-        except ValueError:
-            print("escriba un número de identificacion valido.")
-            continue
+            else:
+                print("El id " + str(ident) + " no se encuentra en la base de datos")
+                
+        if len(ident) > 13:
+                print("El numero de identificacion no puede tener mas de 12 digitos.")
+        ident = input("Ingrese un id valido: ")
+            
     vacunado=str(ident)
     print("\t1 - Registrar Vacunacion del  afiliado")
     print("\t2 - Volver al Menu  Anterior")
