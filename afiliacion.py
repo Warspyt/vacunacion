@@ -241,7 +241,7 @@ def desafiliar(con):
     desafiliado = input("identificacion del usuario a desafiliar: ")
     # Verifiar que el id ingresado se encuentre en la base de datos
     while True:
-        if desafiliado.isdigit() and len(ident) < 13:
+        if desafiliado.isdigit() and len(desafiliado) < 13:
             buscar = 'SELECT * FROM afiliados where id= ' + desafiliado
             cursorobj.execute(buscar)
             afil_b = cursorobj.fetchall()
