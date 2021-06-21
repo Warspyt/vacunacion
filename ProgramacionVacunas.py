@@ -251,6 +251,7 @@ def infoCita(con):
         else:
             break
     print("\nLa agendacion se citas se genero con exito!!\n")
+    con.commit()
 
 def consulta_individual(con):
     cursorObj = con.cursor()
@@ -277,6 +278,7 @@ def consulta_individual(con):
     print("➸ Ciudad de vacunacion:", afil_b[3])
     print("➸ Vacuna:", afil_b[8])
     print("➸ Fecha y hora programada:", afil_b[9], "a las", afil_b[10])
+    con.commit()
 
 def agenda(con):
     cursorObj = con.cursor()
