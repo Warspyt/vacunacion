@@ -205,7 +205,7 @@ def vacunar(con):
                 
             else:
                 print("El id " + str(ident) + " no se encuentra en la base de datos")
-                
+                return
         if len(ident) > 13:
                 print("El numero de identificacion no puede tener mas de 12 digitos.")
         ident = input("Ingrese un id valido: ")
@@ -239,6 +239,20 @@ def desafiliar(con):
     """ Funcion que se utiliza para operar en la base de datos"""
     cursorobj = con.cursor()
     desafiliado = input("identificacion del usuario a desafiliar: ")
+    # Verifiar que el id ingresado se encuentre en la base de datos
+    while True:
+        if desafiliado.isdigit() and len(ident) < 13:
+            buscar = 'SELECT * FROM afiliados where id= ' + desafiliado
+            cursorobj.execute(buscar)
+            afil_b = cursorobj.fetchall()
+            if len(afil_b) != 0:
+                break
+            else:
+                print("El id " + str(desafiliado) + " no se encuentra en la base de datos")
+            return
+        if len(desafiliado) > 13:
+                print("El numero de identificacion no puede tener mas de 12 digitos.")
+        ident = input("Ingrese un id valido: ")
     f = datetime.now()
     dia = str(f.day).rjust(2, "0")
     mes = str(f.month).rjust(2, "0")
@@ -264,7 +278,8 @@ def consulta(con):
                 break
             else:
                 print("El id " + str(c_afilia) + " no se encuentra en la base de datos")
-        c_afilia = input("Ingrese un id valido: ")
+            return
+
 
     print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<15}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "", "", "", "", "", "", "", "", ""))
     print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^15}|{:^25}|{:^20}|{:^10}|{:^10}|{:^15}|{:^10}|".format("Documento", "Nombre", "Apellido", "Direccion", "Telefono", "Email", "Ciudad", "Nacimiento", "Afiliacion", "Desafiliacion", "Vacunado"))
