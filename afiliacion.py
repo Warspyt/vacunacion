@@ -53,7 +53,6 @@ def leer_info():
         # mensaje para que el usuario sepa que le solicitamos el nombre
         nombre = (input("Nombre: "))
         name = (nombre.replace(" ", "")).isalpha()
-        nombre = nombre.ljust(20)
         if not name or len(nombre) > 20:
             name = False
             print("\nEscriba un Nombre Valido")
@@ -61,7 +60,7 @@ def leer_info():
     lastname = False
     # bucle para pedir el apellido
     while not lastname:
-        # mensaje para que el usuario sepa que le solicitamos el nombre
+        # mensaje para que el usuario sepa que le solicitamos el apellido
         apellido = (input("Apellido: "))
         lastname = (apellido.replace(" ", "")).isalpha()
         apellido = apellido.ljust(20)
@@ -70,7 +69,7 @@ def leer_info():
             print("\nEscriba un Apellido Valido")
 
     adress = False
-    # bucle para pedir el apellido
+    # bucle para pedir la direccion
     while not adress:
         # mensaje para que el usuario sepa que le solicitamos la direccion y validamso sea alfa numerica isalmun
         direccion = (input("Direccion: "))
@@ -89,7 +88,7 @@ def leer_info():
             lentel = str(telefono)
 
             if len(lentel) > 13:
-                print("El numero de identificacion no puede tener mas de 12  digitos.")
+                print("El numero de telefono no puede tener mas de 12  digitos.")
             else:
                 break
         except ValueError:
@@ -99,7 +98,7 @@ def leer_info():
     # inicialmente no lo es
     valido = False
     # bucle para pedir el valor
-    while not valido:
+    while not valido or len(email) > 20:
         # mensaje para que el usuario sepa que le solicitamos un correo
         email = (input("Correo electronico: "))
         valido = es_correo_valido(email)
