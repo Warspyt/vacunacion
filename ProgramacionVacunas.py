@@ -166,7 +166,7 @@ def infoCita(con):
             emaxplan = int(planselect[0][2])
 
             # Se busca el plan en la base de datos y se extrae la informacion
-            cursorObj.execute("SELECT * FROM afiliados where vacunado= 'N'")
+            cursorObj.execute("SELECT * FROM afiliados where vacunado= 'N' AND desafiliacion = ' '")
             novacunados = cursorObj.fetchall()
         
             edadvalida = []
@@ -255,6 +255,14 @@ def infoCita(con):
 
 def consulta_individual(con):
     cursorObj = con.cursor()
+
+    try:
+        cursorobj.execute('SELECT * FROM ProgramacionVacunas')
+        total = cursorobj.fetchall()[0]
+    except:
+        print("\nNo hay usuarios con citas asignadas en este momento.")
+        return
+    
     conafi = input("\nNumero de identificacion del afiliado: ")
     # Verifiar que la identificacion ingresada se encuentre en la base de datos
     while True:
@@ -278,10 +286,19 @@ def consulta_individual(con):
     print("➸ Ciudad de vacunacion:", afil_b[3])
     print("➸ Vacuna:", afil_b[8])
     print("➸ Fecha y hora programada:", afil_b[9], "a las", afil_b[10])
+
     con.commit()
 
 def agenda(con):
     cursorObj = con.cursor()
+
+    try:
+        cursorobj.execute('SELECT * FROM ProgramacionVacunas')
+        total = cursorobj.fetchall()[0]
+    except:
+        print("\nAGENDACION DE CITAS\n\nNo hay usuarios con citas asignadas en este momento.")
+        return
+    
     print("Seleccione el campo por el que desea organizar la agenda:\n ")
     print("1  - Identificacion")
     print("2  - Nombre")
