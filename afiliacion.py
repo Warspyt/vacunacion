@@ -189,7 +189,7 @@ def vacunar(con):
         print("\nNo hay usuarios que no se encuentren vacunados en este momento.")
         return
         
-    ident = input("id del afiliado a consultar: ")
+    ident = input("id del afiliado a vacunar: ")
     # Verifiar que el id ingresado se encuentre en la base de datos
     while True:
         if ident.isdigit() and len(ident) < 13:
