@@ -183,13 +183,16 @@ def vacunar(con):
     """ Funcion que se utiliza para operar en la base de datos"""
     cursorobj = con.cursor()
     try:
-        cursorobj.execute('SELECT * FROM afiliados where vacunado = "N"')
+        cursorobj.execute('SELECT * FROM afiliados WHERE vacunado = "N" AND EXISTS(SELECT * FROM afiliados WHERE desafiliacion = " ")')
+
+
         total = cursorobj.fetchall()[0]
+        print(total)
     except:
         print("\nNo hay usuarios que no se encuentren vacunados en este momento.")
         return
         
-    ident = input("id del afiliado a consultar: ")
+    ident = input("id del afiliado a vacunar: ")
     # Verifiar que el id ingresado se encuentre en la base de datos
     while True:
         if ident.isdigit() and len(ident) < 13:
