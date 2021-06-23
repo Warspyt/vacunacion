@@ -130,7 +130,6 @@ def provac():
             progplan = ProgramacionVacunas.sql_prog()
             ProgramacionVacunas.consulta_individual(progplan)
             progplan.close()
-            return
         elif option == "4":
             return
         else:
