@@ -183,16 +183,13 @@ def vacunar(con):
     """ Funcion que se utiliza para operar en la base de datos"""
     cursorobj = con.cursor()
     try:
-        cursorobj.execute('SELECT * FROM afiliados WHERE vacunado = "N" AND EXISTS(SELECT * FROM afiliados WHERE desafiliacion = " ")')
-
-
+        cursorobj.execute('SELECT * FROM afiliados where vacunado = "N" AND desafiliacion = " "')
         total = cursorobj.fetchall()[0]
-        print(total)
     except:
         print("\nNo hay usuarios que no se encuentren vacunados en este momento.")
         return
         
-    ident = input("id del afiliado a vacunar: ")
+    ident = input("id del afiliado a consultar: ")
     # Verifiar que el id ingresado se encuentre en la base de datos
     while True:
         if ident.isdigit() and len(ident) < 13:
@@ -245,7 +242,7 @@ def desafiliar(con):
     cursorobj = con.cursor()
     
     try:
-        cursorobj.execute('SELECT * FROM afiliados')
+        cursorobj.execute('SELECT * FROM afiliados where desafiliacion = " "')
         total = cursorobj.fetchall()[0]
     except:
         print("\nNo hay usuarios registrados en este momento.")
@@ -255,13 +252,13 @@ def desafiliar(con):
     # Verifiar que el id ingresado se encuentre en la base de datos
     while True:
         if desafiliado.isdigit() and len(desafiliado) < 13:
-            buscar = 'SELECT * FROM afiliados where id= ' + desafiliado
+            buscar = 'SELECT * FROM afiliados where id= ' + desafiliado + ' AND desafiliacion = " "'
             cursorobj.execute(buscar)
             afil_b = cursorobj.fetchall()
             if len(afil_b) != 0:
                 break
             else:
-                print("El id " + str(desafiliado) + " no se encuentra en la base de datos")
+                print("El id " + str(desafiliado) + " no se encuentra en la base de datos o ya se encuentra desafiliado")
             return
         if len(desafiliado) > 13:
                 print("El numero de identificacion no puede tener mas de 12 digitos.")
