@@ -223,4 +223,3 @@ def consultar_lote(con):
     #consultar_lote(convacunas)'zzzzzz''
     
 #main() 
-    
