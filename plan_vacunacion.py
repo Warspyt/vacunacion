@@ -67,6 +67,10 @@ def consultaplan(con):
                     elif int(fin[1]) == int(mes) and int(fin[2])>= int(dia):
                         vigentes.append(ids)
 
+    if len(vigentes) == 0:
+        print("No hay planes de vacunacion activos en este momento.")
+        return
+
     print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<15}+".format("", "", "", "", ""))
     print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^15}|".format("Plan", "Edad Minima", "Edad Maxima", "Fecha Inicio",
                                                             "Fecha Final"))
