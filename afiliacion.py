@@ -194,7 +194,7 @@ def vacunar(con):
     while True:
         if ident.isdigit() and len(ident) < 13:
 
-            buscar = 'SELECT * FROM afiliados where id= ' + ident
+            buscar = 'SELECT * FROM afiliados where id= ' + ident + ' AND desafiliacion = " "'
             cursorobj.execute(buscar)
             afil_b = cursorobj.fetchall()
             if len(afil_b) != 0:
@@ -204,9 +204,12 @@ def vacunar(con):
                     return
                 else:
                     break
+
+
                 
             else:
-                print("El id " + str(ident) + " no se encuentra en la base de datos")
+                print("\n El id " + str(ident) + " no se encuentra afiliado")
+                return
                 
         if len(ident) > 13:
                 print("El numero de identificacion no puede tener mas de 12 digitos.")
@@ -223,6 +226,7 @@ def vacunar(con):
 
         if 'S' not in registros[0]:
             actualizar = 'update afiliados SET vacunado = "S" where id =' + vacunado
+
             cursorobj.execute(actualizar)
             print("El afiliado ", vacunado, "fue vacunado")
             con.commit()
