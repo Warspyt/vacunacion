@@ -1,13 +1,17 @@
+""" Se importan los dintintos modulos que componene nuestro programa"""
 import afiliacion
 import lote_vacunas
 import plan_vacunacion
 import ProgramacionVacunas
+
+"""cada modulo tiene su propio menu, afiliacion, lote de vacunas,vacunacion y programacion vacunacion"""
 
 
 def menuafi():
     con = afiliacion.sql_afiliado()
     afiliacion.creartable(con)
     con.close()
+    """Por medio de un bucle se verifica  la opcion seleccionada y en caso de no elegir una valida se le informara """
     while True:
         # Mostramos el menu
         print('\nA D M I N I S T R A R  A F I L I A D O S')
@@ -44,11 +48,13 @@ def menuafi():
             print("")
             input("No has pulsado ninguna opción correcta...\npulsa una tecla para continuar")
 
+
 def menulote():
     convacunas = lote_vacunas.sql_lotevacunas()
     lote_vacunas.tabla_vacunas(convacunas)
     convacunas.close()
     while True:
+        """Por medio de un bucle se verifica  la opcion seleccionada y en caso de no elegir una valida se le informara """
         # Mostramos el menu
         print('\nA D M I N I S T R A R  V A C U N A S')
         print("\t1 - Crear lotes")
@@ -78,6 +84,7 @@ def menuvac():
     plan_vacunacion.tabla_plan(conplan)
     conplan.close()
     while True:
+        """Por medio de un bucle se verifica  la opcion seleccionada y en caso de no elegir una valida se le informara """
         # Mostramos el menu
         print('\nP L A N  V A C U N A C I O N')
         print("\t1 - Crear Plan")
@@ -101,12 +108,14 @@ def menuvac():
             print("")
             input("No has pulsado ninguna opción correcta...\npulsa una tecla para continuar")
 
+
 def provac():
     progplan = ProgramacionVacunas.sql_prog()
     ProgramacionVacunas.tabla_prog(progplan)
     progplan.close()
     while True:
         # Mostramos el menu
+        """Por medio de un bucle se verifica  la opcion seleccionada y en caso de no elegir una valida se le informara """
         print('\nP R O G R A M A  V A C U N A C I O N')
         print("\t1 - Crear Programacion")
         print("\t2 - Consultar Agenda")
@@ -139,7 +148,7 @@ def provac():
 
 def mainmenu():
     """
-    Función que limpia la pantalla y muestra nuevamente el menu
+    este es el menu principal apartir de este  se despliegan los submenus de cada modulo
     """
     while True:
         print('\nS I S T E M A   D E   G E S T I Ó N   D E   V A C U N A C I Ó N ')
@@ -150,9 +159,7 @@ def mainmenu():
         print("\t4 - Programa Vacunacion")
         print("\t5 - salir")
 
-    
         # Mostramos el menu
-
         # solicituamos una opción al usuario
         opcionmenu = input("Seleccione una opcion:  ")
 

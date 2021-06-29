@@ -1,5 +1,5 @@
-''' Se importan las librerias para el manejo de las bases de datos, las fechas, envio de correos
-    electronicos y las conexiones con los modulos de afiliacion y lotes de vacunas'''
+""" Se importan las librerias para el manejo de las bases de datos, las fechas, envio de correos
+    electronicos y las conexiones con los modulos de afiliacion y lotes de vacunas"""
 import sqlite3
 from sqlite3 import Error
 from datetime import datetime
@@ -11,49 +11,56 @@ import smtplib
 
 ''' Funcion para establecer la conexion con la base de datos del
     programa'''
-def sql_prog():
 
-    ''' Se crea la conexion a la base de datos usando el metodo connect, creando el archivo en caso de que no exista y se verifica que
-        no ocurra ningun error a partir de un try - except'''
+
+def sql_prog():
+    """ Se crea la conexion a la base de datos usando el metodo connect, creando el archivo en caso de que no exista y se verifica que
+        no ocurra ningun error a partir de un try - except"""
     try:
         prog = sqlite3.connect('sisgenvac.db')
         return prog
     except Error:
         print(Error)
 
+
 ''' Funcion para crear la tabla de la programacion de vacunas dentro de la base de datos del
     programa, la cual toma como parametro la conexion de la misma'''
-def tabla_prog(con):
 
-    ''' Se crea una tabla para la programacion de vacunas verificando que no exista aun, haciendo uso del objeto cursor
-        y el metodo execute que utiliza el CREATE TABLE dentro de los parametros'''
+
+def tabla_prog(con):
+    """ Se crea una tabla para la programacion de vacunas verificando que no exista aun, haciendo uso del objeto cursor
+        y el metodo execute que utiliza el CREATE TABLE dentro de los parametros"""
     cursorObj = con.cursor()
-    
+
     cursorObj.execute("""CREATE TABLE IF NOT EXISTS ProgramacionVacunas(noid integer, nombre text,
                       apellido text, ciudadvacunacion text,direccion text, telefono integer, email text,
                       nolote integer, fabricante text, fechaprogramada text, horaprogramada text, fechaorden text)""")
     con.commit()
 
+
 ''' Funcion para guardar una cita asignada a un paciente en la base de datos, la cual toma
     como parametros la conexion con la base de datos y la informacion del paciente'''
-def asignarVacuna(con, info):
 
-    ''' Se guarda la cita asignada con la informacion recolectada sobre el paciente, haciendo uso del
-        objeto cursor y el metodo execute que utiliza el INSERT INTO dentro de los parametros'''
+
+def asignarvacuna(con, info):
+    """ Se guarda la cita asignada con la informacion recolectada sobre el paciente, haciendo uso del
+        objeto cursor y el metodo execute que utiliza el INSERT INTO dentro de los parametros"""
     cursorObj = con.cursor()
-    
+
     cursorObj.execute("""INSERT INTO ProgramacionVacunas(noid, nombre, apellido,
                       ciudadvacunacion, direccion, telefono, email, nolote, fabricante,
                       fechaprogramada, horaprogramada, fechaorden)
                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""", info)
     con.commit()
 
+
 ''' Funcion para generar la agendacion de citas a partir de una fecha y hora ingresadas
     por el usuario, la cual toma como parametro la conexion con la base de datos'''
-def infoCita(con):
 
-    ''' Se guarda la ultima fecha y hora asignada en la agenda de citas con el metodo strftime de la libreria
-        datetime y usando el objeto cursor y el metodo execute que utiliza el SELECT como parametro'''
+
+def infoCita(con):
+    """ Se guarda la ultima fecha y hora asignada en la agenda de citas con el metodo strftime de la libreria
+        datetime y usando el objeto cursor y el metodo execute que utiliza el SELECT como parametro"""
     cursorObj = con.cursor()
 
     cursorObj.execute('SELECT * FROM ProgramacionVacunas')
@@ -62,7 +69,8 @@ def infoCita(con):
         ultimoregistro = ultimoregistro[-1]
         ultfechares = ultimoregistro[9]
         ulthorares = ultimoregistro[10]
-        ultimoreg = datetime(int(ultfechares[6:10]), int(ultfechares[3:5]), int(ultfechares[:2]), int(ulthorares[:2]), int(ulthorares[3:5])).strftime("%Y/%m/%d %H:%M")
+        ultimoreg = datetime(int(ultfechares[6:10]), int(ultfechares[3:5]), int(ultfechares[:2]), int(ulthorares[:2]),
+                             int(ulthorares[3:5])).strftime("%Y/%m/%d %H:%M")
 
     ''' Se pide la fecha y hora de inicio de la agendacion de citas por medio de un bucle que se rompe
         cuando se verifica que la fecha ingresada sea mayor a la fecha actual y a la ultima fecha
@@ -73,31 +81,31 @@ def infoCita(con):
             que los datos sean numericos y existan dentro del calendario y horario covencional'''
         diaprog = input("Fecha de inicio del agendamiento de citas:\n\n- Dia de inicio: ")
         while True:
-            if diaprog.isdigit() and 0<int(diaprog)<32:
-                diaprog = diaprog.rjust(2,"0")
+            if diaprog.isdigit() and 0 < int(diaprog) < 32:
+                diaprog = diaprog.rjust(2, "0")
                 break
             else:
                 diaprog = input("Escriba el dia de inicio en dos digitos: ")
         mesprog = input("- Mes de inicio: ")
         while True:
-            if mesprog.isdigit() and 0<int(mesprog)<13:
-                mesprog = mesprog.rjust(2,"0")
+            if mesprog.isdigit() and 0 < int(mesprog) < 13:
+                mesprog = mesprog.rjust(2, "0")
                 break
             else:
                 mesprog = input("Escriba el mes de inicio en numeros entre el 1 y 12: ")
         anoprog = input("- año de inicio: ")
         while True:
-            if anoprog.isdigit() and len(anoprog) == 4 and int(anoprog)>2020:
+            if anoprog.isdigit() and len(anoprog) == 4 and int(anoprog) > 2020:
                 anoprog = anoprog.rjust(4)
                 break
             else:
                 anoprog = input("Escriba el año de inicio en numeros AAAA: ")
         hourprog = input("- Hora de inicio: ")
         while True:
-             if hourprog.isdigit() and 0 < int(hourprog) < 25:
-                 hourprog = hourprog.rjust(2)
-                 break
-             else:
+            if hourprog.isdigit() and 0 < int(hourprog) < 25:
+                hourprog = hourprog.rjust(2)
+                break
+            else:
                 hourprog = input("Escriba la hora de inicio en numeros entre el 1 y 24: ")
         minprog = input("- minutos de inicio: ")
         while True:
@@ -106,19 +114,21 @@ def infoCita(con):
                 break
             else:
                 minprog = input("Escriba los minutos de inicio en numeros entre el 0 y 59: ")
-                
+
         ''' Usando el metodo strftime de la libreria datetime se guardan los valores ingresados por el
             usuario en formato de fecha y hora (DD/MM/AAAA H:M)'''
-        fechaprog1 = datetime(int(anoprog), int(mesprog), int(diaprog), int(hourprog), int(minprog)).strftime("%Y/%m/%d %H:%M")
+        fechaprog1 = datetime(int(anoprog), int(mesprog), int(diaprog), int(hourprog), int(minprog)).strftime(
+            "%Y/%m/%d %H:%M")
         factual = datetime.now().strftime("%Y/%m/%d %H:%M")
 
         '''En caso de que no exista una agendacion de citas previa, se ignora la funcion que
             guarda el ultimo registro'''
         if len(ultimoregistro) == 0:
             ultimoreg = factual
-            
+
         if fechaprog1 >= factual and fechaprog1 >= ultimoreg:
-            fechaprog = datetime(int(anoprog), int(mesprog), int(diaprog), int(hourprog), int(minprog)).strftime("%d/%m/%Y %H:%M")
+            fechaprog = datetime(int(anoprog), int(mesprog), int(diaprog), int(hourprog), int(minprog)).strftime(
+                "%d/%m/%Y %H:%M")
             break
         else:
             print("La fecha de inicio no es valida: ")
@@ -137,7 +147,7 @@ def infoCita(con):
         llote = (ids[9]).split("/")
         venlote = datetime(int(llote[2]), int(llote[1]), int(llote[0])).strftime("%Y/%m/%d")
         if venlote > fechaprog1 and ids[3] > ids[4] + ids[11]:
-            disponible = ids[3]- ids[4] - ids[11] 
+            disponible = ids[3] - ids[4] - ids[11]
             totalvacunas += disponible
             lotesvigentes.append([ids[0], venlote, disponible])
     lotesvigentes.sort(key=lambda x: x[1])
@@ -152,13 +162,11 @@ def infoCita(con):
         print("No hay vacunas a la fecha")
         return
 
-
     ''' Se extraen los planes de vacunacion existentes en la base de datos, haciendo uso del objeto cursor
         y el metodo execute que utiliza el SELECT dentro de los parametros'''
     cursorObj.execute('SELECT * FROM PlanVacunacion')
     listado = cursorObj.fetchall()
     planesvigentes = []
-
 
     ''' Se filtran los planes de vacunacion que se encuentren vigentes a la fecha en la que se iniciara la asignacion
         de citas, asiendo uso de un for para iterar sobre cada plan de vacunacion'''
@@ -169,7 +177,7 @@ def infoCita(con):
         iniplan = datetime(int(iplan[2]), int(iplan[1]), int(iplan[0])).strftime("%Y/%m/%d")
         if venplan > fechaprog1 > iniplan:
             planesvigentes.append((ids[0], iniplan, venplan))
-    planesvigentes.sort(key = lambda x : x[1])
+    planesvigentes.sort(key=lambda x: x[1])
 
     ''' Se verifica que hayan planes de vacunacion vigentes, en caso contrario la funcion se
         termina y se notifica al usuario'''
@@ -177,13 +185,12 @@ def infoCita(con):
         print("No hay planes de vacunacion vigentes a la fecha")
         return
 
-
     ''' Se extraen los pacientes que ya tienen cita asignada, haciendo uso del objeto cursor
         y el metodo execute que utiliza el SELECT dentro de los parametros'''
     cursorObj.execute("SELECT * FROM ProgramacionVacunas")
     inscritos = cursorObj.fetchall()
     agendaExistente = []
-    
+
     for ins in inscritos:
         agendaExistente.append(ins[0])
 
@@ -211,20 +218,20 @@ def infoCita(con):
             edadvalida = []
             for edad in novacunados:
                 if len(candidatos) < totalvacunas:
-                    
+
                     ''' Funcion para calcular la edad de cada paciente en base a la fecha de nacimiento registrada
                         en la base de datos, usando el metodo now y strftime de la libreria datetime para determinar
                         la edad a la fecha actual'''
                     nacimiento = edad[7].split("/")
-                    now= datetime.now()
+                    now = datetime.now()
                     dia = now.strftime("%d")
                     mes = now.strftime("%m")
                     ano = now.strftime("%Y")
 
-                    dano = (int(ano) - int(nacimiento[2]))*365
-                    dmes = (int(mes) - int(nacimiento[1]))*30
+                    dano = (int(ano) - int(nacimiento[2])) * 365
+                    dmes = (int(mes) - int(nacimiento[1])) * 30
                     ddia = int(dia) - int(nacimiento[0])
-                    edadaf = (dano + dmes + ddia)//365
+                    edadaf = (dano + dmes + ddia) // 365
                     if eminplan <= edadaf <= emaxplan and edad[0] not in candidatos and edad[0] not in agendaExistente:
                         candidatos.append(edad[0])
                         edadvalida.append(edad[0])
@@ -237,9 +244,9 @@ def infoCita(con):
     ''' Se verifica que hayan afiliados existentes que cumplan los requisitos para vacunarse, en caso contrario
         la funcion se termina y se notifica al usuario'''
     if not any(candporplan):
-        print("No hay afiliados que cumplan los requisitos dentro de los planes vigentes y que se encuentren sin cita de vacunacion a la fecha")
+        print(
+            "No hay afiliados que cumplan los requisitos dentro de los planes vigentes y que se encuentren sin cita de vacunacion a la fecha")
         return
-    
 
     ''' Se establece la variable con la primera fecha que se asignara y que ira cambiando con cada
         paciente agendado'''
@@ -253,16 +260,16 @@ def infoCita(con):
     for asignar in range(0, len(planesvigentes)):
         if totalvacunas > 0:
             if ultimafecha < planesvigentes[asignar][1]:
-                 ultimafecha = planesvigentes[asignar][1]
+                ultimafecha = planesvigentes[asignar][1]
             for cita in candporplan[asignar]:
-                
+
                 if ultimafecha <= planesvigentes[asignar][2] and totalvacunas > 0:
 
                     ''' Se extrae la informacion de contacto del paciente a vacunar, haciendo uso del objeto cursor
                         y el metodo execute que utiliza el SELECT dentro de los parametros'''
                     cursorObj.execute("SELECT * FROM afiliados where id= " + str(cita))
                     af = cursorObj.fetchall()[0]
-                    
+
                     noid = af[0]
                     nombre = af[1]
                     apellido = af[2]
@@ -276,8 +283,8 @@ def infoCita(con):
                     fechaprogramada = ultimafecha[8:10] + ultimafecha[4:8] + ultimafecha[:4]
                     fechaorden = ultimafecha
                     horaprogramada = ultimafecha[11:]
-                    ultimafecha = (datetime.strptime(ultimafecha, '%Y/%m/%d %H:%M') + timedelta(hours = 1)).strftime('%Y/%m/%d %H:%M')
-
+                    ultimafecha = (datetime.strptime(ultimafecha, '%Y/%m/%d %H:%M') + timedelta(hours=1)).strftime(
+                        '%Y/%m/%d %H:%M')
 
                     ''' Se trae la informacion del lote vigente del cual se extraera la vacuna, haciendo uso del objeto cursor
                         y el metodo execute que utiliza el SELECT dentro de los parametros'''
@@ -293,7 +300,8 @@ def infoCita(con):
 
                             ''' Se reserva la vacuna extraida actualizando el valor de las reservas en la base de datos de los lotes,
                                 haciendo uso del objeto cursor y el metodo execute que utiliza el UPDATE dentro de los parametros'''
-                            cursorObj.execute('update LoteVacunas SET reserva = ' + resv + ' where nolote = ' + str(lotesvigentes[0][0]))
+                            cursorObj.execute('update LoteVacunas SET reserva = ' + resv + ' where nolote = ' + str(
+                                lotesvigentes[0][0]))
                             break
                         else:
                             lotesvigentes.pop(0)
@@ -301,10 +309,12 @@ def infoCita(con):
                             break
 
                     ''' Se guardan los datos del paciente y la cita a agendar en un contenedor de tipo tupla para su posterior uso'''
-                    infcita = (noid, nombre, apellido, ciudad, direccion, telefono, email, nolote, fabricante, fechaprogramada, horaprogramada, fechaorden)
+                    infcita = (
+                        noid, nombre, apellido, ciudad, direccion, telefono, email, nolote, fabricante, fechaprogramada,
+                        horaprogramada, fechaorden)
 
-                    ''' Con el llamado a la funcion asignarVacuna se agenda la cita del paciente sobre el cual se esta iterando'''
-                    asignarVacuna(con, infcita)
+                    ''' Con el llamado a la funcion asignarvacuna se agenda la cita del paciente sobre el cual se esta iterando'''
+                    asignarvacuna(con, infcita)
 
                     ''' Funcion para enviar un correo electronico al paciente, notificandolo sobre la fecha y hora de
                         su cita para vacunarse, haciendo uso de la libreria smtplib'''
@@ -319,7 +329,7 @@ def infoCita(con):
                     Subject: %s
 
                     %s
-                    """ %(emailfrom, to, asunto, texto)
+                    """ % (emailfrom, to, asunto, texto)
 
                     username = 'sisgenvac@gmail.com'
                     password = 'POO123456'
@@ -341,25 +351,27 @@ def infoCita(con):
     print("\nLa agendacion se citas se genero con exito!!\n")
     con.commit()
 
+
 ''' Funcion para consultar la cita de un paciente en especifico, que toma como
     parametro la conexion con la base de datos del programa'''
-def consulta_individual(con):
 
-    ''' Se verifica que existan usuarios con cita agendada, en caso contrario se
-        termina la funcion y se notifica al usuario'''
+
+def consulta_individual(con):
+    """ Se verifica que existan usuarios con cita agendada, en caso contrario se
+        termina la funcion y se notifica al usuario"""
     cursorObj = con.cursor()
 
     try:
         cursorobj.execute('SELECT * FROM ProgramacionVacunas')
-        total = cursorobj.fetchall()[0]
-    except:
+        cursorobj.fetchall()[0]
+    except IndexError:
         print("\nNo hay usuarios con citas asignadas en este momento.")
         return
 
     ''' Se solicita la identificacion del afiliado a consultar por medio de un bucle que se rompe cuando las condiciones son
         validas, verificando que el valor ingresado sea numerico y se encuentre dentro de la base de datos'''
     conafi = input("\nNumero de identificacion del afiliado: ")
-    
+
     while True:
         if conafi.isdigit():
 
@@ -390,18 +402,20 @@ def consulta_individual(con):
 
     con.commit()
 
+
 ''' Funcion para consultar la agenda de citas ordenada por algun campo a eleccion, que toma como
     parametro la conexion con la base de datos del programa'''
-def agenda(con):
 
-    ''' Se verifica que existan usuarios con cita agendada, en caso contrario se
-        termina la funcion y se notifica al usuario'''
+
+def agenda(con):
+    """ Se verifica que existan usuarios con cita agendada, en caso contrario se
+        termina la funcion y se notifica al usuario"""
     cursorObj = con.cursor()
 
     try:
         cursorobj.execute('SELECT * FROM ProgramacionVacunas')
-        total = cursorobj.fetchall()[0]
-    except:
+        cursorobj.fetchall()[0]
+    except IndexError:
         print("\nAGENDACION DE CITAS\n\nNo hay usuarios con citas asignadas en este momento.")
         return
 
@@ -428,7 +442,7 @@ def agenda(con):
             campo = input("Seleccione una opcion valida: ")
 
     ''' Con los condicionales if y elif, segun la opcion ingresada se guarda el campo por el que se ordenaran
-        las citas agendadas en la variable order''' 
+        las citas agendadas en la variable order'''
     if campo == "1":
         order = "noid"
         guia = "IDENTIFICACION"
@@ -456,55 +470,53 @@ def agenda(con):
     elif campo == "9":
         order = "fechaorden"
         guia = "FECHA PROGRAMADA"
-        
+
     ''' Se reordena la agenda de citas existente en la base de datos, haciendo uso del objeto cursor
         y el metodo execute que utiliza el SELECT y el ORDER BY dentro de los parametros'''
     cursorObj.execute('SELECT * FROM ProgramacionVacunas ORDER BY ' + order + ' ASC')
     mostrar = cursorObj.fetchall()
 
-    
     ''' Se muestra en pantalla la agenda de citas en un formato de tabla hecho con simbolos a partir del
         metodo format'''
-    print("\nAGENDACION DE CITAS POR " +  guia + "\n")
-  
+    print("\nAGENDACION DE CITAS POR " + guia + "\n")
 
     print("+{:-<12}+{:-<20}+{:-<20}+{:-<20}+{:-<20}+{:-<20}+{:-<20}+{:-<10}+{:-<12}+{:-<17}+{:-<10}+".format("",
-                                                                                                                "", "",
-                                                                                                                "", "",
-                                                                                                                "", "",
-                                                                                                                "", "",
-                                                                                                                "",""))
+                                                                                                             "", "",
+                                                                                                             "", "",
+                                                                                                             "", "",
+                                                                                                             "", "",
+                                                                                                             "", ""))
     print("|{:^12}|{:^20}|{:^20}|{:^20}|{:^20}|{:^20}|{:^20}|{:^10}|{:^12}|{:^17}|{:^10}|".format("Documento",
-                                                                                                      "Nombre",
-                                                                                                      "Apellido",
-                                                                                                      "Ciudad",
-                                                                                                      "Direccion",
-                                                                                                      "Telefono", "Correo",
-                                                                                                      "Lote",
-                                                                                                      "Vacuna",
-                                                                                                      "Fecha Vacunacion", "Hora"))
+                                                                                                  "Nombre",
+                                                                                                  "Apellido",
+                                                                                                  "Ciudad",
+                                                                                                  "Direccion",
+                                                                                                  "Telefono", "Correo",
+                                                                                                  "Lote",
+                                                                                                  "Vacuna",
+                                                                                                  "Fecha Vacunacion",
+                                                                                                  "Hora"))
     print("+{:-<12}+{:-<20}+{:-<20}+{:-<20}+{:-<20}+{:-<20}+{:-<20}+{:-<10}+{:-<12}+{:-<17}+{:-<10}+".format("",
-                                                                                                                "", "",
-                                                                                                                "", "",
-                                                                                                                "", "",
-                                                                                                                "", "",
-                                                                                                                "",""))
-    for idaf, nombre, apellido, direccion, telefono, email, ciudad, nacimiento, afiliacion, desafiliacion, vacunado,test in mostrar:
+                                                                                                             "", "",
+                                                                                                             "", "",
+                                                                                                             "", "",
+                                                                                                             "", "",
+                                                                                                             "", ""))
+    for idaf, nombre, apellido, direccion, telefono, email, ciudad, nacimiento, afiliacion, desafiliacion, vacunado, test in mostrar:
         print("|{:^12}|{:^20}|{:^20}|{:^20}|{:^20}|{:^20}|{:^20}|{:^10}|{:^12}|{:^17}|{:^10}|".format(idaf, nombre,
-                                                                                                          apellido,
-                                                                                                          direccion,
-                                                                                                          telefono,
-                                                                                                          email, ciudad,
-                                                                                                          nacimiento,
-                                                                                                          afiliacion,
-                                                                                                          desafiliacion,
-                                                                                                          vacunado))
+                                                                                                      apellido,
+                                                                                                      direccion,
+                                                                                                      telefono,
+                                                                                                      email, ciudad,
+                                                                                                      nacimiento,
+                                                                                                      afiliacion,
+                                                                                                      desafiliacion,
+                                                                                                      vacunado))
     print("+{:-<12}+{:-<20}+{:-<20}+{:-<20}+{:-<20}+{:-<20}+{:-<20}+{:-<10}+{:-<12}+{:-<17}+{:-<10}+".format("", "",
-                                                                                                                 "", "",
-                                                                                                                 "", "",
-                                                                                                                 "", "",
-                                                                                                                 "", "",
-                                                                                                                 "",""))
+                                                                                                             "", "",
+                                                                                                             "", "",
+                                                                                                             "", "",
+                                                                                                             "", "",
+                                                                                                             "", ""))
 
     con.commit()
-     

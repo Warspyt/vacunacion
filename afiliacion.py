@@ -1,3 +1,5 @@
+""" Se importan las librerias para el manejo de las bases de datos, las fechas, envio de correos
+    electronicos y las conexiones con los modulos de afiliacion y lotes de vacunas"""
 from datetime import datetime
 from datetime import date
 import sqlite3
@@ -40,8 +42,8 @@ def leer_info():
     """ Funcion para guardar la informacion que se le solicita al usuario
         sobre un afiliado que se creara """
     while True:
-        ''' Por medio de un bucle se verifica que el dato ingresado para la identificacion sea valor numerico
-                my una longitud  max de de 13 caracteres'''
+        """ Por medio de un bucle se verifica que el dato ingresado para la identificacion sea valor numerico
+                my una longitud  max de de 13 caracteres"""
         try:
             ident = int(input("Número de identificación: "))
             lenid = str(ident)
@@ -89,8 +91,8 @@ def leer_info():
         direccion = (input("Direccion: "))
         # adress = (direccion.replace(" ", "")).isalnum()
         dictionary = {'#': "", ' ': '', '/': "", '-': ""}
-        transTable = direccion.maketrans(dictionary)
-        adress = direccion.translate(transTable)
+        transtable = direccion.maketrans(dictionary)
+        adress = direccion.translate(transtable)
         direccion = direccion.ljust(20)
         if not adress or len(direccion) > 20:
             adress = False
@@ -212,13 +214,13 @@ def vacunar(con):
             en caso de no encontrar  que los afiliados esten vacunados y desafiliados nos indicara que no hay 
             a quien vacunar'''
         cursorobj.execute('SELECT * FROM afiliados where vacunado = "N" AND desafiliacion = " "')
-        # total = cursorobj.fetchall()[0]
-    except:
+        cursorobj.fetchall()[0]
+    except IndexError:
         print("\nNo hay usuarios que no se encuentren vacunados en este momento.")
         return
 
     ident = input("id del afiliado a vacunar: ")
-    # Verifiar que el id ingresado se encuentre en la base de datos y no este desafiliado
+    # Verifica que el id ingresado se encuentre en la base de datos y no este desafiliado
     while True:
         if ident.isdigit() and len(ident) < 13:
             buscar = 'SELECT * FROM afiliados where id= ' + ident + ' AND desafiliacion = " "'
@@ -234,7 +236,7 @@ def vacunar(con):
             else:
                 print("\n El id " + str(ident) + " no se encuentra afiliado")
                 return
-
+        # verificacion de longitud
         if len(ident) > 13:
             print("El numero de identificacion no puede tener mas de 12 digitos.")
         ident = input("Ingrese un id valido: ")
@@ -244,6 +246,7 @@ def vacunar(con):
     print("\t2 - Volver al Menu  Anterior")
     option = input("Seleccione una opcion: ")
     if option == '1':
+        # se hace el update del afiliado en el campo vacunado con un print informando
         sql = 'SELECT vacunado FROM afiliados WHERE id =' + vacunado
         cursorobj.execute(sql)
         registros = cursorobj.fetchall()
@@ -270,9 +273,10 @@ def desafiliar(con):
     cursorobj = con.cursor()
 
     try:
+        # recorremos la DB  en busqueda de registros sin desafiliacion
         cursorobj.execute('SELECT * FROM afiliados where desafiliacion = " "')
-        # total = cursorobj.fetchall()[0]
-    except:
+        cursorobj.fetchall()[0]
+    except IndexError:
         print("\nNo hay usuarios registrados en este momento.")
         return
 
@@ -304,17 +308,23 @@ def desafiliar(con):
     con.commit()
 
 
+''' Funcion para consultar la informacion de los afiliados,
+    la cual toma como parametro la conexion con la base de datos del programa'''
+
+
 def consulta(con):
     cursorobj = con.cursor()
     try:
+        # recorre la DB para verificar que no este vacia
         cursorobj.execute('SELECT * FROM afiliados')
-        # total = cursorobj.fetchall()[0]
-    except:
+        cursorobj.fetchall()[0]
+    except IndexError:
+
         print("\nNo hay usuarios registrados en este momento.")
         return
 
     c_afilia = input("id del afiliado a consultar: ")
-    # Verifiar que el id ingresado se encuentre en la base de datos
+    # Verifica que el id ingresado se encuentre en la base de datos
     while True:
         if c_afilia.isdigit():
             buscar = 'SELECT * FROM afiliados where id= ' + c_afilia
@@ -325,6 +335,8 @@ def consulta(con):
             else:
                 print("El id " + str(c_afilia) + " no se encuentra en la base de datos")
         c_afilia = input("Ingrese un id valido: ")
+
+    # muestra la informacion del afiliado consultado
 
     print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<12}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "",
                                                                                                              "", "", "",

@@ -1,5 +1,5 @@
-''' Se importan las librerias para el manejo de las bases de datos
-    y de las fechas'''
+""" Se importan las librerias para el manejo de las bases de datos
+    y de las fechas"""
 import sqlite3
 from sqlite3 import Error
 from datetime import datetime
@@ -7,45 +7,51 @@ from datetime import date
 
 ''' Funcion para establecer la conexion con la base de datos del
     programa'''
+
+
 def sql_lotevacunas():
-    ''' Se crea la conexion a la base de datos usando el metodo connect, creando el archivo en caso de que no exista y se verifica que
-        no ocurra ningun error a partir de un try - except'''
+    """ Se crea la conexion a la base de datos usando el metodo connect, creando el archivo en caso de que no exista y se verifica que
+        no ocurra ningun error a partir de un try - except"""
     try:
         convacunas = sqlite3.connect('sisgenvac.db')
         return convacunas
     except Error:
         print(Error)
 
+
 ''' Funcion para crear la tabla de los lotes de vacunas dentro de la base de datos del
     programa, la cual toma como parametro la conexion de la misma'''
-def tabla_vacunas(con):
 
-    ''' Se crea una tabla para el lote de vacunas verificando que no exista aun, haciendo uso del objeto cursor
-        y el metodo execute que utiliza el CREATE TABLE dentro de los parametros'''
+
+def tabla_vacunas(con):
+    """ Se crea una tabla para el lote de vacunas verificando que no exista aun, haciendo uso del objeto cursor
+        y el metodo execute que utiliza el CREATE TABLE dentro de los parametros"""
     cursorObj = con.cursor()
-    
+
     cursorObj.execute("""CREATE TABLE IF NOT EXISTS LoteVacunas(nolote integer PRIMARY KEY, fabricante text,
                       tipovacuna text, cantidadrecibida integer, cantidadusada integer, dosisnecesarias integer,
                       temperatura text, efectividad text, tiempoproteccion text, fechavencimiento text, imagen text, reserva integer)""")
     con.commit()
 
+
 ''' Funcion para guardar la informacion que se le solicita al usuario
     sobre un lote de vacunas que se creara'''
-def info_lote():
 
-    ''' Se pide al usuario el numero del lote a crear a partir de un bucle que se rompe cuando la
+
+def info_lote():
+    """ Se pide al usuario el numero del lote a crear a partir de un bucle que se rompe cuando la
         informacion es aceptable, donde se verifica que el dato sea un valor numerico y su longitud
-        sea menor a 13 digitos'''
+        sea menor a 13 digitos"""
     print("Ingrese la informacion del lote:\n")
     nolote = input("Numero de lote: ")
-    
+
     while True:
         if nolote.isdigit() and len(nolote) <= 12:
             nolote = nolote.ljust(12)
             break
         else:
-            nolote = input("Ingrese un numero de lote valido: ")            
-    
+            nolote = input("Ingrese un numero de lote valido: ")
+
     ''' Se muestran en pantalla las opciones de vacunas y se solicita al usuario que ingrese una opcion
         identificada por el numero que la precede'''
     op_fabricante = input("""Seleccione un fabricante:\n
@@ -60,7 +66,7 @@ def info_lote():
     ''' A partir de un bucle que se rompe cuando la informacion es valida, se verifica que el valor ingresado
         sea numerico y este entre las opciones dadas que son los numeros del 1 al 7'''
     while True:
-        if op_fabricante.isdigit() and 0<int(op_fabricante)<8:
+        if op_fabricante.isdigit() and 0 < int(op_fabricante) < 8:
             break
         else:
             op_fabricante = input("Ingrese una opcion valida: ")
@@ -106,7 +112,7 @@ def info_lote():
     elif op_fabricante == '6':
         fabricante = "Sinopharm"
         tipovacuna = "Virus desactivado"
-        dosisnecesarias = 2 
+        dosisnecesarias = 2
         temperatura = "2 a 8°C"
         efectividad = "80%"
         tiempoproteccion = "120 dias"
@@ -121,14 +127,14 @@ def info_lote():
     ''' Se solicita la cantidad de vacuna por medio de un bucle que se rompe cuando las condiciones son
         validas, verificando que el valor ingresado sea numerico y tenga una longitud menor a 7 digitos'''
     cantidadrecibida = input("Cantidad recibida: ")
-    
+
     while True:
         if cantidadrecibida.isdigit() and len(cantidadrecibida) <= 6:
             cantidadrecibida = cantidadrecibida.ljust(6)
             break
         else:
             cantidadrecibida = input("Ingrese una cantidad valida: ")
-            
+
     cantidadusada = 0
     reserva = 0
 
@@ -140,21 +146,21 @@ def info_lote():
             numericos y existan dentro del calendario'''
         diaven = input("Fecha de vencimiento:\n\n- Dia de vencimiento: ")
         while True:
-            if diaven.isdigit() and 0<int(diaven)<32:
-                diaven = diaven.rjust(2,"0")
+            if diaven.isdigit() and 0 < int(diaven) < 32:
+                diaven = diaven.rjust(2, "0")
                 break
             else:
                 diaven = input("Escriba el dia de vencimiento en dos digitos: ")
         mesven = input("- Mes de vencimiento: ")
         while True:
-            if mesven.isdigit() and 0<int(mesven)<13:
-                mesven = mesven.rjust(2,"0")
+            if mesven.isdigit() and 0 < int(mesven) < 13:
+                mesven = mesven.rjust(2, "0")
                 break
             else:
                 mesven = input("Escriba el mes de vencimiento en numeros entre el 1 y 12: ")
         anoven = input("- año de vencimiento: ")
         while True:
-            if anoven.isdigit() and len(anoven) == 4 and int(anoven)>2020:
+            if anoven.isdigit() and len(anoven) == 4 and int(anoven) > 2020:
                 anoven = anoven.rjust(4)
                 break
             else:
@@ -164,7 +170,7 @@ def info_lote():
             usuario en formato de fecha (DD/MM/AAAA)'''
         fechavencimiento = datetime(int(anoven), int(mesven), int(diaven)).strftime("%Y/%m/%d")
         factual = datetime.now().strftime("%Y/%m/%d")
-        
+
         if fechavencimiento > factual:
             fechavencimiento = datetime(int(anoven), int(mesven), int(diaven)).strftime("%d/%m/%Y")
             break
@@ -176,17 +182,20 @@ def info_lote():
         dentro de la interfaz grafica del programa'''
     imagen = input("Ingrese la ruta de la imagen de una vacuna: ")
     print("Funcion de imagen en desarrollo, proximamente mas funcional...")
-    
+
     ''' Se guardan los datos del lote a crear en un contenedor de tipo tupla para su posterior uso'''
-    lote = (nolote, fabricante, tipovacuna, cantidadrecibida, cantidadusada, dosisnecesarias, temperatura, efectividad, tiempoproteccion, fechavencimiento, imagen, reserva)
+    lote = (nolote, fabricante, tipovacuna, cantidadrecibida, cantidadusada, dosisnecesarias, temperatura, efectividad,
+            tiempoproteccion, fechavencimiento, imagen, reserva)
     return lote
+
 
 ''' Funcion para crear un nuevo lote de vacunas, que toma como parametro la conexion a la
     base de datos y el contenedor tupla que almacena la informacion del nuevo lote'''
-def crear_lote(con, lote):
 
-    ''' Se crea un nuevo lote de vacunas con la informacion recolectada del usuario, haciendo uso del
-        objeto cursor y el metodo execute que utiliza el INSERT INTO dentro de los parametros'''
+
+def crear_lote(con, lote):
+    """ Se crea un nuevo lote de vacunas con la informacion recolectada del usuario, haciendo uso del
+        objeto cursor y el metodo execute que utiliza el INSERT INTO dentro de los parametros"""
     cursorObj = con.cursor()
     cursorObj.execute("""INSERT INTO LoteVacunas(nolote, fabricante, tipovacuna,
                       cantidadrecibida, cantidadusada, dosisnecesarias, temperatura, efectividad,
@@ -194,28 +203,30 @@ def crear_lote(con, lote):
                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""", lote)
     con.commit()
 
+
 ''' Funcion para consultar la informacion de los lotes vigentes a la fecha, que toma como
     parametro la conexion con la base de datos del programa'''
-def consultar_lote(con):
 
-    ''' Se muestran los lotes existentes en la base de datos que a la fecha tienen vigencia, haciendo uso
-        del objeto cursor y el metodo execute que utiliza el SELECT dentro de los parametros'''
+
+def consultar_lote(con):
+    """ Se muestran los lotes existentes en la base de datos que a la fecha tienen vigencia, haciendo uso
+        del objeto cursor y el metodo execute que utiliza el SELECT dentro de los parametros"""
     cursorObj = con.cursor()
-    
+
     print("\n           LOTES VIGENTES\n")
     cursorObj.execute('SELECT * FROM LoteVacunas')
     listado = cursorObj.fetchall()
-    
+
     datoslote = []
 
     ''' Se verifica que la fecha de vencimiento de cada lote sea mayor a la actual, a partir del iterador for
         que recorre cada lote de vacunas existente en la base de datos'''
     factual = datetime.now().strftime("%Y/%m/%d")
-    
+
     for ids in listado:
         llote = (ids[9]).split("/")
         venlote = datetime(int(llote[2]), int(llote[1]), int(llote[0])).strftime("%Y/%m/%d")
-        if venlote > factual and ids[3] > ids[4]: 
+        if venlote > factual and ids[3] > ids[4]:
             print("•", ids[0])
         datoslote.append(ids[0])
 
@@ -246,13 +257,35 @@ def consultar_lote(con):
 
     ''' Se muestra en pantalla la informacion del lote con un formato de tabla hecho con simbolos a partir del
         metodo format'''
-    print("+{:-<10}+{:-<15}+{:-<21}+{:-<15}+{:-<10}+{:-<8}+{:-<15}+{:-<15}+{:-<25}+{:-<15}+{:-<15}+".format("", "", "", "","", "", "", "","", "", ""))
-    print("|{:^10}|{:^15}|{:^21}|{:^15}|{:^10}|{:^8}|{:^15}|{:^15}|{:^25}|{:^15}|{:^15}|".format("lote", "Fabricante", "Tipo de vacuna", "Recibidas", "Usadas", "Dosis", "Temperatura", "Efectividad","Tiempo de Proteccion","Vencimiento","imagen"))
-    print("+{:-<10}+{:-<15}+{:-<21}+{:-<15}+{:-<10}+{:-<8}+{:-<15}+{:-<15}+{:-<25}+{:-<15}+{:-<15}+".format("", "", "", "","", "", "", "","", "", ""))
-    for nolote, fabricante, tipovacuna,cantidadrecibida, cantidadusada, dosisnecesarias, temperatura, efectividad,tiempoproteccion, fechavencimiento, imagen, reserva in filas:
-
-        print("|{:^10}|{:^15}|{:^21}|{:^15}|{:^10}|{:^8}|{:^15}|{:^15}|{:^25}|{:^15}|{:^15}|".format(nolote, fabricante, tipovacuna,
-                      cantidadrecibida, cantidadusada, dosisnecesarias, temperatura, efectividad,
-                      tiempoproteccion, fechavencimiento, imagen, reserva))
-    print("+{:-<10}+{:-<15}+{:-<21}+{:-<15}+{:-<10}+{:-<8}+{:-<15}+{:-<15}+{:-<25}+{:-<15}+{:-<15}+".format("", "", "", "","", "", "", "","", "", ""))
+    print("+{:-<10}+{:-<15}+{:-<21}+{:-<15}+{:-<10}+{:-<8}+{:-<15}+{:-<15}+{:-<25}+{:-<15}+{:-<15}+".format("", "", "",
+                                                                                                            "", "", "",
+                                                                                                            "", "", "",
+                                                                                                            "", ""))
+    print("|{:^10}|{:^15}|{:^21}|{:^15}|{:^10}|{:^8}|{:^15}|{:^15}|{:^25}|{:^15}|{:^15}|".format("lote", "Fabricante",
+                                                                                                 "Tipo de vacuna",
+                                                                                                 "Recibidas", "Usadas",
+                                                                                                 "Dosis", "Temperatura",
+                                                                                                 "Efectividad",
+                                                                                                 "Tiempo de Proteccion",
+                                                                                                 "Vencimiento",
+                                                                                                 "imagen"))
+    print("+{:-<10}+{:-<15}+{:-<21}+{:-<15}+{:-<10}+{:-<8}+{:-<15}+{:-<15}+{:-<25}+{:-<15}+{:-<15}+".format("", "", "",
+                                                                                                            "", "", "",
+                                                                                                            "", "", "",
+                                                                                                            "", ""))
+    for nolote, fabricante, tipovacuna, cantidadrecibida, cantidadusada, dosisnecesarias, temperatura, efectividad, tiempoproteccion, fechavencimiento, imagen, reserva in filas:
+        print("|{:^10}|{:^15}|{:^21}|{:^15}|{:^10}|{:^8}|{:^15}|{:^15}|{:^25}|{:^15}|{:^15}|".format(nolote, fabricante,
+                                                                                                     tipovacuna,
+                                                                                                     cantidadrecibida,
+                                                                                                     cantidadusada,
+                                                                                                     dosisnecesarias,
+                                                                                                     temperatura,
+                                                                                                     efectividad,
+                                                                                                     tiempoproteccion,
+                                                                                                     fechavencimiento,
+                                                                                                     imagen, reserva))
+    print("+{:-<10}+{:-<15}+{:-<21}+{:-<15}+{:-<10}+{:-<8}+{:-<15}+{:-<15}+{:-<25}+{:-<15}+{:-<15}+".format("", "", "",
+                                                                                                            "", "", "",
+                                                                                                            "", "", "",
+                                                                                                            "", ""))
     con.commit()
