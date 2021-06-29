@@ -43,7 +43,7 @@ def leer_info():
         sobre un afiliado que se creara """
     while True:
         """ Por medio de un bucle se verifica que el dato ingresado para la identificacion sea valor numerico
-                my una longitud  max de de 13 caracteres"""
+                y una longitud  max de de 13 caracteres"""
         try:
             ident = int(input("Número de identificación: "))
             lenid = str(ident)
@@ -60,7 +60,7 @@ def leer_info():
     # bucle para pedir el nombre
     while not name:
         ''' Por medio de un bucle se verifica que el dato ingresado para el nombre sea valor un caracter alfabetico
-                        my una longitud  max de de 20 caracteres'''
+                        y una longitud  max de de 20 caracteres'''
         # mensaje para que el usuario sepa que le solicitamos el nombre
         nombre = (input("Nombre: "))
         name = (nombre.replace(" ", "")).isalpha()
@@ -72,7 +72,7 @@ def leer_info():
     # bucle para pedir el apellido
     while not lastname:
         ''' Por medio de un bucle se verifica que el dato ingresado para el apellido sea valor un caracter alfabetico
-                                my una longitud  max de de 20 caracteres'''
+                                y una longitud  max de de 20 caracteres'''
         # mensaje para que el usuario sepa que le solicitamos el apellido
         apellido = (input("Apellido: "))
         lastname = (apellido.replace(" ", "")).isalpha()
@@ -85,7 +85,7 @@ def leer_info():
     # bucle para pedir la direccion
     while not adress:
         ''' Por medio de un bucle se verifica que el dato ingresado para la direccion sea valor un caracter alfanumerico
-                                my una longitud  max de de 20 caracteres, se usa un diccionario para remplazar
+                                y una longitud  max de de 20 caracteres, se usa un diccionario para remplazar
                                 los  simbolos y poder realizar la verificacion de la cadena'''
         # mensaje para que el usuario sepa que le solicitamos la direccion y validamso sea alfa numerica isalmun
         direccion = (input("Direccion: "))
@@ -101,7 +101,7 @@ def leer_info():
     while True:
         try:
             ''' Por medio de un bucle se verifica que el dato ingresado para el telefono sea valor un numero
-                                            my una longitud  max de 12 caracteres'''
+                                            y una longitud  max de 12 caracteres'''
             telefono = int(input("Telefono: "))
             lentel = str(telefono)
 

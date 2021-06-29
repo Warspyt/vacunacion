@@ -7,6 +7,8 @@ from datetime import date
 from datetime import timedelta
 import afiliacion
 import lote_vacunas
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 import smtplib
 
 ''' Funcion para establecer la conexion con la base de datos del
@@ -318,30 +320,35 @@ def infoCita(con):
 
                     ''' Funcion para enviar un correo electronico al paciente, notificandolo sobre la fecha y hora de
                         su cita para vacunarse, haciendo uso de la libreria smtplib'''
-                    emailfrom = 'sisgenvac@gmail.com'
-                    to = email
-                    asunto = 'Cita para vacunacion'
-                    texto = 'Cordial saludo ' + nombre.strip() + ' ' + apellido.strip() + ' , se le informa que su cita para vacunarse ha sido asignada para el ' + fechaprogramada + ' a las ' + horaprogramada + ' . Se recomienda ser puntual.'
-
-                    mensaje = """
-                    From: %s
-                    To: %s
-                    Subject: %s
-
-                    %s
-                    """ % (emailfrom, to, asunto, texto)
-
-                    username = 'sisgenvac@gmail.com'
-                    password = 'POO123456'
-
-                    ''' con el metodo SMTP se crea una conexion segura al servidor de gmail y se inicia con starttls, luego se loguea
-                        con el metodo login, se envia el correo con sendmail y finalmente se cierra la conexion con quit'''
-                    server = smtplib.SMTP('smtp.gmail.com:587')
+                    # creamos la instancia del mensaje
+                    msg = MIMEMultipart()
+                    message = '\nCordial saludo ' + nombre.strip() + ' ' + apellido.strip() + ' , se le informa que su cita para vacunarse ha sido asignada. \nFecha ' + fechaprogramada + ' \nHora: ' + horaprogramada + ' . \nSe recomienda ser puntual y presentar su documento de identidad.'
+                    # parametros del mensaje
+                    password = "POO123456"
+                    msg['From'] = "sisgenvac@gmail.com"
+                    msg['To'] = email
+                    msg['Subject'] = "Cita agendacion COVID"
+                    msg.attach(MIMEText(message, 'plain'))
+                    ''' con el metodo SMTP se crea una conexion segura al servidor de gmail , luego se loguea
+                                            con el metodo login, se envia el correo con sendmail y finalmente se cierra la conexion con quit'''
+                    # servidor de correo y puerto
+                    server = smtplib.SMTP('smtp.gmail.com: 587')
                     server.starttls()
-                    server.login(username, password)
-                    server.sendmail(emailfrom, to, mensaje)
+
+                    # login con las credenciales
+                    server.login(msg['From'], password)
+
+                    # send the message via the server.
+                    server.sendmail(msg['From'], msg['To'], msg.as_string())
 
                     server.quit()
+
+                    print("correo de informacion enviado a %s" % (msg['To']))
+
+
+
+
+
 
                 else:
                     # Se sigue con los afiliados del siguiente plan
