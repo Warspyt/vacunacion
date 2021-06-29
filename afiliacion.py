@@ -24,6 +24,9 @@ def creartable(con):
                       "direccion text,telefono integer,email text, ciudad text,nacimiento text,afiliacion text,"
                       "desafiliacion text,vacunado text)")
     con.commit()
+    """
+             por medio del modulo re busca  concidencias de expresiones regulares para validar los caracteres  
+             y formato del  correo         """
 
 
 def es_correo_valido(email):
@@ -34,10 +37,14 @@ def es_correo_valido(email):
 
 
 def leer_info():
+    """ Funcion para guardar la informacion que se le solicita al usuario
+        sobre un afiliado que se creara """
     while True:
+        ''' Por medio de un bucle se verifica que el dato ingresado para la identificacion sea valor numerico
+                my una longitud  max de de 13 caracteres'''
         try:
             ident = int(input("Número de identificación: "))
-            lenid=str(ident)
+            lenid = str(ident)
 
             if len(lenid) > 13:
                 print("El numero de identificacion no puede tener mas de 12  digitos.")
@@ -50,16 +57,20 @@ def leer_info():
     name = False
     # bucle para pedir el nombre
     while not name:
+        ''' Por medio de un bucle se verifica que el dato ingresado para el nombre sea valor un caracter alfabetico
+                        my una longitud  max de de 20 caracteres'''
         # mensaje para que el usuario sepa que le solicitamos el nombre
         nombre = (input("Nombre: "))
         name = (nombre.replace(" ", "")).isalpha()
         if not name or len(nombre) > 20:
             name = False
             print("\nEscriba un Nombre Valido")
-            
+
     lastname = False
     # bucle para pedir el apellido
     while not lastname:
+        ''' Por medio de un bucle se verifica que el dato ingresado para el apellido sea valor un caracter alfabetico
+                                my una longitud  max de de 20 caracteres'''
         # mensaje para que el usuario sepa que le solicitamos el apellido
         apellido = (input("Apellido: "))
         lastname = (apellido.replace(" ", "")).isalpha()
@@ -71,10 +82,13 @@ def leer_info():
     adress = False
     # bucle para pedir la direccion
     while not adress:
+        ''' Por medio de un bucle se verifica que el dato ingresado para la direccion sea valor un caracter alfanumerico
+                                my una longitud  max de de 20 caracteres, se usa un diccionario para remplazar
+                                los  simbolos y poder realizar la verificacion de la cadena'''
         # mensaje para que el usuario sepa que le solicitamos la direccion y validamso sea alfa numerica isalmun
         direccion = (input("Direccion: "))
-        #adress = (direccion.replace(" ", "")).isalnum()
-        dictionary = {'#': "", ' ': '','/': "",'-': ""}
+        # adress = (direccion.replace(" ", "")).isalnum()
+        dictionary = {'#': "", ' ': '', '/': "", '-': ""}
         transTable = direccion.maketrans(dictionary)
         adress = direccion.translate(transTable)
         direccion = direccion.ljust(20)
@@ -84,6 +98,8 @@ def leer_info():
 
     while True:
         try:
+            ''' Por medio de un bucle se verifica que el dato ingresado para el telefono sea valor un numero
+                                            my una longitud  max de 12 caracteres'''
             telefono = int(input("Telefono: "))
             lentel = str(telefono)
 
@@ -101,6 +117,7 @@ def leer_info():
     while not valido or len(email) > 20:
         # mensaje para que el usuario sepa que le solicitamos un correo
         email = (input("Correo electronico: "))
+        # validacion por medio de la  funcion con regex
         valido = es_correo_valido(email)
         if not valido:
             print("\nescriba un correo valido: ")
@@ -108,16 +125,22 @@ def leer_info():
     city = False
     # bucle para pedir la ciudad
     while not city:
+        ''' Por medio de un bucle se verifica que el dato ingresado para el ciudad sea valor un caracter  alfabetico
+                                                    y una longitud  max de 20 caracteres'''
         # mensaje para que el usuario sepa que le solicitamos la ciudad
         ciudad = (input("Ciudad: "))
         city = (ciudad.replace(" ", "")).isalpha()
-        if not city or len(ciudad) > 20:
+        if not city or len(ciudad) > 21:
+            # variable que indica si el valor es válido
+            # inicialmente no lo es
             city = False
             print("\nEscriba una ciudad Valida: ")
 
     # mensaje para que el usuario sepa que le solicitamos el dia de nacimiento
     while True:
-
+        ''' Por medio de un bucles se verifica que el dato ingresado parala fecha de nacimiento  sean digitos, entre
+            un rango especifico como dias menores a  32, meses menores  a 13, que  el año tenga  4 digitos
+            y luego se pasa a un formato  fecha'''
         dianac = input("Fecha de nacimiento:\n\n- Dia de nacimiento: ")
         # Se verifica que el dato ingresado sea un dia existente dentro del calendario
         while True:
@@ -153,8 +176,7 @@ def leer_info():
             print("La fecha de nacimiento no es valida: ")
     print("Fecha ingresada: " + nacimiento)
 
-
-# se actualiza la fecha de afiliacion automaticamente
+    # se actualiza la fecha de afiliacion automaticamente
     f = datetime.now()
     dia = str(f.day).rjust(2, "0")
     mes = str(f.month).rjust(2, "0")
@@ -166,13 +188,16 @@ def leer_info():
 
     # Por defecto el usuario  ingresa como no  vacunado
     vacunado = "N"
-    
-    newafi = (ident, nombre, apellido, direccion, telefono, email, ciudad, nacimiento, afiliacion, desafiliacion, vacunado)
+
+    newafi = (
+        ident, nombre, apellido, direccion, telefono, email, ciudad, nacimiento, afiliacion, desafiliacion, vacunado)
     return newafi
 
 
 def insertar_tabla(con, newafi):
-    """ Funcion que se utiliza para operar en la base de datos"""
+    """ Se crea un nuevo afiliado con la informacion recolectada del usuario, haciendo uso del
+        objeto cursor y el metodo execute que utiliza el INSERT INTO dentro de los parametros
+        """
     cursorobj = con.cursor()
     cursorobj.execute('''INSERT INTO afiliados (id ,nombre,apellidos ,direccion,telefono ,email, ciudad ,nacimiento,
     afiliacion,desafiliacion,vacunado) VALUES(?, ?, ?, ?,?,?,?, ?, ?, ?,?)''', newafi)
@@ -183,17 +208,19 @@ def vacunar(con):
     """ Funcion que se utiliza para operar en la base de datos"""
     cursorobj = con.cursor()
     try:
+        ''' se selecciona en la  DB los registros que  no estan vacunadosy no estan desafiliados
+            en caso de no encontrar  que los afiliados esten vacunados y desafiliados nos indicara que no hay 
+            a quien vacunar'''
         cursorobj.execute('SELECT * FROM afiliados where vacunado = "N" AND desafiliacion = " "')
-        total = cursorobj.fetchall()[0]
+        # total = cursorobj.fetchall()[0]
     except:
         print("\nNo hay usuarios que no se encuentren vacunados en este momento.")
         return
-        
+
     ident = input("id del afiliado a vacunar: ")
-    # Verifiar que el id ingresado se encuentre en la base de datos
+    # Verifiar que el id ingresado se encuentre en la base de datos y no este desafiliado
     while True:
         if ident.isdigit() and len(ident) < 13:
-
             buscar = 'SELECT * FROM afiliados where id= ' + ident + ' AND desafiliacion = " "'
             cursorobj.execute(buscar)
             afil_b = cursorobj.fetchall()
@@ -204,23 +231,20 @@ def vacunar(con):
                     return
                 else:
                     break
-
-
-                
             else:
                 print("\n El id " + str(ident) + " no se encuentra afiliado")
                 return
-                
+
         if len(ident) > 13:
-                print("El numero de identificacion no puede tener mas de 12 digitos.")
+            print("El numero de identificacion no puede tener mas de 12 digitos.")
         ident = input("Ingrese un id valido: ")
-            
-    vacunado=str(ident)
+
+    vacunado = str(ident)
     print("\t1 - Registrar Vacunacion del  afiliado")
     print("\t2 - Volver al Menu  Anterior")
     option = input("Seleccione una opcion: ")
     if option == '1':
-        sql = 'SELECT vacunado FROM afiliados WHERE id ='+vacunado
+        sql = 'SELECT vacunado FROM afiliados WHERE id =' + vacunado
         cursorobj.execute(sql)
         registros = cursorobj.fetchall()
 
@@ -244,14 +268,14 @@ def vacunar(con):
 def desafiliar(con):
     """ Funcion que se utiliza para operar en la base de datos"""
     cursorobj = con.cursor()
-    
+
     try:
         cursorobj.execute('SELECT * FROM afiliados where desafiliacion = " "')
-        total = cursorobj.fetchall()[0]
+        # total = cursorobj.fetchall()[0]
     except:
         print("\nNo hay usuarios registrados en este momento.")
         return
-    
+
     desafiliado = input("identificacion del usuario a desafiliar: ")
     # Verifiar que el id ingresado se encuentre en la base de datos
     while True:
@@ -262,10 +286,11 @@ def desafiliar(con):
             if len(afil_b) != 0:
                 break
             else:
-                print("El id " + str(desafiliado) + " no se encuentra en la base de datos o ya se encuentra desafiliado")
+                print(
+                    "El id " + str(desafiliado) + " no se encuentra en la base de datos o ya se encuentra desafiliado")
             return
         if len(desafiliado) > 13:
-                print("El numero de identificacion no puede tener mas de 12 digitos.")
+            print("El numero de identificacion no puede tener mas de 12 digitos.")
         desafiliado = input("Ingrese un id valido: ")
     f = datetime.now()
     dia = str(f.day).rjust(2, "0")
@@ -283,11 +308,11 @@ def consulta(con):
     cursorobj = con.cursor()
     try:
         cursorobj.execute('SELECT * FROM afiliados')
-        total = cursorobj.fetchall()[0]
+        # total = cursorobj.fetchall()[0]
     except:
         print("\nNo hay usuarios registrados en este momento.")
         return
-    
+
     c_afilia = input("id del afiliado a consultar: ")
     # Verifiar que el id ingresado se encuentre en la base de datos
     while True:
@@ -300,29 +325,49 @@ def consulta(con):
             else:
                 print("El id " + str(c_afilia) + " no se encuentra en la base de datos")
         c_afilia = input("Ingrese un id valido: ")
-        
-    
-    print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<12}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "", "","", "", "", "","", "", ""))
-    print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^12}|{:^25}|{:^20}|{:^10}|{:^10}|{:^15}|{:^10}|".format("Documento", "Nombre", "Apellido", "Direccion", "Telefono", "Email", "Ciudad","Nacimiento", "Afiliacion","Desafiliacion","Vacunado"))
-    print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<12}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "", "","", "", "", "","", "", ""))
-    for idaf, nombre, apellido, direccion, telefono, email, ciudad, nacimiento,afiliacion, desafiliacion, vacunado in afil_b:
 
-        print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^12}|{:^25}|{:^20}|{:^10}|{:^10}|{:^15}|{:^10}|".format(idaf, nombre, apellido,
-                      direccion, telefono, email, ciudad, nacimiento,
-                      afiliacion, desafiliacion, vacunado))
-    print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<12}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "", "","", "", "", "","", "", ""))
+    print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<12}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "",
+                                                                                                             "", "", "",
+                                                                                                             "", "", "",
+                                                                                                             "", ""))
+    print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^12}|{:^25}|{:^20}|{:^10}|{:^10}|{:^15}|{:^10}|".format("Documento", "Nombre",
+                                                                                                  "Apellido",
+                                                                                                  "Direccion",
+                                                                                                  "Telefono", "Email",
+                                                                                                  "Ciudad",
+                                                                                                  "Nacimiento",
+                                                                                                  "Afiliacion",
+                                                                                                  "Desafiliacion",
+                                                                                                  "Vacunado"))
+    print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<12}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "",
+                                                                                                             "", "", "",
+                                                                                                             "", "", "",
+                                                                                                             "", ""))
+    for idaf, nombre, apellido, direccion, telefono, email, ciudad, nacimiento, afiliacion, desafiliacion, vacunado in afil_b:
+        print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^12}|{:^25}|{:^20}|{:^10}|{:^10}|{:^15}|{:^10}|".format(idaf, nombre,
+                                                                                                      apellido,
+                                                                                                      direccion,
+                                                                                                      telefono, email,
+                                                                                                      ciudad,
+                                                                                                      nacimiento,
+                                                                                                      afiliacion,
+                                                                                                      desafiliacion,
+                                                                                                      vacunado))
+    print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<12}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "",
+                                                                                                             "", "", "",
+                                                                                                             "", "", "",
+                                                                                                             "", ""))
     con.commit()
 
 
 def cerrar_db(con):
     con.close()
 
-
-#def main():
-    #con = sql_afiliado()
-    #creartable(con)
-    #afiliado = leer_info()
-    #insertar_tabla(con, afiliado)
-    #consulta(con)
-    #cerrar_db(con)
-#main()
+# def main():
+# con = sql_afiliado()
+# creartable(con)
+# afiliado = leer_info()
+# insertar_tabla(con, afiliado)
+# consulta(con)
+# cerrar_db(con)
+# main()
