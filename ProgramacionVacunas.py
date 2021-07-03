@@ -369,8 +369,8 @@ def consulta_individual(con):
     cursorObj = con.cursor()
 
     try:
-        cursorobj.execute('SELECT * FROM ProgramacionVacunas')
-        cursorobj.fetchall()[0]
+        cursorObj.execute('SELECT * FROM ProgramacionVacunas')
+        cursorObj.fetchall()[0]
     except IndexError:
         print("\nNo hay usuarios con citas asignadas en este momento.")
         return
@@ -420,8 +420,8 @@ def agenda(con):
     cursorObj = con.cursor()
 
     try:
-        cursorobj.execute('SELECT * FROM ProgramacionVacunas')
-        cursorobj.fetchall()[0]
+        cursorObj.execute('SELECT * FROM ProgramacionVacunas')
+        cursorObj.fetchall()[0]
     except IndexError:
         print("\nAGENDACION DE CITAS\n\nNo hay usuarios con citas asignadas en este momento.")
         return
