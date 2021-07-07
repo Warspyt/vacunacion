@@ -8,9 +8,6 @@ import ProgramacionVacunas
 
 
 def menuafi():
-    con = afiliacion.sql_afiliado()
-    afiliacion.creartable(con)
-    con.close()
     """Por medio de un bucle se verifica  la opcion seleccionada y en caso de no elegir una valida se le informara """
     while True:
         # Mostramos el menu
@@ -50,9 +47,6 @@ def menuafi():
 
 
 def menulote():
-    convacunas = lote_vacunas.sql_lotevacunas()
-    lote_vacunas.tabla_vacunas(convacunas)
-    convacunas.close()
     while True:
         """Por medio de un bucle se verifica  la opcion seleccionada y en caso de no elegir una valida se le informara """
         # Mostramos el menu
@@ -80,9 +74,6 @@ def menulote():
 
 
 def menuvac():
-    conplan = plan_vacunacion.sql_plan()
-    plan_vacunacion.tabla_plan(conplan)
-    conplan.close()
     while True:
         """Por medio de un bucle se verifica  la opcion seleccionada y en caso de no elegir una valida se le informara """
         # Mostramos el menu
@@ -110,9 +101,6 @@ def menuvac():
 
 
 def provac():
-    progplan = ProgramacionVacunas.sql_prog()
-    ProgramacionVacunas.tabla_prog(progplan)
-    progplan.close()
     while True:
         # Mostramos el menu
         """Por medio de un bucle se verifica  la opcion seleccionada y en caso de no elegir una valida se le informara """
@@ -147,6 +135,20 @@ def provac():
             
 
 def mainmenu():
+    """ Se crean todas las tablas necesarias de la base de datos para su
+        manipulacion dentro del programa"""
+    con = afiliacion.sql_afiliado()
+    afiliacion.creartable(con)
+    con.close()
+    convacunas = lote_vacunas.sql_lotevacunas()
+    lote_vacunas.tabla_vacunas(convacunas)
+    convacunas.close()
+    conplan = plan_vacunacion.sql_plan()
+    plan_vacunacion.tabla_plan(conplan)
+    conplan.close()
+    progplan = ProgramacionVacunas.sql_prog()
+    ProgramacionVacunas.tabla_prog(progplan)
+    progplan.close()
     """
     este es el menu principal apartir de este  se despliegan los submenus de cada modulo
     """
