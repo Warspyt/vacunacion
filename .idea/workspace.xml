@@ -2,11 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="31656571-185a-4cde-8de1-7d5e1041d094" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProgramacionVacunas.py" beforeDir="false" afterPath="$PROJECT_DIR$/ProgramacionVacunas.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/afiliacion.py" beforeDir="false" afterPath="$PROJECT_DIR$/afiliacion.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/plan_vacunacion.py" beforeDir="false" afterPath="$PROJECT_DIR$/plan_vacunacion.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sisgenvac.db" beforeDir="false" afterPath="$PROJECT_DIR$/sisgenvac.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sisgenvac.sqbpro3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sisgenvac3.db" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -382,7 +384,14 @@
       <option name="project" value="LOCAL" />
       <updated>1624989860357</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="fix  mail">
+      <created>1625000115004</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1625000115004</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -415,6 +424,7 @@
     <MESSAGE value="." />
     <MESSAGE value="revisar si esta  no vacunado y desafiliado" />
     <MESSAGE value="comentarios tecnicos  fix pequeños" />
-    <option name="LAST_COMMIT_MESSAGE" value="comentarios tecnicos  fix pequeños" />
+    <MESSAGE value="fix  mail" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix  mail" />
   </component>
 </project>

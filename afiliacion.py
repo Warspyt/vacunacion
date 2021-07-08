@@ -200,11 +200,15 @@ def insertar_tabla(con, newafi):
     """ Se crea un nuevo afiliado con la informacion recolectada del usuario, haciendo uso del
         objeto cursor y el metodo execute que utiliza el INSERT INTO dentro de los parametros
         """
-    cursorobj = con.cursor()
-    cursorobj.execute('''INSERT INTO afiliados (id ,nombre,apellidos ,direccion,telefono ,email, ciudad ,nacimiento,
-    afiliacion,desafiliacion,vacunado) VALUES(?, ?, ?, ?,?,?,?, ?, ?, ?,?)''', newafi)
-    con.commit()
 
+    cursorobj = con.cursor()
+    try:
+        cursorobj.execute('''INSERT INTO afiliados (id ,nombre,apellidos ,direccion,telefono ,email, ciudad ,nacimiento,
+        afiliacion,desafiliacion,vacunado) VALUES(?, ?, ?, ?,?,?,?, ?, ?, ?,?)''', newafi)
+        con.commit()
+    except :
+        print("\nVerifique la informacion ingresada.")
+        return
 
 def vacunar(con):
     """ Funcion que se utiliza para operar en la base de datos"""
