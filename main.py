@@ -85,8 +85,11 @@ def menuvac():
         if option == '1':
             # Aca se crea el plan
             conplan = plan_vacunacion.sql_plan()
-            plan = plan_vacunacion.recibirPlan()
-            plan_vacunacion.crearPlan(conplan, plan)
+            plan = plan_vacunacion.recibirPlan(conplan)
+            try:
+                plan_vacunacion.crearPlan(conplan, plan)
+            except:
+                print("El plan de vacunacion no pudo ser creado.")
             conplan.close()
         elif option == '2':
             # Aca se consulta el plan
