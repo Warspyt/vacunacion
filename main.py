@@ -4,7 +4,7 @@ from sqlite3 import Error
 import afiliacion
 import lote_vacunas as lv
 import plan_vacunacion
-import ProgramacionVacunas
+import ProgramacionVacunas as prgva
 
 """cada modulo tiene su propio menu, afiliacion, lote de vacunas,vacunacion y programacion vacunacion"""
 class conexion:
@@ -114,15 +114,15 @@ class menu(conexion):
             option = input("Seleccione una opcion: ")
             if option == '1':
                 # Aca se crea la agendacion de citas
-                ProgramacionVacunas.infoCita(con)
+                prg.infoCita(con)
 
             elif option == '2':
                 # Aca se consulta la agenda completa
-                ProgramacionVacunas.agenda(con)
+                prg.agenda(con)
                 
             elif option == "3":
                 # Aca se consulta la cita por identificacion del afiliado
-                ProgramacionVacunas.consulta_individual(con)
+                prg.consulta_individual(con)
             elif option == "4":
                 return
             else:
@@ -136,13 +136,15 @@ class menu(conexion):
         op = menu()
         global con
         global lt
+        global prg
         con = op.sql_conexion()
-        lt = lv.lotes()
+        lt = lv.Lotes()
+        prg = prgva.Agenda()
         
         afiliacion.creartable(con)
         lt.tabla_vacunas(con)
         plan_vacunacion.tabla_plan(con)
-        ProgramacionVacunas.tabla_prog(con)
+        prg.tabla_prog(con)
         """
         este es el menu principal apartir de este  se despliegan los submenus de cada modulo
         """
