@@ -89,13 +89,13 @@ class Afiliado:
                                     y una longitud  max de de 20 caracteres, se usa un diccionario para remplazar
                                     los  simbolos y poder realizar la verificacion de la cadena'''
             # mensaje para que el usuario sepa que le solicitamos la direccion y validamso sea alfa numerica isalmun
-            direccion = (input("Direccion: "))
+            self.direccion = (input("Direccion: "))
             # adress = (direccion.replace(" ", "")).isalnum()
             dictionary = {'#': "", ' ': '', '/': "", '-': ""}
-            transtable = direccion.maketrans(dictionary)
-            adress = direccion.translate(transtable)
-            direccion = direccion.ljust(20)
-            if not adress or len(direccion) > 20:
+            transtable = self.direccion.maketrans(dictionary)
+            adress = self.direccion.translate(transtable)
+            self.direccion = self.direccion.ljust(20)
+            if not adress or len(self.direccion) > 20:
                 adress = False
                 print("\nEscriba una Direccion Valida")
 
@@ -103,8 +103,8 @@ class Afiliado:
             try:
                 ''' Por medio de un bucle se verifica que el dato ingresado para el telefono sea valor un numero
                                                 y una longitud  max de 12 caracteres'''
-                telefono = int(input("Telefono: "))
-                lentel = str(telefono)
+                self.telefono = int(input("Telefono: "))
+                lentel = str(self.telefono)
 
                 if len(lentel) > 13:
                     print("El numero de telefono no puede tener mas de 12  digitos.")
@@ -117,11 +117,11 @@ class Afiliado:
         # inicialmente no lo es
         valido = False
         # bucle para pedir el valor
-        while not valido or len(email) > 20:
+        while not valido or len(self.email) > 20:
             # mensaje para que el usuario sepa que le solicitamos un correo
-            email = (input("Correo electronico: "))
+            self.email = (input("Correo electronico: "))
             # validacion por medio de la  funcion con regex
-            valido = es_correo_valido(email)
+            valido = es_correo_valido(self.email)
             if not valido:
                 print("\nescriba un correo valido: ")
 
@@ -193,7 +193,7 @@ class Afiliado:
         vacunado = "N"
 
         newafi = (
-            self.ident, self.nombre, self.apellido, direccion, telefono, email, ciudad, nacimiento, afiliacion, desafiliacion,
+            self.ident, self.nombre, self.apellido, self.direccion, self.telefono, self.email, ciudad, nacimiento, afiliacion, desafiliacion,
             vacunado)
         return newafi
 
@@ -216,7 +216,7 @@ def creartable(con):
 def es_correo_valido(email):
     # funcion valida el formato del correo
     regex = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])"
-    mailvalido = (re.search(regex, email))
+    mailvalido = (re.search(regex, self.email))
     return mailvalido
 
 

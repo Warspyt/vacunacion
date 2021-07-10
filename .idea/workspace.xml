@@ -5,7 +5,6 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/afiliacion.py" beforeDir="false" afterPath="$PROJECT_DIR$/afiliacion.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sisgenvac.db" beforeDir="false" afterPath="$PROJECT_DIR$/sisgenvac.db" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -395,7 +394,14 @@
       <option name="project" value="LOCAL" />
       <updated>1625706893238</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary=".">
+      <created>1625956921377</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1625956921377</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -425,11 +431,11 @@
     <MESSAGE value="crudo esto" />
     <MESSAGE value="SE ACTUALIZA EL MENU DE VACUNACION AFLIADO YA QUE NO TENIA   VALIDACIONES" />
     <MESSAGE value="VALIDACION QUE SEA NUMERO&#10;VERIFICA SI YA ESTA VACUNADO" />
-    <MESSAGE value="." />
     <MESSAGE value="revisar si esta  no vacunado y desafiliado" />
     <MESSAGE value="comentarios tecnicos  fix pequeños" />
     <MESSAGE value="fix  mail" />
     <MESSAGE value="fix error  id repetido" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix error  id repetido" />
+    <MESSAGE value="." />
+    <option name="LAST_COMMIT_MESSAGE" value="." />
   </component>
 </project>
