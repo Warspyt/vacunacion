@@ -16,6 +16,188 @@ def sql_afiliado():
         print('Se ha producido un error al crear la conexion', Error)
 
 
+"""def VerTipDatoAlpha(self):
+    if dato.isalpha() == false:
+        tipo = "alfabetico"
+        sel
+        """
+
+
+class Afiliado:
+    def __init__(self):
+        self.ident = ""
+        self.nombre = ""
+        self.apelllidos = ""
+        self.direccion = ""
+        self.telefono = ""
+        self.email = ""
+        self.ciudad = ""
+        self.nacimiento = ""
+        self.afiliacion = ""
+        self.desafiliacion = ""
+        self.vacunado = ""
+
+    def leer_info(self):
+
+        """ Funcion para guardar la informacion que se le solicita al usuario
+            sobre un afiliado que se creara """
+        while True:
+            """ Por medio de un bucle se verifica que el dato ingresado para la identificacion sea valor numerico
+                    y una longitud  max de de 13 caracteres"""
+            try:
+                self.ident = int(input("Número de identificación: "))
+                lenid = str(self.ident)
+
+                if len(lenid) > 13:
+                    print("El numero de identificacion no puede tener mas de 12  digitos.")
+                else:
+                    break
+            except ValueError:
+                print("escriba un número de identificacion valido.")
+                continue
+
+        name = False
+        # bucle para pedir el nombre
+        while not name:
+            ''' Por medio de un bucle se verifica que el dato ingresado para el nombre sea valor un caracter alfabetico
+                            y una longitud  max de de 20 caracteres'''
+            # mensaje para que el usuario sepa que le solicitamos el nombre
+            self.nombre = (input("Nombre: "))
+            name = (self.nombre.replace(" ", "")).isalpha()
+            self.nombre = self.nombre.ljust(20)
+            if not name or len(self.nombre) > 20:
+                name = False
+                print("\nEscriba un Nombre Valido")
+
+        lastname = False
+        # bucle para pedir el apellido
+        while not lastname:
+            ''' Por medio de un bucle se verifica que el dato ingresado para el apellido sea valor un caracter alfabetico
+                                    y una longitud  max de de 20 caracteres'''
+            # mensaje para que el usuario sepa que le solicitamos el apellido
+            self.apellido = (input("Apellido: "))
+            lastname = (self.apellido.replace(" ", "")).isalpha()
+            self.apellido = self.apellido.ljust(20)
+            if not lastname or len(self.apellido) > 20:
+                lastname = False
+                print("\nEscriba un Apellido Valido")
+
+        adress = False
+        # bucle para pedir la direccion
+        while not adress:
+            ''' Por medio de un bucle se verifica que el dato ingresado para la direccion sea valor un caracter alfanumerico
+                                    y una longitud  max de de 20 caracteres, se usa un diccionario para remplazar
+                                    los  simbolos y poder realizar la verificacion de la cadena'''
+            # mensaje para que el usuario sepa que le solicitamos la direccion y validamso sea alfa numerica isalmun
+            direccion = (input("Direccion: "))
+            # adress = (direccion.replace(" ", "")).isalnum()
+            dictionary = {'#': "", ' ': '', '/': "", '-': ""}
+            transtable = direccion.maketrans(dictionary)
+            adress = direccion.translate(transtable)
+            direccion = direccion.ljust(20)
+            if not adress or len(direccion) > 20:
+                adress = False
+                print("\nEscriba una Direccion Valida")
+
+        while True:
+            try:
+                ''' Por medio de un bucle se verifica que el dato ingresado para el telefono sea valor un numero
+                                                y una longitud  max de 12 caracteres'''
+                telefono = int(input("Telefono: "))
+                lentel = str(telefono)
+
+                if len(lentel) > 13:
+                    print("El numero de telefono no puede tener mas de 12  digitos.")
+                else:
+                    break
+            except ValueError:
+                print("Escriba un numero de telefono valido.")
+                continue
+        # variable que indica si el valor es válido
+        # inicialmente no lo es
+        valido = False
+        # bucle para pedir el valor
+        while not valido or len(email) > 20:
+            # mensaje para que el usuario sepa que le solicitamos un correo
+            email = (input("Correo electronico: "))
+            # validacion por medio de la  funcion con regex
+            valido = es_correo_valido(email)
+            if not valido:
+                print("\nescriba un correo valido: ")
+
+        city = False
+        # bucle para pedir la ciudad
+        while not city:
+            ''' Por medio de un bucle se verifica que el dato ingresado para el ciudad sea valor un caracter  alfabetico
+                                                        y una longitud  max de 20 caracteres'''
+            # mensaje para que el usuario sepa que le solicitamos la ciudad
+            ciudad = (input("Ciudad: "))
+            city = (ciudad.replace(" ", "")).isalpha()
+            if not city or len(ciudad) > 21:
+                # variable que indica si el valor es válido
+                # inicialmente no lo es
+                city = False
+                print("\nEscriba una ciudad Valida: ")
+
+        # mensaje para que el usuario sepa que le solicitamos el dia de nacimiento
+        while True:
+            ''' Por medio de un bucles se verifica que el dato ingresado parala fecha de nacimiento  sean digitos, entre
+                un rango especifico como dias menores a  32, meses menores  a 13, que  el año tenga  4 digitos
+                y luego se pasa a un formato  fecha'''
+            dianac = input("Fecha de nacimiento:\n\n- Dia de nacimiento: ")
+            # Se verifica que el dato ingresado sea un dia existente dentro del calendario
+            while True:
+                if dianac.isdigit() and 0 < int(dianac) < 32:
+                    dianac = dianac.rjust(2, "0")
+                    break
+                else:
+                    dianac = input("Escriba el dia de nacimiento en dos digitos: ")
+            mesnac = input("- Mes de nacimiento: ")
+            # Se verifica que el dato ingresado sea un mes existente dentro del calendario
+            while True:
+                if mesnac.isdigit() and 0 < int(mesnac) < 13:
+                    mesnac = mesnac.rjust(2, "0")
+                    break
+                else:
+                    mesnac = input("Escriba el mes de nacimiento en numeros entre el 1 y 12: ")
+            anosnac = input("- año de nacimiento: ")
+            # Se verifica que el dato ingresado sea un año coherente para el nacimiento
+            while True:
+                if anosnac.isdigit() and len(anosnac) == 4:
+                    anosnac = anosnac.rjust(4)
+                    break
+                else:
+                    anosnac = input("Escriba el año de nacimiento en numeros AAAA: ")
+            # Se guardan los datos de la fecha en formato (DD/MM/AAAA)
+            nacimiento = datetime(int(anosnac), int(mesnac), int(dianac)).strftime("%Y/%m/%d")
+            factual = datetime.now().strftime("%Y/%m/%d")
+            # nacimiento = dianac+"/"+mesnac+"/"+anosnac
+            if nacimiento < factual:
+                nacimiento = datetime(int(anosnac), int(mesnac), int(dianac)).strftime("%d/%m/%Y")
+                break
+            else:
+                print("La fecha de nacimiento no es valida: ")
+        print("Fecha ingresada: " + nacimiento)
+
+        # se actualiza la fecha de afiliacion automaticamente
+        f = datetime.now()
+        dia = str(f.day).rjust(2, "0")
+        mes = str(f.month).rjust(2, "0")
+        ano = str(f.year).rjust(2, "0")
+        afiliacion = dia + "/" + mes + "/" + ano
+        print("la fecha de afiliacion es: ", afiliacion)
+
+        desafiliacion = " "
+
+        # Por defecto el usuario  ingresa como no  vacunado
+        vacunado = "N"
+
+        newafi = (
+            self.ident, self.nombre, self.apellido, direccion, telefono, email, ciudad, nacimiento, afiliacion, desafiliacion,
+            vacunado)
+        return newafi
+
+
 def creartable(con):
     """
              Se crea el objeto de conexión.
@@ -38,164 +220,6 @@ def es_correo_valido(email):
     return mailvalido
 
 
-def leer_info():
-    """ Funcion para guardar la informacion que se le solicita al usuario
-        sobre un afiliado que se creara """
-    while True:
-        """ Por medio de un bucle se verifica que el dato ingresado para la identificacion sea valor numerico
-                y una longitud  max de de 13 caracteres"""
-        try:
-            ident = int(input("Número de identificación: "))
-            lenid = str(ident)
-
-            if len(lenid) > 13:
-                print("El numero de identificacion no puede tener mas de 12  digitos.")
-            else:
-                break
-        except ValueError:
-            print("escriba un número de identificacion valido.")
-            continue
-
-    name = False
-    # bucle para pedir el nombre
-    while not name:
-        ''' Por medio de un bucle se verifica que el dato ingresado para el nombre sea valor un caracter alfabetico
-                        y una longitud  max de de 20 caracteres'''
-        # mensaje para que el usuario sepa que le solicitamos el nombre
-        nombre = (input("Nombre: "))
-        name = (nombre.replace(" ", "")).isalpha()
-        if not name or len(nombre) > 20:
-            name = False
-            print("\nEscriba un Nombre Valido")
-
-    lastname = False
-    # bucle para pedir el apellido
-    while not lastname:
-        ''' Por medio de un bucle se verifica que el dato ingresado para el apellido sea valor un caracter alfabetico
-                                y una longitud  max de de 20 caracteres'''
-        # mensaje para que el usuario sepa que le solicitamos el apellido
-        apellido = (input("Apellido: "))
-        lastname = (apellido.replace(" ", "")).isalpha()
-        apellido = apellido.ljust(20)
-        if not lastname or len(apellido) > 20:
-            lastname = False
-            print("\nEscriba un Apellido Valido")
-
-    adress = False
-    # bucle para pedir la direccion
-    while not adress:
-        ''' Por medio de un bucle se verifica que el dato ingresado para la direccion sea valor un caracter alfanumerico
-                                y una longitud  max de de 20 caracteres, se usa un diccionario para remplazar
-                                los  simbolos y poder realizar la verificacion de la cadena'''
-        # mensaje para que el usuario sepa que le solicitamos la direccion y validamso sea alfa numerica isalmun
-        direccion = (input("Direccion: "))
-        # adress = (direccion.replace(" ", "")).isalnum()
-        dictionary = {'#': "", ' ': '', '/': "", '-': ""}
-        transtable = direccion.maketrans(dictionary)
-        adress = direccion.translate(transtable)
-        direccion = direccion.ljust(20)
-        if not adress or len(direccion) > 20:
-            adress = False
-            print("\nEscriba una Direccion Valida")
-
-    while True:
-        try:
-            ''' Por medio de un bucle se verifica que el dato ingresado para el telefono sea valor un numero
-                                            y una longitud  max de 12 caracteres'''
-            telefono = int(input("Telefono: "))
-            lentel = str(telefono)
-
-            if len(lentel) > 13:
-                print("El numero de telefono no puede tener mas de 12  digitos.")
-            else:
-                break
-        except ValueError:
-            print("Escriba un numero de telefono valido.")
-            continue
-    # variable que indica si el valor es válido
-    # inicialmente no lo es
-    valido = False
-    # bucle para pedir el valor
-    while not valido or len(email) > 20:
-        # mensaje para que el usuario sepa que le solicitamos un correo
-        email = (input("Correo electronico: "))
-        # validacion por medio de la  funcion con regex
-        valido = es_correo_valido(email)
-        if not valido:
-            print("\nescriba un correo valido: ")
-
-    city = False
-    # bucle para pedir la ciudad
-    while not city:
-        ''' Por medio de un bucle se verifica que el dato ingresado para el ciudad sea valor un caracter  alfabetico
-                                                    y una longitud  max de 20 caracteres'''
-        # mensaje para que el usuario sepa que le solicitamos la ciudad
-        ciudad = (input("Ciudad: "))
-        city = (ciudad.replace(" ", "")).isalpha()
-        if not city or len(ciudad) > 21:
-            # variable que indica si el valor es válido
-            # inicialmente no lo es
-            city = False
-            print("\nEscriba una ciudad Valida: ")
-
-    # mensaje para que el usuario sepa que le solicitamos el dia de nacimiento
-    while True:
-        ''' Por medio de un bucles se verifica que el dato ingresado parala fecha de nacimiento  sean digitos, entre
-            un rango especifico como dias menores a  32, meses menores  a 13, que  el año tenga  4 digitos
-            y luego se pasa a un formato  fecha'''
-        dianac = input("Fecha de nacimiento:\n\n- Dia de nacimiento: ")
-        # Se verifica que el dato ingresado sea un dia existente dentro del calendario
-        while True:
-            if dianac.isdigit() and 0 < int(dianac) < 32:
-                dianac = dianac.rjust(2, "0")
-                break
-            else:
-                dianac = input("Escriba el dia de nacimiento en dos digitos: ")
-        mesnac = input("- Mes de nacimiento: ")
-        # Se verifica que el dato ingresado sea un mes existente dentro del calendario
-        while True:
-            if mesnac.isdigit() and 0 < int(mesnac) < 13:
-                mesnac = mesnac.rjust(2, "0")
-                break
-            else:
-                mesnac = input("Escriba el mes de nacimiento en numeros entre el 1 y 12: ")
-        anosnac = input("- año de nacimiento: ")
-        # Se verifica que el dato ingresado sea un año coherente para el nacimiento
-        while True:
-            if anosnac.isdigit() and len(anosnac) == 4:
-                anosnac = anosnac.rjust(4)
-                break
-            else:
-                anosnac = input("Escriba el año de nacimiento en numeros AAAA: ")
-        # Se guardan los datos de la fecha en formato (DD/MM/AAAA)
-        nacimiento = datetime(int(anosnac), int(mesnac), int(dianac)).strftime("%Y/%m/%d")
-        factual = datetime.now().strftime("%Y/%m/%d")
-        # nacimiento = dianac+"/"+mesnac+"/"+anosnac
-        if nacimiento < factual:
-            nacimiento = datetime(int(anosnac), int(mesnac), int(dianac)).strftime("%d/%m/%Y")
-            break
-        else:
-            print("La fecha de nacimiento no es valida: ")
-    print("Fecha ingresada: " + nacimiento)
-
-    # se actualiza la fecha de afiliacion automaticamente
-    f = datetime.now()
-    dia = str(f.day).rjust(2, "0")
-    mes = str(f.month).rjust(2, "0")
-    ano = str(f.year).rjust(2, "0")
-    afiliacion = dia + "/" + mes + "/" + ano
-    print("la fecha de afiliacion es: ", afiliacion)
-
-    desafiliacion = " "
-
-    # Por defecto el usuario  ingresa como no  vacunado
-    vacunado = "N"
-
-    newafi = (
-        ident, nombre, apellido, direccion, telefono, email, ciudad, nacimiento, afiliacion, desafiliacion, vacunado)
-    return newafi
-
-
 def insertar_tabla(con, newafi):
     """ Se crea un nuevo afiliado con la informacion recolectada del usuario, haciendo uso del
         objeto cursor y el metodo execute que utiliza el INSERT INTO dentro de los parametros
@@ -206,9 +230,10 @@ def insertar_tabla(con, newafi):
         cursorobj.execute('''INSERT INTO afiliados (id ,nombre,apellidos ,direccion,telefono ,email, ciudad ,nacimiento,
         afiliacion,desafiliacion,vacunado) VALUES(?, ?, ?, ?,?,?,?, ?, ?, ?,?)''', newafi)
         con.commit()
-    except :
+    except:
         print("\nVerifique la informacion ingresada.")
         return
+
 
 def vacunar(con):
     """ Funcion que se utiliza para operar en la base de datos"""
@@ -226,7 +251,7 @@ def vacunar(con):
     ident = input("id del afiliado a vacunar: ")
     # Verifica que el id ingresado se encuentre en la base de datos y no este desafiliado
     while True:
-        if ident.isdigit() and len(ident) < 13:
+        if ident.isdigit() and len(self.ident) < 13:
             buscar = 'SELECT * FROM afiliados where id= ' + ident + ' AND desafiliacion = " "'
             cursorobj.execute(buscar)
             afil_b = cursorobj.fetchall()
@@ -238,14 +263,14 @@ def vacunar(con):
                 else:
                     break
             else:
-                print("\n El id " + str(ident) + " no se encuentra afiliado")
+                print("\n El id " + str(self.ident) + " no se encuentra afiliado")
                 return
         # verificacion de longitud
-        if len(ident) > 13:
+        if len(self.ident) > 13:
             print("El numero de identificacion no puede tener mas de 12 digitos.")
         ident = input("Ingrese un id valido: ")
 
-    vacunado = str(ident)
+    vacunado = str(self.ident)
     print("\t1 - Registrar Vacunacion del  afiliado")
     print("\t2 - Volver al Menu  Anterior")
     option = input("Seleccione una opcion: ")
@@ -327,18 +352,23 @@ def consulta(con):
         print("\nNo hay usuarios registrados en este momento.")
         return
 
-    c_afilia = input("id del afiliado a consultar: ")
+    self.ident = input("Número de identificación: ")
+    lenid = str(self.ident)
+
+    if len(lenid) > 13:
+        print("El numero de identificacion no puede tener mas de 12  digitos.")
+        return
     # Verifica que el id ingresado se encuentre en la base de datos
     while True:
-        if c_afilia.isdigit():
-            buscar = 'SELECT * FROM afiliados where id= ' + c_afilia
+        if self.ident.isdigit():
+            buscar = 'SELECT * FROM afiliados where id= ' + self.ident
             cursorobj.execute(buscar)
             afil_b = cursorobj.fetchall()
             if len(afil_b) != 0:
                 break
             else:
-                print("El id " + str(c_afilia) + " no se encuentra en la base de datos")
-        c_afilia = input("Ingrese un id valido: ")
+                print("El id " + str(self.ident) + " no se encuentra en la base de datos")
+        self.ident = input("Ingrese un id valido: ")
 
     # muestra la informacion del afiliado consultado
 
