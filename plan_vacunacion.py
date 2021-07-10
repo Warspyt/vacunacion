@@ -147,45 +147,54 @@ def consultaplan(con):
 
 ''' Funcion para guardar la informacion que se le solicita al usuario
     sobre un plan de vacunacion que se creara'''                         
-def recibirPlan():
+def recibirPlan(con):
 
-  '''Se solicita al usuario la edad minima y maxima del plan de vacunacion con un bucle que termina cuando
+    '''Se solicita al usuario la edad minima y maxima del plan de vacunacion con un bucle que termina cuando
      la informacion es valida, donde se verifica que la edad minima sea menor a la maxima'''          
-  emin=0
-  emax=0
+    emin=0
+    emax=0
 
-  while (emin >= emax):
+    while (emin >= emax):
     
-    ''' Por medio de un bucle se verifica que el dato ingresado para la edad minima sea un valor numerico
-        mayor a cero'''
-    emin = input("Escriba la edad minima del plan: ")
+        ''' Por medio de un bucle se verifica que el dato ingresado para la edad minima sea un valor numerico
+            mayor a cero'''
+        emin = input("Escriba la edad minima del plan: ")
     
-    while True:
-        if emin.isdigit() and len(emin) <= 3 and int(emin) > 0:
-            break
-        else:
-            print("Ingrese un valor numerico: ")
-            emin = input("Escriba la edad minima del plan: ")
+        while True:
+            if emin.isdigit() and len(emin) <= 3 and int(emin) > 0:
+                break
+            else:
+                print("Ingrese un valor numerico: ")
+                emin = input("Escriba la edad minima del plan: ")
 
-    ''' Por medio de un bucle se verifica que el dato ingresado para la edad maxima sea un valor numerico
-        mayor a cero'''
-    emax = input("Escriba la edad maxima del plan: ")
+        ''' Por medio de un bucle se verifica que el dato ingresado para la edad maxima sea un valor numerico
+            mayor a cero'''
+        emax = input("Escriba la edad maxima del plan: ")
     
-    while True:
-        if emax.isdigit() and len(emax) <= 3 and int(emax) > 0:
-            break
-        else:
-            print("Ingrese un valor numerico: ")
-            emax = input("Escriba la edad maxima del plan: ")
-    emin = int(emin)
-    emax = int(emax)
-    if (emin>emax):
-      print("ERROR: la edad minima debe ser mayor a la maxima ingrese datos validos")
-    elif (emin<=0):
-      print("ERROR: la edad minima debe ser mayor a cero ingrese datos validos")
-    elif (emax<=0):
-      print("ERROR: la edad maxima debe ser mayor a cero ingrese datos validos")
+        while True:
+            if emax.isdigit() and len(emax) <= 3 and int(emax) > 0:
+                break
+            else:
+                print("Ingrese un valor numerico: ")
+                emax = input("Escriba la edad maxima del plan: ")
+        emin = int(emin)
+        emax = int(emax)
+        if (emin>emax):
+            print("ERROR: la edad minima debe ser mayor a la maxima ingrese datos validos")
+        elif (emin<=0):
+            print("ERROR: la edad minima debe ser mayor a cero ingrese datos validos")
+        elif (emax<=0):
+            print("ERROR: la edad maxima debe ser mayor a cero ingrese datos validos")
 
+    cursorObj = con.cursor()
+    cursorObj.execute('SELECT * FROM PlanVacunacion')
+    Pexistentes = cursorObj.fetchall()
+
+    for ver in Pexistentes:
+        if int(ver[1]) <= emin <= int(ver[2]):
+            print("\nEl rango de edad ingresado o parte de el ya se encuentra dentro del plan de vacunacion numero", ver[0], "que abarca el rango de edad entre los",
+                    ver[1], "y los", ver[2], "años.\n")
+            return
 
     ''' Se pide la fecha de inicio del plan por medio de un bucle que se rompe cuando se verifica que la fecha
         ingresada sea mayor a la fecha actual'''
@@ -267,10 +276,10 @@ def recibirPlan():
             print("La fecha de finalizacion del plan no es valida: ")
     print("Fecha de finalizacion ingresada: " + ffin)
 
-  ''' Se guardan los datos del plan de vacunacion a crear en un contenedor de tipo tupla para su
-      posterior uso'''
-  plan = (emin, emax, fini, ffin)
-  return plan 
+    ''' Se guardan los datos del plan de vacunacion a crear en un contenedor de tipo tupla para su
+        posterior uso'''
+    plan = (emin, emax, fini, ffin)
+    return plan 
 
 ''' Funcion para crear un nuevo lote de vacunas, que toma como parametro la conexion a la
     base de datos y el contenedor tupla que almacena la informacion del nuevo plan de vacunacion'''
@@ -282,3 +291,4 @@ def crearPlan(con, plan):
     cursorObj.execute("""INSERT INTO PlanVacunacion( edadmin, edadmax,
                       fechainicioplan, fechafinalplan)VALUES ( ?, ?, ?, ?)""", plan)
     con.commit()
+
