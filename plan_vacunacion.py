@@ -191,7 +191,7 @@ def recibirPlan(con):
     Pexistentes = cursorObj.fetchall()
 
     for ver in Pexistentes:
-        if int(ver[1]) <= emin <= int(ver[2]):
+        if int(ver[1]) <= emin <= int(ver[2]) or int(ver[1]) <= emax <= int(ver[2]):
             print("\nEl rango de edad ingresado o parte de el ya se encuentra dentro del plan de vacunacion numero", ver[0], "que abarca el rango de edad entre los",
                     ver[1], "y los", ver[2], "años.\n")
             return
