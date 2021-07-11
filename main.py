@@ -1,7 +1,7 @@
 """ Se importan los dintintos modulos que componene nuestro programa"""
 import sqlite3
 from sqlite3 import Error
-import afiliacion
+import afiliacion as af
 import lote_vacunas as lv
 import plan_vacunacion
 import ProgramacionVacunas as prgva
@@ -141,7 +141,7 @@ class menu(conexion):
         con = op.sql_conexion()
         lt = lv.Lotes()
         prg = prgva.Agenda()
-        afi = afiliacion.Afiliado()
+        afi = af.Afiliado()
         
         afi.tabla_afiliados(con)
         lt.tabla_vacunas(con)
