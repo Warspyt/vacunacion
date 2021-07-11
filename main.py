@@ -38,7 +38,8 @@ class menu(conexion):
                 #afiliado = afiliacion.leer_info()# quitar luego
                 
                 afiliado = afi.leer_info()
-                afi.insertar_tabla(self,con, newafi)
+
+                afi.insertar_tabla(con, afiliado)
             elif option == "2":
                 # Aca se se vacuna a la gente
                 afiliacion.vacunar(con)
