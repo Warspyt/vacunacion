@@ -8,6 +8,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import smtplib
 
+
 class Agenda:
     def __init__(self):
         pass
@@ -25,7 +26,6 @@ class Agenda:
                           nolote integer, fabricante text, fechaprogramada text, horaprogramada text, fechaorden text)""")
         con.commit()
 
-
     ''' Funcion para guardar una cita asignada a un paciente en la base de datos, la cual toma
         como parametros la conexion con la base de datos y la informacion del paciente'''
 
@@ -39,7 +39,6 @@ class Agenda:
                           fechaprogramada, horaprogramada, fechaorden)
                           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""", info)
         con.commit()
-
 
     ''' Funcion para generar la agendacion de citas a partir de una fecha y hora ingresadas
         por el usuario, la cual toma como parametro la conexion con la base de datos'''
@@ -311,8 +310,6 @@ class Agenda:
 
                         server.quit()
 
-
-
                     else:
                         # Se sigue con los afiliados del siguiente plan
                         break
@@ -320,7 +317,6 @@ class Agenda:
                 break
         print("\nLa agendacion se citas se genero con exito!!\n")
         con.commit()
-
 
     ''' Funcion para consultar la cita de un paciente en especifico, que toma como
         parametro la conexion con la base de datos del programa'''
@@ -370,7 +366,6 @@ class Agenda:
         print("➸ Fecha y hora programada:", afil_b[9], "a las", afil_b[10])
 
         con.commit()
-
 
     ''' Funcion para consultar la agenda de citas ordenada por algun campo a eleccion, que toma como
         parametro la conexion con la base de datos del programa'''

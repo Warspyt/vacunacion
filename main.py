@@ -4,7 +4,7 @@ from sqlite3 import Error
 import afiliacion as af
 import lote_vacunas as lv
 import plan_vacunacion as pl
-import ProgramacionVacunas as prgva
+import programacionvacunas as prgva
 
 """cada modulo tiene su propio menu, afiliacion, lote de vacunas,vacunacion y programacion vacunacion"""
 
@@ -89,14 +89,6 @@ class Menu(Conexion):
             option = input("Seleccione una opcion: ")
             if option == '1':
                 # Aca se crea el plan
-                #afiliado = afi.leer_info()
-                # afi.insertar_tabla(con, afiliado)
-                """planv = plv.recibirPlan(con)
-                try:
-                    plv.insertar_plan(con, planv)
-                except:
-                    print("El plan de vacunacion no pudo ser creado.")
-                    # Aca se crea la agendacion de citas"""
                 plv.recibirPlan(con)
             elif option == '2':
                 # Aca se consulta el plan
@@ -181,6 +173,7 @@ class Menu(Conexion):
                 break
             else:
                 input("\nNo has pulsado ninguna opción correcta...\npulsa una tecla para continuar")
+
 
 mn = Menu()
 mn.mainmenu()

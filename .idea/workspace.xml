@@ -3,8 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="31656571-185a-4cde-8de1-7d5e1041d094" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProgramacionVacunas.py" beforeDir="false" afterPath="$PROJECT_DIR$/ProgramacionVacunas.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/afiliacion.py" beforeDir="false" afterPath="$PROJECT_DIR$/afiliacion.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plan_vacunacion.py" beforeDir="false" afterPath="$PROJECT_DIR$/plan_vacunacion.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sisgenvac.db" beforeDir="false" afterPath="$PROJECT_DIR$/sisgenvac.db" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -485,7 +487,14 @@
       <option name="project" value="LOCAL" />
       <updated>1626030018533</updated>
     </task>
-    <option name="localTasksCounter" value="45" />
+    <task id="LOCAL-00045" summary="plan de vacunacion finalizado">
+      <created>1626032161500</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1626032161500</updated>
+    </task>
+    <option name="localTasksCounter" value="46" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -502,7 +511,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="cambio  desafiliacion" />
     <MESSAGE value="cambio  desafiliacion&#10;menu  corregido" />
     <MESSAGE value="Observacion de plan de vacunacion" />
     <MESSAGE value="rescate  viernes" />
@@ -527,7 +535,8 @@
     <MESSAGE value="afiliados ok" />
     <MESSAGE value="plan vacunacion update" />
     <MESSAGE value="plan vacunacion update&#10;se cambia la  fecha de comparacion de 2020 a una dinamica usando now" />
-    <option name="LAST_COMMIT_MESSAGE" value="plan vacunacion update&#10;se cambia la  fecha de comparacion de 2020 a una dinamica usando now" />
+    <MESSAGE value="plan de vacunacion finalizado" />
+    <option name="LAST_COMMIT_MESSAGE" value="plan de vacunacion finalizado" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
