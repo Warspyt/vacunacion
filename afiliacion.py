@@ -7,15 +7,6 @@ from sqlite3 import Error
 import re
 
 
-def sql_afiliado():
-    # funcion que crea la base de datos
-    try:
-        con = sqlite3.connect('sisgenvac.db')
-        return con
-    except Error:
-        print('Se ha producido un error al crear la conexion', Error)
-
-
 """def VerTipDatoAlpha(self):
     if dato.isalpha() == false:
         tipo = "alfabetico"
@@ -25,9 +16,10 @@ def sql_afiliado():
 
 class Afiliado:
     def __init__(self):
+
         self.ident = ""
         self.nombre = ""
-        self.apelllidos = ""
+        self.apellido = ""
         self.direccion = ""
         self.telefono = ""
         self.email = ""
@@ -36,6 +28,10 @@ class Afiliado:
         self.afiliacion = ""
         self.desafiliacion = ""
         self.vacunado = ""
+        self.newafi = (
+            self.ident, self.nombre, self.apellido, self.direccion, self.telefono, self.email, self.ciudad,
+            self.nacimiento, self.afiliacion, self.desafiliacion,
+            self.vacunado)
 
     def leer_info(self):
 
@@ -131,9 +127,9 @@ class Afiliado:
             ''' Por medio de un bucle se verifica que el dato ingresado para el ciudad sea valor un caracter  alfabetico
                                                         y una longitud  max de 20 caracteres'''
             # mensaje para que el usuario sepa que le solicitamos la ciudad
-            ciudad = (input("Ciudad: "))
-            city = (ciudad.replace(" ", "")).isalpha()
-            if not city or len(ciudad) > 21:
+            self.ciudad = (input("Ciudad: "))
+            city = (self.ciudad.replace(" ", "")).isalpha()
+            if not city or len(self.ciudad) > 21:
                 # variable que indica si el valor es válido
                 # inicialmente no lo es
                 city = False
@@ -169,34 +165,42 @@ class Afiliado:
                 else:
                     anosnac = input("Escriba el año de nacimiento en numeros AAAA: ")
             # Se guardan los datos de la fecha en formato (DD/MM/AAAA)
-            nacimiento = datetime(int(anosnac), int(mesnac), int(dianac)).strftime("%Y/%m/%d")
+            self.nacimiento = datetime(int(anosnac), int(mesnac), int(dianac)).strftime("%Y/%m/%d")
             factual = datetime.now().strftime("%Y/%m/%d")
             # nacimiento = dianac+"/"+mesnac+"/"+anosnac
-            if nacimiento < factual:
-                nacimiento = datetime(int(anosnac), int(mesnac), int(dianac)).strftime("%d/%m/%Y")
+            if self.nacimiento < factual:
+                self.nacimiento = datetime(int(anosnac), int(mesnac), int(dianac)).strftime("%d/%m/%Y")
                 break
             else:
                 print("La fecha de nacimiento no es valida: ")
-        print("Fecha ingresada: " + nacimiento)
+        print("Fecha ingresada: " + self.nacimiento)
 
         # se actualiza la fecha de afiliacion automaticamente
         f = datetime.now()
         dia = str(f.day).rjust(2, "0")
         mes = str(f.month).rjust(2, "0")
         ano = str(f.year).rjust(2, "0")
-        afiliacion = dia + "/" + mes + "/" + ano
-        print("la fecha de afiliacion es: ", afiliacion)
-
-        desafiliacion = " "
+        self.afiliacion = dia + "/" + mes + "/" + ano
+        print("la fecha de afiliacion es: ", self.afiliacion)
 
         # Por defecto el usuario  ingresa como no  vacunado
-        vacunado = "N"
+        self.vacunado = "N"
 
-        newafi = (
-            self.ident, self.nombre, self.apellido, self.direccion, self.telefono, self.email, ciudad, nacimiento, afiliacion, desafiliacion,
-            vacunado)
-        return newafi
+        return self.newafi
 
+    def insertar_tabla(self, newafi, con):
+        """ Se crea un nuevo afiliado con la informacion recolectada del usuario, haciendo uso del
+            objeto cursor y el metodo execute que utiliza el INSERT INTO dentro de los parametros
+            """
+
+        cursorobj = con.cursor()
+        try:
+            cursorobj.execute('''INSERT INTO afiliados (id ,nombre,apellidos ,direccion,telefono ,email, ciudad ,nacimiento,
+            afiliacion,desafiliacion,vacunado) VALUES(?, ?, ?, ?,?,?,?, ?, ?, ?,?)''', self.newafi)
+            con.commit()
+        except:
+            print("\nVerifique la informacion ingresada.")
+            return
 
 def creartable(con):
     """
@@ -216,23 +220,10 @@ def creartable(con):
 def es_correo_valido(email):
     # funcion valida el formato del correo
     regex = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])"
-    mailvalido = (re.search(regex, self.email))
+    mailvalido = (re.search(regex, email))
     return mailvalido
 
 
-def insertar_tabla(con, newafi):
-    """ Se crea un nuevo afiliado con la informacion recolectada del usuario, haciendo uso del
-        objeto cursor y el metodo execute que utiliza el INSERT INTO dentro de los parametros
-        """
-
-    cursorobj = con.cursor()
-    try:
-        cursorobj.execute('''INSERT INTO afiliados (id ,nombre,apellidos ,direccion,telefono ,email, ciudad ,nacimiento,
-        afiliacion,desafiliacion,vacunado) VALUES(?, ?, ?, ?,?,?,?, ?, ?, ?,?)''', newafi)
-        con.commit()
-    except:
-        print("\nVerifique la informacion ingresada.")
-        return
 
 
 def vacunar(con):
