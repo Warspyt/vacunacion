@@ -457,7 +457,14 @@
       <option name="project" value="LOCAL" />
       <updated>1625984363692</updated>
     </task>
-    <option name="localTasksCounter" value="41" />
+    <task id="LOCAL-00041" summary="mail no  funcion validacion">
+      <created>1625985588787</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1625985588787</updated>
+    </task>
+    <option name="localTasksCounter" value="42" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -495,6 +502,7 @@
     <MESSAGE value=".poo afiliados clases" />
     <MESSAGE value="error" />
     <MESSAGE value="afiliado" />
-    <option name="LAST_COMMIT_MESSAGE" value="afiliado" />
+    <MESSAGE value="mail no  funcion validacion" />
+    <option name="LAST_COMMIT_MESSAGE" value="mail no  funcion validacion" />
   </component>
 </project>
