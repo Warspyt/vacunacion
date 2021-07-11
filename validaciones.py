@@ -55,6 +55,22 @@ class Dato:
         else:
             ano = False
         return ano
+    
+    def hora(self):
+        if self.variable.isdigit() and 0 < int(self.variable) < 25:
+            hora = True
+            self.variable = self.variable.rjust(2)
+        else:
+            hora = False
+        return hora
+
+    def minuto(self):
+        if self.variable.isdigit() and 0 <= int(self.variable) < 60:
+            minuto = True
+            self.variable = self.variable.rjust(2)
+        else:
+            minuto = False
+        return minuto
 
     def fecha(self, indicador): # valdiar con un < (menor que) o un >(mayor que)
         factual = datetime.now().strftime("%Y/%m/%d")
