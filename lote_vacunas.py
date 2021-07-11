@@ -1,9 +1,10 @@
 """ Se importan las librerias para el manejo de las bases de datos
     y de las fechas"""
+import validaciones as vl
 from datetime import datetime
 from datetime import date
 
-class lotes:
+class Lotes:
     def __init__(self):
         pass
 
@@ -29,80 +30,75 @@ class lotes:
             informacion es aceptable, donde se verifica que el dato sea un valor numerico y su longitud
             sea menor a 13 digitos"""
         print("Ingrese la informacion del lote:\n")
-        nolote = input("Numero de lote: ")
+        
+        nolote = vl.Dato(input("Numero de lote: "))
 
-        while True:
-            if nolote.isdigit() and len(nolote) <= 12:
-                nolote = nolote.ljust(12)
-                break
-            else:
-                nolote = input("Ingrese un numero de lote valido: ")
+        while not nolote.TipoDatoNum() or not nolote.longitud(12):
+            nolote = vl.Dato(input("Ingrese un numero de lote valido: "))
 
         ''' Se muestran en pantalla las opciones de vacunas y se solicita al usuario que ingrese una opcion
             identificada por el numero que la precede'''
-        op_fabricante = input("""Seleccione un fabricante:\n
+        op_fabricante = vl.Dato(input("""Seleccione un fabricante:\n
+
         \t1 - Sinovac
         \t2 - Pfizer
         \t3 - Moderna
         \t4 - Sputnik V
         \t5 - AstraZeneca
         \t6 - Sinopharm
-        \t7 - Covaxim\n\nSeleccione una opcion: """)
+        \t7 - Covaxim\n\nSeleccione una opcion: """))
 
         ''' A partir de un bucle que se rompe cuando la informacion es valida, se verifica que el valor ingresado
             sea numerico y este entre las opciones dadas que son los numeros del 1 al 7'''
-        while True:
-            if op_fabricante.isdigit() and 0 < int(op_fabricante) < 8:
-                break
-            else:
-                op_fabricante = input("Ingrese una opcion valida: ")
+        while not op_fabricante.TipoDatoNum() or not op_fabricante.rango(7) :
+            op_fabricante = vl.Dato(input("Ingrese una opcion valida: "))
 
         ''' Con los condicionales if y else, segun la opcion ingresada se asignan los valores preestablecidos para
             cada vacuna,los cuales estan asignados de acuerdo a la informacion que se encuentra en internet sobre cada
             una de las mmismas'''
-        if op_fabricante == '1':
+        if op_fabricante.variable == '1':
             fabricante = "Sinovac"
             tipovacuna = "Virus desactivado"
             dosisnecesarias = 2
             temperatura = "2 a 8°C"
             efectividad = "78%"
             tiempoproteccion = "120 dias"
-        elif op_fabricante == '2':
+        elif op_fabricante.variable == '2':
             fabricante = "Pfizer"
             tipovacuna = "En base a proteinas"
             dosisnecesarias = 2
             temperatura = "-25 a -15°C"
             efectividad = "95%"
             tiempoproteccion = "210 dias"
-        elif op_fabricante == '3':
+        elif op_fabricante.variable == '3':
             fabricante = "Moderna"
             tipovacuna = "ARN/ADN"
             dosisnecesarias = 2
             temperatura = "-20°C"
             efectividad = "94%"
             tiempoproteccion = "238 dias"
-        elif op_fabricante == '4':
+        elif op_fabricante.variable == '4':
             fabricante = "Sputnik V"
             tipovacuna = "Vector viral"
             dosisnecesarias = 2
             temperatura = "-18°C"
             efectividad = "92%"
             tiempoproteccion = "238 dias"
-        elif op_fabricante == '5':
+        elif op_fabricante.variable == '5':
             fabricante = "AstraZeneca"
             tipovacuna = "Vector viral"
             dosisnecesarias = 2
             temperatura = "2 a 8°C"
             efectividad = "70%"
             tiempoproteccion = "120 dias"
-        elif op_fabricante == '6':
+        elif op_fabricante.variable == '6':
             fabricante = "Sinopharm"
             tipovacuna = "Virus desactivado"
             dosisnecesarias = 2
             temperatura = "2 a 8°C"
             efectividad = "80%"
             tiempoproteccion = "120 dias"
-        elif op_fabricante == '7':
+        elif op_fabricante.variable == '7':
             fabricante = "Covaxim"
             tipovacuna = "Virus desactivado"
             dosisnecesarias = 2
@@ -112,14 +108,10 @@ class lotes:
 
         ''' Se solicita la cantidad de vacuna por medio de un bucle que se rompe cuando las condiciones son
             validas, verificando que el valor ingresado sea numerico y tenga una longitud menor a 7 digitos'''
-        cantidadrecibida = input("Cantidad recibida: ")
+        cantidadrecibida = vl.Dato(input("Cantidad recibida: "))
 
-        while True:
-            if cantidadrecibida.isdigit() and len(cantidadrecibida) <= 6:
-                cantidadrecibida = cantidadrecibida.ljust(6)
-                break
-            else:
-                cantidadrecibida = input("Ingrese una cantidad valida: ")
+        while  not cantidadrecibida.TipoDatoNum() or not cantidadrecibida.longitud(6):
+            cantidadrecibida = vl.Dato(input("Ingrese una cantidad valida: "))
 
         cantidadusada = 0
         reserva = 0
@@ -130,35 +122,24 @@ class lotes:
 
             ''' Se solicita individualmente el dia, mes y año, verificando a partir de un bucle que los datos sean
                 numericos y existan dentro del calendario'''
-            diaven = input("Fecha de vencimiento:\n\n- Dia de vencimiento: ")
-            while True:
-                if diaven.isdigit() and 0 < int(diaven) < 32:
-                    diaven = diaven.rjust(2, "0")
-                    break
-                else:
-                    diaven = input("Escriba el dia de vencimiento en dos digitos: ")
-            mesven = input("- Mes de vencimiento: ")
-            while True:
-                if mesven.isdigit() and 0 < int(mesven) < 13:
-                    mesven = mesven.rjust(2, "0")
-                    break
-                else:
-                    mesven = input("Escriba el mes de vencimiento en numeros entre el 1 y 12: ")
-            anoven = input("- año de vencimiento: ")
-            while True:
-                if anoven.isdigit() and len(anoven) == 4 and int(anoven) > 2020:
-                    anoven = anoven.rjust(4)
-                    break
-                else:
-                    anoven = input("Escriba el año de vencimiento en numeros AAAA: ")
+            diaven = vl.Dato(input("Fecha de vencimiento:\n\n- Dia de vencimiento: "))
+            while not diaven.dia():
+                diaven = vl.Dato(input("Escriba el dia de vencimiento en dos digitos: "))
+                
+            mesven = vl.Dato(input("- Mes de vencimiento: "))
+            while not mesven.mes():
+                mesven = vl.Dato(input("Escriba el mes de vencimiento en numeros entre el 1 y 12: "))
+                    
+            anoven = vl.Dato(input("- año de vencimiento: "))
+            while not anoven.anio(2020, 3000):
+                anoven = vl.Dato(input("Escriba el año de vencimiento en numeros AAAA: "))
 
             ''' Usando el metodo strftime de la libreria datetime se guardan los valores ingresados por el
                 usuario en formato de fecha (DD/MM/AAAA)'''
-            fechavencimiento = datetime(int(anoven), int(mesven), int(diaven)).strftime("%Y/%m/%d")
-            factual = datetime.now().strftime("%Y/%m/%d")
+            fechavencimiento = vl.Dato(datetime(int(anoven.variable), int(mesven.variable), int(diaven.variable)).strftime("%Y/%m/%d"))
 
-            if fechavencimiento > factual:
-                fechavencimiento = datetime(int(anoven), int(mesven), int(diaven)).strftime("%d/%m/%Y")
+            if fechavencimiento.fecha(">"):
+                fechavencimiento = datetime(int(anoven.variable), int(mesven.variable), int(diaven.variable)).strftime("%d/%m/%Y")
                 break
             else:
                 print("La fecha de vencimiento no es valida: ")
@@ -170,7 +151,7 @@ class lotes:
         print("Funcion de imagen en desarrollo, proximamente mas funcional...")
 
         ''' Se guardan los datos del lote a crear en un contenedor de tipo tupla para su posterior uso'''
-        lote = (nolote, fabricante, tipovacuna, cantidadrecibida, cantidadusada, dosisnecesarias, temperatura, efectividad,
+        lote = (nolote.variable, fabricante, tipovacuna, cantidadrecibida.variable, cantidadusada, dosisnecesarias, temperatura, efectividad,
                 tiempoproteccion, fechavencimiento, imagen, reserva)
         return lote
 
@@ -273,3 +254,7 @@ class lotes:
                                                                                                                 "", "", "",
                                                                                                                 "", ""))
         con.commit()
+
+
+Lotes = Lotes()
+Lotes.info_lote()
