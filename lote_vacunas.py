@@ -256,5 +256,5 @@ class Lotes:
         con.commit()
 
 
-Lotes = Lotes()
-Lotes.info_lote()
+#Lotes = Lotes()
+#Lotes.info_lote()

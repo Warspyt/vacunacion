@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="31656571-185a-4cde-8de1-7d5e1041d094" name="Default Changelist" comment="" />
+    <list default="true" id="31656571-185a-4cde-8de1-7d5e1041d094" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lote_vacunas.py" beforeDir="false" afterPath="$PROJECT_DIR$/lote_vacunas.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -418,7 +422,14 @@
       <option name="project" value="LOCAL" />
       <updated>1625964862015</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="error">
+      <created>1625965274777</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1625965274777</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -454,6 +465,7 @@
     <MESSAGE value="fix error  id repetido" />
     <MESSAGE value="." />
     <MESSAGE value=".poo afiliados clases" />
-    <option name="LAST_COMMIT_MESSAGE" value=".poo afiliados clases" />
+    <MESSAGE value="error" />
+    <option name="LAST_COMMIT_MESSAGE" value="error" />
   </component>
 </project>

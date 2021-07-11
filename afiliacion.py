@@ -28,10 +28,7 @@ class Afiliado:
         self.afiliacion = ""
         self.desafiliacion = ""
         self.vacunado = ""
-        self.newafi = (
-            self.ident, self.nombre, self.apellido, self.direccion, self.telefono, self.email, self.ciudad,
-            self.nacimiento, self.afiliacion, self.desafiliacion,
-            self.vacunado)
+
 
     def leer_info(self):
 
@@ -185,8 +182,11 @@ class Afiliado:
 
         # Por defecto el usuario  ingresa como no  vacunado
         self.vacunado = "N"
-
-        return self.newafi
+        newafi = (
+            self.ident, self.nombre, self.apellido, self.direccion, self.telefono, self.email, self.ciudad,
+            self.nacimiento, self.afiliacion, self.desafiliacion,
+            self.vacunado)
+        return newafi
 
     def insertar_tabla(self, con):
         """ Se crea un nuevo afiliado con la informacion recolectada del usuario, haciendo uso del
