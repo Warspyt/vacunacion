@@ -29,6 +29,14 @@ class Afiliado:
         self.desafiliacion = ""
         self.vacunado = ""
 
+
+    def es_correo_valido(email):
+        # funcion valida el formato del correo
+        regex = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])"
+        mailvalido = (re.search(regex, email))
+        return mailvalido
+        print("hola mundo",mailvalido)
+
     def leer_info(self):
 
         """ Funcion para guardar la informacion que se le solicita al usuario
@@ -203,67 +211,6 @@ class Afiliado:
             print("\nVerifique la informacion ingresada.")
             return
 
-    def vacunar(self, con):
-        """ Funcion que se utiliza para operar en la base de datos"""
-        cursorobj = con.cursor()
-        try:
-            ''' se selecciona en la  DB los registros que  no estan vacunadosy no estan desafiliados
-                en caso de no encontrar  que los afiliados esten vacunados y desafiliados nos indicara que no hay 
-                a quien vacunar'''
-            cursorobj.execute('SELECT * FROM afiliados where vacunado = "N" AND desafiliacion = " "')
-            cursorobj.fetchall()[0]
-        except IndexError:
-            print("\nNo hay usuarios que no se encuentren vacunados en este momento.")
-            return
-
-        ident = input("id del afiliado a vacunar: ")
-        # Verifica que el id ingresado se encuentre en la base de datos y no este desafiliado
-        while True:
-            if ident.isdigit() and len(self.ident) < 13:
-                buscar = 'SELECT * FROM afiliados where id= ' + ident + ' AND desafiliacion = " "'
-                cursorobj.execute(buscar)
-                afil_b = cursorobj.fetchall()
-                if len(afil_b) != 0:
-                    # Verificar que el afiliado no este vacunado
-                    if afil_b[0][10] == 'S':
-                        print("El afiliado ya se encuentra vacunado")
-                        return
-                    else:
-                        break
-                else:
-                    print("\n El id " + str(self.ident) + " no se encuentra afiliado")
-                    return
-            # verificacion de longitud
-            if len(self.ident) > 13:
-                print("El numero de identificacion no puede tener mas de 12 digitos.")
-            ident = input("Ingrese un id valido: ")
-
-        vacunado = str(self.ident)
-        print("\t1 - Registrar Vacunacion del  afiliado")
-        print("\t2 - Volver al Menu  Anterior")
-        option = input("Seleccione una opcion: ")
-        if option == '1':
-            # se hace el update del afiliado en el campo vacunado con un print informando
-            sql = 'SELECT vacunado FROM afiliados WHERE id =' + vacunado
-            cursorobj.execute(sql)
-            registros = cursorobj.fetchall()
-
-            if 'S' not in registros[0]:
-                actualizar = 'update afiliados SET vacunado = "S" where id =' + vacunado
-
-                cursorobj.execute(actualizar)
-                print("El afiliado ", vacunado, "fue vacunado")
-                con.commit()
-
-            else:
-                print(" El afiliado ya se encuentra vacunado")
-
-        elif option == "2":
-            return
-        else:
-            print("")
-            input("No has pulsado ninguna opción correcta...\npulsa una tecla para continuar")
-
     def tabla_afiliados(self, con):
         """
                  Se crea el objeto de conexión.
@@ -294,7 +241,7 @@ class Afiliado:
         ident = input("id del afiliado a vacunar: ")
         # Verifica que el id ingresado se encuentre en la base de datos y no este desafiliado
         while True:
-            if ident.isdigit() and len(self.ident) < 13:
+            if ident.isdigit() and len(ident) < 13:
                 buscar = 'SELECT * FROM afiliados where id= ' + ident + ' AND desafiliacion = " "'
                 cursorobj.execute(buscar)
                 afil_b = cursorobj.fetchall()
@@ -306,14 +253,14 @@ class Afiliado:
                     else:
                         break
                 else:
-                    print("\n El id " + str(self.ident) + " no se encuentra afiliado")
+                    print("\n El id " + str(ident) + " no se encuentra afiliado")
                     return
             # verificacion de longitud
-            if len(self.ident) > 13:
+            if len(ident) > 13:
                 print("El numero de identificacion no puede tener mas de 12 digitos.")
             ident = input("Ingrese un id valido: ")
 
-        vacunado = str(self.ident)
+        vacunado = str(ident)
         print("\t1 - Registrar Vacunacion del  afiliado")
         print("\t2 - Volver al Menu  Anterior")
         option = input("Seleccione una opcion: ")
@@ -378,9 +325,10 @@ class Afiliado:
         print("El afiliado ", desafiliado, "fue desafiliado")
         con.commit()
 
+    ''' Funcion para consultar la informacion de los afiliados,
+        la cual toma como parametro la conexion con la base de datos del programa'''
 
-
-    def consulta(SELF, con):
+    def consulta(self, con):
         cursorobj = con.cursor()
         try:
             # recorre la DB para verificar que no este vacia
@@ -446,82 +394,6 @@ class Afiliado:
 
 
 
-
-def es_correo_valido(email):
-    # funcion valida el formato del correo
-    regex = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])"
-    mailvalido = (re.search(regex, email))
-    return mailvalido
-
-
-
-''' Funcion para consultar la informacion de los afiliados,
-    la cual toma como parametro la conexion con la base de datos del programa'''
-
-
-def consulta(con):
-    cursorobj = con.cursor()
-    try:
-        # recorre la DB para verificar que no este vacia
-        cursorobj.execute('SELECT * FROM afiliados')
-        cursorobj.fetchall()[0]
-    except IndexError:
-
-        print("\nNo hay usuarios registrados en este momento.")
-        return
-
-    self.ident = input("Número de identificación: ")
-    lenid = str(self.ident)
-
-    if len(lenid) > 13:
-        print("El numero de identificacion no puede tener mas de 12  digitos.")
-        return
-    # Verifica que el id ingresado se encuentre en la base de datos
-    while True:
-        if self.ident.isdigit():
-            buscar = 'SELECT * FROM afiliados where id= ' + self.ident
-            cursorobj.execute(buscar)
-            afil_b = cursorobj.fetchall()
-            if len(afil_b) != 0:
-                break
-            else:
-                print("El id " + str(self.ident) + " no se encuentra en la base de datos")
-        self.ident = input("Ingrese un id valido: ")
-
-    # muestra la informacion del afiliado consultado
-
-    print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<12}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "",
-                                                                                                             "", "", "",
-                                                                                                             "", "", "",
-                                                                                                             "", ""))
-    print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^12}|{:^25}|{:^20}|{:^10}|{:^10}|{:^15}|{:^10}|".format("Documento", "Nombre",
-                                                                                                  "Apellido",
-                                                                                                  "Direccion",
-                                                                                                  "Telefono", "Email",
-                                                                                                  "Ciudad",
-                                                                                                  "Nacimiento",
-                                                                                                  "Afiliacion",
-                                                                                                  "Desafiliacion",
-                                                                                                  "Vacunado"))
-    print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<12}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "",
-                                                                                                             "", "", "",
-                                                                                                             "", "", "",
-                                                                                                             "", ""))
-    for idaf, nombre, apellido, direccion, telefono, email, ciudad, nacimiento, afiliacion, desafiliacion, vacunado in afil_b:
-        print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^12}|{:^25}|{:^20}|{:^10}|{:^10}|{:^15}|{:^10}|".format(idaf, nombre,
-                                                                                                      apellido,
-                                                                                                      direccion,
-                                                                                                      telefono, email,
-                                                                                                      ciudad,
-                                                                                                      nacimiento,
-                                                                                                      afiliacion,
-                                                                                                      desafiliacion,
-                                                                                                      vacunado))
-    print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<12}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "",
-                                                                                                             "", "", "",
-                                                                                                             "", "", "",
-                                                                                                             "", ""))
-    con.commit()
 
 
 def cerrar_db(con):
