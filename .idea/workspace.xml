@@ -3,7 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="31656571-185a-4cde-8de1-7d5e1041d094" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/afiliacion.py" beforeDir="false" afterPath="$PROJECT_DIR$/afiliacion.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plan_vacunacion.py" beforeDir="false" afterPath="$PROJECT_DIR$/plan_vacunacion.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sisgenvac.db" beforeDir="false" afterPath="$PROJECT_DIR$/sisgenvac.db" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -45,7 +46,7 @@
     <property name="full.screen.before.presentation.mode" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/plan_vacunacion.py" />
     <property name="restartRequiresConfirmation" value="false" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -464,7 +465,14 @@
       <option name="project" value="LOCAL" />
       <updated>1625985588787</updated>
     </task>
-    <option name="localTasksCounter" value="42" />
+    <task id="LOCAL-00042" summary="afiliados ok">
+      <created>1625987827084</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1625987827084</updated>
+    </task>
+    <option name="localTasksCounter" value="43" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -503,6 +511,18 @@
     <MESSAGE value="error" />
     <MESSAGE value="afiliado" />
     <MESSAGE value="mail no  funcion validacion" />
-    <option name="LAST_COMMIT_MESSAGE" value="mail no  funcion validacion" />
+    <MESSAGE value="afiliados ok" />
+    <option name="LAST_COMMIT_MESSAGE" value="afiliados ok" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/main.py</url>
+          <line>33</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

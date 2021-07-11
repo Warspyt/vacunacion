@@ -7,141 +7,134 @@ from datetime import date
 
 ''' Funcion para establecer la conexion con la base de datos del
     programa'''
-def sql_plan():
-    
-    ''' Se crea la conexion a la base de datos usando el metodo connect, creando el archivo en caso de que no exista y se verifica que
-        no ocurra ningun error a partir de un try - except'''
-    try:
-        conplan = sqlite3.connect('sisgenvac.db')
-        return conplan
-    except Error:
-        print('Se ha producido un error al crear la conexion', Error)
+class Plan:
+    def __init__(self):
 
-''' Funcion para crear la tabla de los planes de vacunacion dentro de la base de datos del
-    programa, la cual toma como parametro la conexion de la misma'''
-def tabla_plan(con):
+        ''' Funcion para crear la tabla de los planes de vacunacion dentro de la base de datos del
+            programa, la cual toma como parametro la conexion de la misma'''
+    def tabla_plan(self,con):
 
-    ''' Se crea una tabla para los planes de vacunacion verificando que no exista aun, haciendo uso del objeto cursor
-        y el metodo execute que utiliza el CREATE TABLE dentro de los parametros'''
-    cursorObj = con.cursor()
-    
-    cursorObj.execute("""CREATE TABLE IF NOT EXISTS PlanVacunacion(idplan integer PRIMARY KEY AUTOINCREMENT, edadmin text,
-                      edadmax text, fechainicioplan text, fechafinalplan text)""")
-    con.commit()
-    
-''' Funcion para consultar la informacion de los planes de vacunacion activos a la fecha,
-    la cual toma como parametro la conexion con la base de datos del programa'''
-def consultaplan(con):
-    cursorObj = con.cursor()
+        ''' Se crea una tabla para los planes de vacunacion verificando que no exista aun, haciendo uso del objeto cursor
+            y el metodo execute que utiliza el CREATE TABLE dentro de los parametros'''
+        cursorObj = con.cursor()
 
-    ''' Se extrae la fecha actual con el metodo now de la libreria datetime y se separa en dia,
-        mes y año'''
-    now= datetime.now()
-    dia = now.strftime("%d")
-    mes = now.strftime("%m")
-    ano = now.strftime("%Y")
+        cursorObj.execute("""CREATE TABLE IF NOT EXISTS PlanVacunacion(idplan integer PRIMARY KEY AUTOINCREMENT, edadmin text,
+                          edadmax text, fechainicioplan text, fechafinalplan text)""")
+        con.commit()
     
-    ''' Se extraen todos los planes de vacunacion de la base de datos del programa, con el objeto cursor y el
-        metodo execute que utiliza el SELECT como parametro '''
-    compara  = 'SELECT *FROM PlanVacunacion  '
-    cursorObj.execute(compara)
-    listado = cursorObj.fetchall()
+        ''' Funcion para consultar la informacion de los planes de vacunacion activos a la fecha,
+            la cual toma como parametro la conexion con la base de datos del programa'''
+    def consultaplan(SELF,con):
+        cursorObj = con.cursor()
 
-    ''' Con el iterador for a partir de una serie de condiciones se filtran los planes de vacunacion activos cuya
-        fecha de inicio y fin abarca la fecha actual'''
-    vigentes = []
-    pendientes = []
-    
-    for ids in listado:
+        ''' Se extrae la fecha actual con el metodo now de la libreria datetime y se separa en dia,
+            mes y año'''
+        now = datetime.now()
+        dia = now.strftime("%d")
+        mes = now.strftime("%m")
+        ano = now.strftime("%Y")
 
-        ''' Se extraen las fechas de inicio y fin de cada plan de vacunacion, separandolas en dia, mes
-            y año'''
-        ini = ids[3].split("/")
-        fin = ids[4].split("/")
-        
-        if int(ini[2])< int(ano):
-            if int(ano) < int(fin[2]):
-                vigentes.append(ids)
-            elif int(ano) == int(fin[2]):
-                if int(fin[1]) > int(mes):
-                    vigentes.append(ids)
-                elif int(fin[1]) == int(mes) and int(fin[2])>= int(dia):
-                    vigentes.append(ids)
-                else:
-                    pendientes.append(ids)
-            else:
-                pendientes.append(ids)
-                   
-        elif int(ini[2])== int(ano):
-            if int(ini[1]) < int(mes):
+        ''' Se extraen todos los planes de vacunacion de la base de datos del programa, con el objeto cursor y el
+            metodo execute que utiliza el SELECT como parametro '''
+        compara  = 'SELECT *FROM PlanVacunacion  '
+        cursorObj.execute(compara)
+        listado = cursorObj.fetchall()
+
+        ''' Con el iterador for a partir de una serie de condiciones se filtran los planes de vacunacion activos cuya
+            fecha de inicio y fin abarca la fecha actual'''
+        vigentes = []
+        pendientes = []
+
+        for ids in listado:
+
+            ''' Se extraen las fechas de inicio y fin de cada plan de vacunacion, separandolas en dia, mes
+                y año'''
+            ini = ids[3].split("/")
+            fin = ids[4].split("/")
+
+            if int(ini[2])< int(ano):
                 if int(ano) < int(fin[2]):
                     vigentes.append(ids)
                 elif int(ano) == int(fin[2]):
                     if int(fin[1]) > int(mes):
                         vigentes.append(ids)
-                    elif int(fin[1]) == int(mes) and int(fin[0])>= int(dia):
+                    elif int(fin[1]) == int(mes) and int(fin[2])>= int(dia):
                         vigentes.append(ids)
                     else:
                         pendientes.append(ids)
                 else:
                     pendientes.append(ids)
-            elif int(ini[1]) == int(mes) and int(ini[0])<= int(dia):
-                if int(ano) < int(fin[2]):
-                    vigentes.append(ids)
-                elif int(ano) == int(fin[2]):
-                    if int(fin[1]) > int(mes):
+
+            elif int(ini[2])== int(ano):
+                if int(ini[1]) < int(mes):
+                    if int(ano) < int(fin[2]):
                         vigentes.append(ids)
-                    elif int(fin[1]) == int(mes) and int(fin[0])>= int(dia):
+                    elif int(ano) == int(fin[2]):
+                        if int(fin[1]) > int(mes):
+                            vigentes.append(ids)
+                        elif int(fin[1]) == int(mes) and int(fin[0])>= int(dia):
+                            vigentes.append(ids)
+                        else:
+                            pendientes.append(ids)
+                    else:
+                        pendientes.append(ids)
+                elif int(ini[1]) == int(mes) and int(ini[0])<= int(dia):
+                    if int(ano) < int(fin[2]):
                         vigentes.append(ids)
+                    elif int(ano) == int(fin[2]):
+                        if int(fin[1]) > int(mes):
+                            vigentes.append(ids)
+                        elif int(fin[1]) == int(mes) and int(fin[0])>= int(dia):
+                            vigentes.append(ids)
+                        else:
+                            pendientes.append(ids)
                     else:
                         pendientes.append(ids)
                 else:
                     pendientes.append(ids)
             else:
                 pendientes.append(ids)
+
+        ''' Se termina la funcion en caso de que la base de datos no tenga informacion o no existan planes de 
+            vacunacion activos a la fecha y se notifica al usuario'''
+        if len(vigentes) == 0 and len(pendientes):
+            print("No hay planes de vacunacion en este momento.")
+            return
+
+        print("\n           PlANES DE VACUNACION ACTIVOS \n")
+
+        if len(vigentes) != 0:
+            ''' Se muestra en pantalla la informacion de los planes de vacunacion activos, con un formato de tabla hecho con
+                simbolos a partir del metodo format'''
+
+            print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<15}+".format("", "", "", "", ""))
+            print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^15}|".format("Plan", "Edad Minima", "Edad Maxima", "Fecha Inicio",
+                                                                    "Fecha Final"))
+            print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<15}+".format("", "", "", "", ""))
+
+
+            for idPlan, Emin, Emax, inicio, fin in vigentes:
+                print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^15}|".format(idPlan, Emin, Emax, inicio, fin))
+                print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<15}+".format("", "","", "", ""))
         else:
-            pendientes.append(ids)
-            
-    ''' Se termina la funcion en caso de que la base de datos no tenga informacion o no existan planes de 
-        vacunacion activos a la fecha y se notifica al usuario'''
-    if len(vigentes) == 0 and len(pendientes):
-        print("No hay planes de vacunacion en este momento.")
-        return
+            print("No hay planes de vacunacion activos en este momento.")
 
-    print("\n           PlANES DE VACUNACION ACTIVOS \n")
-    
-    if len(vigentes) != 0:
-        ''' Se muestra en pantalla la informacion de los planes de vacunacion activos, con un formato de tabla hecho con
-            simbolos a partir del metodo format'''
-        
-        print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<15}+".format("", "", "", "", ""))
-        print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^15}|".format("Plan", "Edad Minima", "Edad Maxima", "Fecha Inicio",
-                                                                "Fecha Final"))
-        print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<15}+".format("", "", "", "", ""))
+        print("\n           PlANES DE VACUNACION FINALIZADOS O PENDIENTES POR INICIAR \n")
+        if len(pendientes) != 0:
+            ''' Se muestra en pantalla la informacion de los planes de vacunacion finalizados o que no han iniciado, con un formato de
+                tabla hecho con simbolos a partir del metodo format'''
+
+            print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<15}+".format("", "", "", "", ""))
+            print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^15}|".format("Plan", "Edad Minima", "Edad Maxima", "Fecha Inicio",
+                                                                    "Fecha Final"))
+            print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<15}+".format("", "", "", "", ""))
 
 
-        for idPlan, Emin, Emax, inicio, fin in vigentes:
-            print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^15}|".format(idPlan, Emin, Emax, inicio, fin))
-            print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<15}+".format("", "","", "", ""))
-    else:
-        print("No hay planes de vacunacion activos en este momento.")
-
-    print("\n           PlANES DE VACUNACION FINALIZADOS O PENDIENTES POR INICIAR \n")
-    if len(pendientes) != 0:
-        ''' Se muestra en pantalla la informacion de los planes de vacunacion finalizados o que no han iniciado, con un formato de
-            tabla hecho con simbolos a partir del metodo format'''
-        
-        print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<15}+".format("", "", "", "", ""))
-        print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^15}|".format("Plan", "Edad Minima", "Edad Maxima", "Fecha Inicio",
-                                                                "Fecha Final"))
-        print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<15}+".format("", "", "", "", ""))
-
-
-        for idPlan, Emin, Emax, inicio, fin in pendientes:
-            print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^15}|".format(idPlan, Emin, Emax, inicio, fin))
-            print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<15}+".format("", "","", "", ""))
-    else:
-        print("No hay mas planes de vacunacion en este momento.")
+            for idPlan, Emin, Emax, inicio, fin in pendientes:
+                print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^15}|".format(idPlan, Emin, Emax, inicio, fin))
+                print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<15}+".format("", "","", "", ""))
+        else:
+            print("No hay mas planes de vacunacion en este momento.")
         
         
 
