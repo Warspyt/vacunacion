@@ -1,5 +1,6 @@
 """ Se importan las librerias para el manejo de las bases de datos, las fechas, envio de correos
     electronicos"""
+import validaciones as vl
 from datetime import datetime
 from datetime import date
 from datetime import timedelta
@@ -64,55 +65,39 @@ class Agenda:
 
             ''' Se solicita individualmente el dia, mes, año, hora y minuto verificando a partir de un bucle
                 que los datos sean numericos y existan dentro del calendario y horario covencional'''
-            diaprog = input("Fecha de inicio del agendamiento de citas:\n\n- Dia de inicio: ")
-            while True:
-                if diaprog.isdigit() and 0 < int(diaprog) < 32:
-                    diaprog = diaprog.rjust(2, "0")
-                    break
-                else:
-                    diaprog = input("Escriba el dia de inicio en dos digitos: ")
-            mesprog = input("- Mes de inicio: ")
-            while True:
-                if mesprog.isdigit() and 0 < int(mesprog) < 13:
-                    mesprog = mesprog.rjust(2, "0")
-                    break
-                else:
-                    mesprog = input("Escriba el mes de inicio en numeros entre el 1 y 12: ")
-            anoprog = input("- año de inicio: ")
-            while True:
-                if anoprog.isdigit() and len(anoprog) == 4 and int(anoprog) > 2020:
-                    anoprog = anoprog.rjust(4)
-                    break
-                else:
-                    anoprog = input("Escriba el año de inicio en numeros AAAA: ")
-            hourprog = input("- Hora de inicio: ")
-            while True:
-                if hourprog.isdigit() and 0 < int(hourprog) < 25:
-                    hourprog = hourprog.rjust(2)
-                    break
-                else:
-                    hourprog = input("Escriba la hora de inicio en numeros entre el 1 y 24: ")
-            minprog = input("- minutos de inicio: ")
-            while True:
-                if minprog.isdigit() and 0 <= int(minprog) < 60:
-                    minprog = minprog.rjust(2)
-                    break
-                else:
-                    minprog = input("Escriba los minutos de inicio en numeros entre el 0 y 59: ")
+
+            diaprog = vl.Dato(input("Fecha de inicio del agendamiento de citas:\n\n- Dia de inicio: "))
+            while not diaprog.dia():
+                diaprog = vl.Dato(input("Escriba el dia de inicio en dos digitos: "))
+
+            mesprog = vl.Dato(input("- Mes de inicio: "))
+            while not mesprog.mes():
+                mesprog = vl.Dato(input("Escriba el mes de inicio en numeros entre el 1 y 12: "))
+                    
+            anoprog = vl.Dato(input("- año de inicio: "))
+            while not anoprog.anio(2020, 3000):
+                anoprog = vl.Dato(input("Escriba el año de inicio en numeros AAAA: "))
+
+            hourprog = vl.Dato(input("- Hora de inicio: "))
+            while not hourprog.hora():
+                hourprog = vl.Dato(input("Escriba la hora de inicio en numeros entre el 1 y 24: "))
+                
+            minprog = vl.Dato(input("- minutos de inicio: "))
+            while not minprog.minuto():
+                minprog = vl.Dato(input("Escriba los minutos de inicio en numeros entre el 0 y 59: "))
 
             ''' Usando el metodo strftime de la libreria datetime se guardan los valores ingresados por el
                 usuario en formato de fecha y hora (DD/MM/AAAA H:M)'''
-            fechaprog1 = datetime(int(anoprog), int(mesprog), int(diaprog), int(hourprog), int(minprog)).strftime(
-                "%Y/%m/%d %H:%M")
-            factual = datetime.now().strftime("%Y/%m/%d %H:%M")
+            fechaprog1 = vl.Dato(datetime(int(anoprog.variable), int(mesprog.variable), int(diaprog.variable), int(hourprog.variable), int(minprog.variable)).strftime(
+                "%Y/%m/%d %H:%M"))
 
             '''En caso de que no exista una agendacion de citas previa, se ignora la funcion que
                 guarda el ultimo registro'''
             if len(ultimoregistro) == 0:
-                ultimoreg = factual
+                ultimoreg = datetime.now().strftime("%Y/%m/%d %H:%M")
 
-            if fechaprog1 >= factual and fechaprog1 >= ultimoreg:
-                fechaprog = datetime(int(anoprog), int(mesprog), int(diaprog), int(hourprog), int(minprog)).strftime(
+            if fechaprog1.fecha(">") and fechaprog1.variable >= ultimoreg:
+                fechaprog = datetime(int(anoprog.variable), int(mesprog.variable), int(diaprog.variable), int(hourprog.variable), int(minprog.variable)).strftime(
                     "%d/%m/%Y %H:%M")
                 break
             else:
@@ -131,7 +116,7 @@ class Agenda:
         for ids in listado:
             llote = (ids[9]).split("/")
             venlote = datetime(int(llote[2]), int(llote[1]), int(llote[0])).strftime("%Y/%m/%d")
-            if venlote > fechaprog1 and ids[3] > ids[4] + ids[11]:
+            if venlote > fechaprog1.variable and ids[3] > ids[4] + ids[11]:
                 disponible = ids[3] - ids[4] - ids[11]
                 totalvacunas += disponible
                 lotesvigentes.append([ids[0], venlote, disponible])
@@ -160,7 +145,7 @@ class Agenda:
             venplan = datetime(int(lplan[2]), int(lplan[1]), int(lplan[0])).strftime("%Y/%m/%d")
             iplan = (ids[3]).split("/")
             iniplan = datetime(int(iplan[2]), int(iplan[1]), int(iplan[0])).strftime("%Y/%m/%d")
-            if venplan > fechaprog1 > iniplan:
+            if venplan > fechaprog1.variable > iniplan:
                 planesvigentes.append((ids[0], iniplan, venplan))
         planesvigentes.sort(key=lambda x: x[1])
 
@@ -235,10 +220,10 @@ class Agenda:
 
         ''' Se establece la variable con la primera fecha que se asignara y que ira cambiando con cada
             paciente agendado'''
-        if fechaprog1 < planesvigentes[0][1]:
+        if fechaprog1.variable < planesvigentes[0][1]:
             ultimafecha = planesvigentes[0][1]
         else:
-            ultimafecha = fechaprog1
+            ultimafecha = fechaprog1.variable
 
         ''' En base a la informacion guardada en contenedores sobre los lotes, planes de vacunacion y afiliados,
             se empiezan a asignar las citas, mientras sigan habiendo vacunas y cupos en los planes de vacunacion'''
@@ -299,7 +284,7 @@ class Agenda:
                             horaprogramada, fechaorden)
 
                         ''' Con el llamado a la funcion asignarvacuna se agenda la cita del paciente sobre el cual se esta iterando'''
-                        asignarvacuna(con, infcita)
+                        self.asignarvacuna(con, infcita)
 
                         ''' Funcion para enviar un correo electronico al paciente, notificandolo sobre la fecha y hora de
                             su cita para vacunarse, haciendo uso de la libreria smtplib'''
@@ -414,43 +399,40 @@ class Agenda:
         print("7  - Ciudad de vacunacion")
         print("8  - Vacuna")
         print("9  - Fecha de programacion y hora programada\n")
-        campo = input("Ingrese una opcion: ")
+        campo = vl.Dato(input("Ingrese una opcion: "))
 
         ''' A partir de un bucle que se rompe cuando la informacion es valida, se verifica que el valor ingresado
             sea numerico y este entre las opciones dadas que son los numeros del 1 al 9'''
-        while True:
-            if campo.isdigit() and 0 < int(campo) < 10:
-                break
-            else:
-                campo = input("Seleccione una opcion valida: ")
+        while not campo.TipoDatoNum() or not campo.rango(9):
+            campo = vl.Dato(input("Seleccione una opcion valida: "))
 
         ''' Con los condicionales if y elif, segun la opcion ingresada se guarda el campo por el que se ordenaran
             las citas agendadas en la variable order'''
-        if campo == "1":
+        if campo.variable == "1":
             order = "noid"
             guia = "IDENTIFICACION"
-        elif campo == "2":
+        elif campo.variable == "2":
             order = "nombre"
             guia = "NOMBRE"
-        elif campo == "3":
+        elif campo.variable == "3":
             order = "apellido"
             guia = "APELLIDO"
-        elif campo == "4":
+        elif campo.variable == "4":
             order = "direccion"
             guia = "DIRECCION"
-        elif campo == "5":
+        elif campo.variable == "5":
             order = "telefono"
             guia = "TELEFONO"
-        elif campo == "6":
+        elif campo.variable == "6":
             order = "email"
             guia = "CORREO"
-        elif campo == "7":
+        elif campo.variable == "7":
             order = "ciudadvacunacion"
             guia = "CIUDAD DE VACUNACION"
-        elif campo == "8":
+        elif campo.variable == "8":
             order = "fabricante"
             guia = "VACUNA"
-        elif campo == "9":
+        elif campo.variable == "9":
             order = "fechaorden"
             guia = "FECHA PROGRAMADA"
 
