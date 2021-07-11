@@ -7,12 +7,9 @@ import plan_vacunacion
 import ProgramacionVacunas as prgva
 
 """cada modulo tiene su propio menu, afiliacion, lote de vacunas,vacunacion y programacion vacunacion"""
-
-
 class conexion:
     def __init__(self):
         pass
-
     def sql_conexion(self):
         """ Se crea la conexion a la base de datos usando el metodo connect, creando el archivo en caso de que no exista y se verifica que
             no ocurra ningun error a partir de un try - except"""
@@ -22,11 +19,9 @@ class conexion:
         except Error:
             print(Error)
 
-
 class menu(conexion):
     def __init__(self):
         pass
-
     def menuafi(self):
         """Por medio de un bucle se verifica  la opcion seleccionada y en caso de no elegir una valida se le informara """
         while True:
@@ -40,8 +35,10 @@ class menu(conexion):
             option = input("Seleccione una opcion: ")
             if option == '1':
                 print('\n')
-                afiliado = afiliacion.Afiliado().leer_info()
-                afiliacion.Afiliado.insertar_tabla(con, afiliado)
+                #afiliado = afiliacion.leer_info()# quitar luego
+                
+                afiliado = afi.leer_info()
+                afi.insertar_tabla(con, afiliado)
             elif option == "2":
                 # Aca se se vacuna a la gente
                 afiliacion.vacunar(con)
@@ -56,6 +53,7 @@ class menu(conexion):
             else:
                 print("")
                 input("No has pulsado ninguna opción correcta...\npulsa una tecla para continuar")
+
 
     def menulote(self):
         while True:
@@ -77,6 +75,7 @@ class menu(conexion):
                 return
             else:
                 input("\nNo has pulsado ninguna opción correcta...\npulsa una tecla para continuar")
+
 
     def menuvac(self):
         while True:
@@ -101,6 +100,7 @@ class menu(conexion):
                 return
             else:
                 input("\nNo has pulsado ninguna opción correcta...\npulsa una tecla para continuar")
+
 
     def provac(self):
         while True:
@@ -137,9 +137,11 @@ class menu(conexion):
         global con
         global lt
         global prg
+        global afi
         con = op.sql_conexion()
-        lt = lv.lotes()
+        lt = lv.Lotes()
         prg = prgva.Agenda()
+        afi = afiliacion.Afiliado()
         
         afiliacion.creartable(con)
         lt.tabla_vacunas(con)
@@ -174,7 +176,6 @@ class menu(conexion):
                 break
             else:
                 input("\nNo has pulsado ninguna opción correcta...\npulsa una tecla para continuar")
-
 
 mn = menu()
 mn.mainmenu()
