@@ -91,11 +91,13 @@ class Menu(Conexion):
                 # Aca se crea el plan
                 #afiliado = afi.leer_info()
                 # afi.insertar_tabla(con, afiliado)
-                planv = plv.recibirPlan(con)
+                """planv = plv.recibirPlan(con)
                 try:
-                    plan_vacunacion.crearPlan(con, planv)
+                    plv.insertar_plan(con, planv)
                 except:
                     print("El plan de vacunacion no pudo ser creado.")
+                    # Aca se crea la agendacion de citas"""
+                plv.recibirPlan(con)
             elif option == '2':
                 # Aca se consulta el plan
                 plv.consultaplan(con)

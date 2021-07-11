@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="31656571-185a-4cde-8de1-7d5e1041d094" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/plan_vacunacion.py" beforeDir="false" afterPath="$PROJECT_DIR$/plan_vacunacion.py" afterDir="false" />
     </list>
@@ -478,7 +478,14 @@
       <option name="project" value="LOCAL" />
       <updated>1626028611265</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL-00044" summary="plan vacunacion update&#10;se cambia la  fecha de comparacion de 2020 a una dinamica usando now">
+      <created>1626030018533</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1626030018533</updated>
+    </task>
+    <option name="localTasksCounter" value="45" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -519,7 +526,8 @@
     <MESSAGE value="mail no  funcion validacion" />
     <MESSAGE value="afiliados ok" />
     <MESSAGE value="plan vacunacion update" />
-    <option name="LAST_COMMIT_MESSAGE" value="plan vacunacion update" />
+    <MESSAGE value="plan vacunacion update&#10;se cambia la  fecha de comparacion de 2020 a una dinamica usando now" />
+    <option name="LAST_COMMIT_MESSAGE" value="plan vacunacion update&#10;se cambia la  fecha de comparacion de 2020 a una dinamica usando now" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
