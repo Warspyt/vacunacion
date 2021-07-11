@@ -50,7 +50,7 @@ class Lotes:
 
         ''' A partir de un bucle que se rompe cuando la informacion es valida, se verifica que el valor ingresado
             sea numerico y este entre las opciones dadas que son los numeros del 1 al 7'''
-        while not op_fabricante.TipoDatoNum() or not op_fabricante.rango(7) :
+        while not op_fabricante.TipoDatoNum() or not op_fabricante.rango(7):
             op_fabricante = vl.Dato(input("Ingrese una opcion valida: "))
 
         ''' Con los condicionales if y else, segun la opcion ingresada se asignan los valores preestablecidos para
