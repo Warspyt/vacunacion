@@ -89,9 +89,11 @@ class Menu(Conexion):
             option = input("Seleccione una opcion: ")
             if option == '1':
                 # Aca se crea el plan
-                plan = plan_vacunacion.recibirPlan(con)
+                #afiliado = afi.leer_info()
+                # afi.insertar_tabla(con, afiliado)
+                planv = plv.recibirPlan(con)
                 try:
-                    plan_vacunacion.crearPlan(con, plan)
+                    plan_vacunacion.crearPlan(con, planv)
                 except:
                     print("El plan de vacunacion no pudo ser creado.")
             elif option == '2':
