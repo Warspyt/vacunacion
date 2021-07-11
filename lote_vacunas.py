@@ -186,12 +186,11 @@ class Lotes:
 
         ''' Se verifica que la fecha de vencimiento de cada lote sea mayor a la actual, a partir del iterador for
             que recorre cada lote de vacunas existente en la base de datos'''
-        factual = datetime.now().strftime("%Y/%m/%d")
 
         for ids in listado:
             llote = (ids[9]).split("/")
-            venlote = datetime(int(llote[2]), int(llote[1]), int(llote[0])).strftime("%Y/%m/%d")
-            if venlote > factual and ids[3] > ids[4]:
+            venlote = vl.Dato(datetime(int(llote[2]), int(llote[1]), int(llote[0])).strftime("%Y/%m/%d"))
+            if venlote.fecha(">") and ids[3] > ids[4]:
                 print("•", ids[0])
             datoslote.append(ids[0])
 
@@ -203,21 +202,18 @@ class Lotes:
 
         ''' Se solicita el numero del lote a consultar por medio de un bucle que se rompe cuando las condiciones son
             validas, verificando que el valor ingresado sea numerico y se encuentre dentro de la base de datos'''
-        c_lote = input("\nNumero de lote a consultar: ")
+        c_lote = vl.Dato(input("\nNumero de lote a consultar: "))
 
-        while True:
-            if c_lote.isdigit() and int(c_lote) in datoslote:
-                break
-            else:
-                c_lote = input("Ingrese un numero de lote valido: ")
+        while not c_lote.TipoDatoNum() or not vl.Dato(int(c_lote.variable)).existir(datoslote):
+            c_lote = vl.Dato(input("Ingrese un numero de lote valido: "))
 
         ''' Se extrae de la base de datos la informacion del lote indicado, haciendo uso del objeto cursor y el metodo
             execute que utiliza el SELECT dentro de los parametros'''
-        cursorObj.execute('SELECT * FROM LoteVacunas where nolote= ' + c_lote)
+        cursorObj.execute('SELECT * FROM LoteVacunas where nolote= ' + c_lote.variable)
         filas = cursorObj.fetchall()
         lfila = (filas[0][9]).split("/")
         venfila = datetime(int(lfila[2]), int(lfila[1]), int(lfila[0])).strftime("%Y/%m/%d")
-        if venfila < factual or filas[0][3] <= filas[0][4]:
+        if venlote.fecha("<") or filas[0][3] <= filas[0][4]:
             print("ESTE LOTE NO SE ENCUENTRA VIGENTE\n")
 
         ''' Se muestra en pantalla la informacion del lote con un formato de tabla hecho con simbolos a partir del
@@ -255,6 +251,3 @@ class Lotes:
                                                                                                                 "", ""))
         con.commit()
 
-
-#Lotes = Lotes()
-#Lotes.info_lote()
