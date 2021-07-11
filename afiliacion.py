@@ -380,6 +380,69 @@ class Afiliado:
 
 
 
+    def consulta(SELF, con):
+        cursorobj = con.cursor()
+        try:
+            # recorre la DB para verificar que no este vacia
+            cursorobj.execute('SELECT * FROM afiliados')
+            cursorobj.fetchall()[0]
+        except IndexError:
+
+            print("\nNo hay usuarios registrados en este momento.")
+            return
+
+        ident = input("Número de identificación: ")
+        lenid = str(ident)
+
+        if len(lenid) > 13:
+            print("El numero de identificacion no puede tener mas de 12  digitos.")
+            return
+        # Verifica que el id ingresado se encuentre en la base de datos
+        while True:
+            if ident.isdigit():
+                buscar = 'SELECT * FROM afiliados where id= ' + ident
+                cursorobj.execute(buscar)
+                afil_b = cursorobj.fetchall()
+                if len(afil_b) != 0:
+                    break
+                else:
+                    print("El id " + str(ident) + " no se encuentra en la base de datos")
+            ident = input("Ingrese un id valido: ")
+
+        # muestra la informacion del afiliado consultado
+
+        print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<12}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "",
+                                                                                                                 "", "", "",
+                                                                                                                 "", "", "",
+                                                                                                                 "", ""))
+        print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^12}|{:^25}|{:^20}|{:^10}|{:^10}|{:^15}|{:^10}|".format("Documento", "Nombre",
+                                                                                                      "Apellido",
+                                                                                                      "Direccion",
+                                                                                                      "Telefono", "Email",
+                                                                                                      "Ciudad",
+                                                                                                      "Nacimiento",
+                                                                                                      "Afiliacion",
+                                                                                                      "Desafiliacion",
+                                                                                                      "Vacunado"))
+        print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<12}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "",
+                                                                                                                 "", "", "",
+                                                                                                                 "", "", "",
+                                                                                                                 "", ""))
+        for idaf, nombre, apellido, direccion, telefono, email, ciudad, nacimiento, afiliacion, desafiliacion, vacunado in afil_b:
+            print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^12}|{:^25}|{:^20}|{:^10}|{:^10}|{:^15}|{:^10}|".format(idaf, nombre,
+                                                                                                          apellido,
+                                                                                                          direccion,
+                                                                                                          telefono, email,
+                                                                                                          ciudad,
+                                                                                                          nacimiento,
+                                                                                                          afiliacion,
+                                                                                                          desafiliacion,
+                                                                                                          vacunado))
+        print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<12}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "",
+                                                                                                                 "", "", "",
+                                                                                                                 "", "", "",
+                                                                                                                 "", ""))
+        con.commit()
 
 
 

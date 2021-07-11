@@ -44,10 +44,10 @@ class menu(conexion):
                 afi.vacunar(con)
             elif option == "3":
                 # Aca se consulta el afiliado
-                afiliacion.consulta(con)
+                afi.consulta(con)
             elif option == "4":
                 # Aca se desafilia el afiliado y queda con la fecha del momento
-                afiliacion.desafiliar(con)
+                afi.desafiliar(con)
             elif option == "5":
                 return
             else:
