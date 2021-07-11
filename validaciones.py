@@ -70,5 +70,12 @@ class Dato:
                 fecha = False
         return fecha
 
+    def existir(self, contenedor):
+        if self.variable in contenedor:
+            existe = True
+        else:
+            existe = False
+        return existe
+
 
         
