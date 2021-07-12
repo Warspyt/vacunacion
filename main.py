@@ -7,7 +7,7 @@ import plan_vacunacion as pl
 import ProgramacionVacunas as prgva
 
 """cada modulo tiene su propio menu, afiliacion, lote de vacunas,vacunacion y programacion vacunacion"""
-class conexion:
+class Conexion:
     def __init__(self):
         pass
     
@@ -20,7 +20,7 @@ class conexion:
         except Error:
             print(Error)
 
-class menu(conexion):
+class Menu(Conexion):
     def __init__(self):
         pass
     
@@ -129,7 +129,7 @@ class menu(conexion):
         """ Se crean todas las tablas necesarias de la base de datos para su
             manipulacion dentro del programa"""
         
-        op = menu()
+        op = Menu()
         
         global con
         global lt
@@ -178,5 +178,5 @@ class menu(conexion):
             else:
                 input("\nNo has pulsado ninguna opción correcta...\npulsa una tecla para continuar")
 
-mn = menu()
+mn = Menu()
 mn.mainmenu()
