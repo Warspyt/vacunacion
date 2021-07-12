@@ -217,7 +217,7 @@ class Lotes:
         self.cursorObj.execute('SELECT * FROM LoteVacunas where nolote= ' + c_lote.variable)
         filas = self.cursorObj.fetchall()
         lfila = (filas[0][9]).split("/")
-        venfila = datetime(int(lfila[2]), int(lfila[1]), int(lfila[0])).strftime("%Y/%m/%d")
+        venlote = datetime(int(lfila[2]), int(lfila[1]), int(lfila[0])).strftime("%Y/%m/%d")
         if venlote.fecha("<") or filas[0][3] <= filas[0][4]:
             print("ESTE LOTE NO SE ENCUENTRA VIGENTE\n")
 
