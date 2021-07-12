@@ -4,6 +4,7 @@ import validaciones as vl
 from datetime import datetime
 from datetime import date
 
+
 class Lotes:
     def __init__(self, con):
         self.conexion = con
@@ -24,7 +25,6 @@ class Lotes:
                           temperatura text, efectividad text, tiempoproteccion text, fechavencimiento text, imagen text, reserva integer)""")
         
         self.conexion.commit()
-
 
     ''' Funcion para guardar la informacion que se le solicita al usuario
         sobre un lote de vacunas que se creara'''
@@ -117,8 +117,8 @@ class Lotes:
         while not cantidadrecibida.TipoDatoNum() or not cantidadrecibida.longitud(6):
             cantidadrecibida = vl.Dato(input("Ingrese una cantidad valida: "))
 
-        cantidadusada = 0
-        reserva = 0
+        self.cantidadusada = 0
+        self.reserva = 0
 
         ''' Se pide la fecha de vencimiento por medio de un bucle que se rompe cuando se verifica que la fecha
             ingresada sea mayor a la fecha actual'''
@@ -155,14 +155,13 @@ class Lotes:
         if not imagen:
             imagen = self.imagen
 
-        print(imagen)#=============================
+        print(imagen)
         print("Funcion de imagen en desarrollo, proximamente mas funcional...")
 
         ''' Se guardan los datos del lote a crear en un contenedor de tipo tupla para su posterior uso'''
         lote = (nolote.variable, fabricante, tipovacuna, cantidadrecibida.variable, self.cantidadusada, dosisnecesarias, temperatura, efectividad,
                 tiempoproteccion, fechavencimiento, self.imagen, self.reserva)
         return lote
-
 
     ''' Funcion para crear un nuevo lote de vacunas, que toma como parametro la conexion a la
         base de datos y el contenedor tupla que almacena la informacion del nuevo lote'''
@@ -176,7 +175,6 @@ class Lotes:
                           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""", lote)
         
         self.conexion.commit()
-
 
     ''' Funcion para consultar la informacion de los lotes vigentes a la fecha, que toma como
         parametro la conexion con la base de datos del programa'''

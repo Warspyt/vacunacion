@@ -4,13 +4,15 @@ from sqlite3 import Error
 import afiliacion as af
 import lote_vacunas as lv
 import plan_vacunacion as pl
-import ProgramacionVacunas as prgva
+import programacionacunas as prgva
 
 """cada modulo tiene su propio menu, afiliacion, lote de vacunas,vacunacion y programacion vacunacion"""
+
+
 class Conexion:
     def __init__(self):
         pass
-    
+
     def sql_conexion(self):
         """ Se crea la conexion a la base de datos usando el metodo connect, creando el archivo en caso de que no exista y se verifica que
             no ocurra ningun error a partir de un try - except"""
@@ -20,10 +22,11 @@ class Conexion:
         except Error:
             print(Error)
 
+
 class Menu(Conexion):
     def __init__(self):
         pass
-    
+
     def menuafi(self):
         """Por medio de un bucle se verifica  la opcion seleccionada y en caso de no elegir una valida se le informara """
         while True:
@@ -54,7 +57,6 @@ class Menu(Conexion):
                 print("")
                 input("No has pulsado ninguna opción correcta...\npulsa una tecla para continuar")
 
-
     def menulote(self):
         while True:
             """Por medio de un bucle se verifica  la opcion seleccionada y en caso de no elegir una valida se le informara """
@@ -76,7 +78,6 @@ class Menu(Conexion):
             else:
                 input("\nNo has pulsado ninguna opción correcta...\npulsa una tecla para continuar")
 
-
     def menuvac(self):
         while True:
             """Por medio de un bucle se verifica  la opcion seleccionada y en caso de no elegir una valida se le informara """
@@ -97,7 +98,6 @@ class Menu(Conexion):
             else:
                 input("\nNo has pulsado ninguna opción correcta...\npulsa una tecla para continuar")
 
-
     def provac(self):
         while True:
             # Mostramos el menu
@@ -115,7 +115,7 @@ class Menu(Conexion):
             elif option == '2':
                 # Aca se consulta la agenda completa
                 prg.agenda()
-                
+
             elif option == "3":
                 # Aca se consulta la cita por identificacion del afiliado
                 prg.consulta_individual()
@@ -123,31 +123,30 @@ class Menu(Conexion):
                 return
             else:
                 input("\nNo has pulsado ninguna opción correcta...\npulsa una tecla para continuar")
-                
 
     def mainmenu(self):
         """ Se crean todas las tablas necesarias de la base de datos para su
             manipulacion dentro del programa"""
-        
+
         op = Menu()
-        
+
         global con
         global lt
         global prg
         global afi
         global plv
-        
+
         con = op.sql_conexion()
         lt = lv.Lotes(con)
         prg = prgva.Agenda(con)
         afi = af.Afiliado()
         plv = pl.Plan(con)
-        
+
         afi.tabla_afiliados(con)
         lt.tabla_vacunas()
         plv.tabla_plan()
         prg.tabla_prog()
-        
+
         """
         este es el menu principal apartir de este  se despliegan los submenus de cada modulo
         """
@@ -177,6 +176,7 @@ class Menu(Conexion):
                 break
             else:
                 input("\nNo has pulsado ninguna opción correcta...\npulsa una tecla para continuar")
+
 
 mn = Menu()
 mn.mainmenu()

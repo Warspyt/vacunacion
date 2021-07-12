@@ -14,8 +14,7 @@ class Plan:
         self.emin = ""
         self.emax = ""
 
-        
-    ''' Funcion para crear la tabla de los planes de vacunacion dentro de la base de datos del
+        ''' Funcion para crear la tabla de los planes de vacunacion dentro de la base de datos del
         programa, la cual toma como parametro la conexion de la misma'''
 
     def tabla_plan(self):
@@ -27,14 +26,13 @@ class Plan:
                           edadmax text, fechainicioplan text, fechafinalplan text)""")
         self.conexion.commit()
 
-
     ''' Funcion para consultar la informacion de los planes de vacunacion activos a la fecha,
         la cual toma como parametro la conexion con la base de datos del programa'''
 
     def consultaplan(self):
 
-        ''' Se extraen todos los planes de vacunacion de la base de datos del programa, con el objeto cursor y el
-            metodo execute que utiliza el SELECT como parametro '''
+        """ Se extraen todos los planes de vacunacion de la base de datos del programa, con el objeto cursor y el
+            metodo execute que utiliza el SELECT como parametro """
         compara = 'SELECT *FROM PlanVacunacion  '
         self.cursorObj.execute(compara)
         listado = self.cursorObj.fetchall()
@@ -174,7 +172,6 @@ class Plan:
                 print("La fecha de inicio no es valida: ")
         print("Fecha de inicio ingresada: " + fini)
 
-
         ''' Se pide la fecha de fin del plan por medio de un bucle que se rompe cuando se verifica que la fecha
             ingresada sea mayor a la fecha actual y a la fecha de inicio'''
 
@@ -205,7 +202,6 @@ class Plan:
                 print("La fecha de finalizacion no es valida: ")
         print("Fecha de finalizacion ingresada: " + ffin)
 
-
         ''' Se guardan los datos del plan de vacunacion a crear en un contenedor de tipo tupla para su
             posterior uso'''
         infoplan = (emin.variable, emax.variable, fini, ffin)
@@ -214,7 +210,6 @@ class Plan:
         self.insertar_Plan(infoplan)
 
         self.conexion.commit()
-
 
     ''' Funcion para crear un nuevo lote de vacunas, que toma como parametro la conexion a la
         base de datos y el contenedor tupla que almacena la informacion del nuevo plan de vacunacion'''
