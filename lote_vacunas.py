@@ -5,21 +5,25 @@ from datetime import datetime
 from datetime import date
 
 class Lotes:
-    def __init__(self):
-        pass
+    def __init__(self, con):
+        self.conexion = con
+        self.cursorObj = con.cursor()
+        self.cantidadusada = 0
+        self.imagen = "Imagen no disponible"
+        self.reserva = 0
 
     ''' Funcion para crear la tabla de los lotes de vacunas dentro de la base de datos del
         programa, la cual toma como parametro la conexion de la misma'''
-
-    def tabla_vacunas(self, con):
+        
+    def tabla_vacunas(self):
         """ Se crea una tabla para el lote de vacunas verificando que no exista aun, haciendo uso del objeto cursor
             y el metodo execute que utiliza el CREATE TABLE dentro de los parametros"""
-        cursorObj = con.cursor()
 
-        cursorObj.execute("""CREATE TABLE IF NOT EXISTS LoteVacunas(nolote integer PRIMARY KEY, fabricante text,
+        self.cursorObj.execute("""CREATE TABLE IF NOT EXISTS LoteVacunas(nolote integer PRIMARY KEY, fabricante text,
                           tipovacuna text, cantidadrecibida integer, cantidadusada integer, dosisnecesarias integer,
                           temperatura text, efectividad text, tiempoproteccion text, fechavencimiento text, imagen text, reserva integer)""")
-        con.commit()
+        
+        self.conexion.commit()
 
 
     ''' Funcion para guardar la informacion que se le solicita al usuario
@@ -110,7 +114,7 @@ class Lotes:
             validas, verificando que el valor ingresado sea numerico y tenga una longitud menor a 7 digitos'''
         cantidadrecibida = vl.Dato(input("Cantidad recibida: "))
 
-        while  not cantidadrecibida.TipoDatoNum() or not cantidadrecibida.longitud(6):
+        while not cantidadrecibida.TipoDatoNum() or not cantidadrecibida.longitud(6):
             cantidadrecibida = vl.Dato(input("Ingrese una cantidad valida: "))
 
         cantidadusada = 0
@@ -148,39 +152,42 @@ class Lotes:
         ''' Se solicita al usuario la ruta de una imagen de la vacuna, que posteriormente sera incluida
             dentro de la interfaz grafica del programa'''
         imagen = input("Ingrese la ruta de la imagen de una vacuna: ")
+        if not imagen:
+            imagen = self.imagen
+
+        print(imagen)#=============================
         print("Funcion de imagen en desarrollo, proximamente mas funcional...")
 
         ''' Se guardan los datos del lote a crear en un contenedor de tipo tupla para su posterior uso'''
-        lote = (nolote.variable, fabricante, tipovacuna, cantidadrecibida.variable, cantidadusada, dosisnecesarias, temperatura, efectividad,
-                tiempoproteccion, fechavencimiento, imagen, reserva)
+        lote = (nolote.variable, fabricante, tipovacuna, cantidadrecibida.variable, self.cantidadusada, dosisnecesarias, temperatura, efectividad,
+                tiempoproteccion, fechavencimiento, self.imagen, self.reserva)
         return lote
 
 
     ''' Funcion para crear un nuevo lote de vacunas, que toma como parametro la conexion a la
         base de datos y el contenedor tupla que almacena la informacion del nuevo lote'''
 
-    def crear_lote(self, con, lote):
+    def crear_lote(self, lote):
         """ Se crea un nuevo lote de vacunas con la informacion recolectada del usuario, haciendo uso del
             objeto cursor y el metodo execute que utiliza el INSERT INTO dentro de los parametros"""
-        cursorObj = con.cursor()
-        cursorObj.execute("""INSERT INTO LoteVacunas(nolote, fabricante, tipovacuna,
+        self.cursorObj.execute("""INSERT INTO LoteVacunas(nolote, fabricante, tipovacuna,
                           cantidadrecibida, cantidadusada, dosisnecesarias, temperatura, efectividad,
                           tiempoproteccion, fechavencimiento, imagen, reserva)
                           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""", lote)
-        con.commit()
+        
+        self.conexion.commit()
 
 
     ''' Funcion para consultar la informacion de los lotes vigentes a la fecha, que toma como
         parametro la conexion con la base de datos del programa'''
 
-    def consultar_lote(self, con):
+    def consultar_lote(self):
         """ Se muestran los lotes existentes en la base de datos que a la fecha tienen vigencia, haciendo uso
             del objeto cursor y el metodo execute que utiliza el SELECT dentro de los parametros"""
-        cursorObj = con.cursor()
 
         print("\n           LOTES VIGENTES\n")
-        cursorObj.execute('SELECT * FROM LoteVacunas')
-        listado = cursorObj.fetchall()
+        self.cursorObj.execute('SELECT * FROM LoteVacunas')
+        listado = self.cursorObj.fetchall()
 
         datoslote = []
 
@@ -209,8 +216,8 @@ class Lotes:
 
         ''' Se extrae de la base de datos la informacion del lote indicado, haciendo uso del objeto cursor y el metodo
             execute que utiliza el SELECT dentro de los parametros'''
-        cursorObj.execute('SELECT * FROM LoteVacunas where nolote= ' + c_lote.variable)
-        filas = cursorObj.fetchall()
+        self.cursorObj.execute('SELECT * FROM LoteVacunas where nolote= ' + c_lote.variable)
+        filas = self.cursorObj.fetchall()
         lfila = (filas[0][9]).split("/")
         venfila = datetime(int(lfila[2]), int(lfila[1]), int(lfila[0])).strftime("%Y/%m/%d")
         if venlote.fecha("<") or filas[0][3] <= filas[0][4]:
@@ -249,5 +256,4 @@ class Lotes:
                                                                                                                 "", "", "",
                                                                                                                 "", "", "",
                                                                                                                 "", ""))
-        con.commit()
-
+        self.conexion.commit()
