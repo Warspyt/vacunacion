@@ -31,7 +31,7 @@ class Dato:
             dentro = True
         else:
             dentro = False
-        return (dentro, self.variable)
+        return dentro
     
     def dia(self):
         if self.variable.isdigit() and 0 < int(self.variable) < 32:
@@ -79,8 +79,18 @@ class Dato:
                 fecha = True
             else:
                 fecha = False
+        elif indicador == "<=":
+            if self.variable <= factual:
+                fecha = True
+            else:
+                fecha = False
         elif indicador == ">":
             if self.variable > factual:
+                fecha = True
+            else:
+                fecha = False
+        elif indicador == ">=":
+            if self.variable >= factual:
                 fecha = True
             else:
                 fecha = False
