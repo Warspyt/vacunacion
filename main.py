@@ -4,15 +4,13 @@ from sqlite3 import Error
 import afiliacion as af
 import lote_vacunas as lv
 import plan_vacunacion as pl
-import programacionvacunas as prgva
+import ProgramacionVacunas as prgva
 
 """cada modulo tiene su propio menu, afiliacion, lote de vacunas,vacunacion y programacion vacunacion"""
-
-
-class Conexion:
+class conexion:
     def __init__(self):
         pass
-
+    
     def sql_conexion(self):
         """ Se crea la conexion a la base de datos usando el metodo connect, creando el archivo en caso de que no exista y se verifica que
             no ocurra ningun error a partir de un try - except"""
@@ -22,11 +20,10 @@ class Conexion:
         except Error:
             print(Error)
 
-
-class Menu(Conexion):
+class menu(conexion):
     def __init__(self):
         pass
-
+    
     def menuafi(self):
         """Por medio de un bucle se verifica  la opcion seleccionada y en caso de no elegir una valida se le informara """
         while True:
@@ -57,6 +54,7 @@ class Menu(Conexion):
                 print("")
                 input("No has pulsado ninguna opción correcta...\npulsa una tecla para continuar")
 
+
     def menulote(self):
         while True:
             """Por medio de un bucle se verifica  la opcion seleccionada y en caso de no elegir una valida se le informara """
@@ -69,14 +67,15 @@ class Menu(Conexion):
             if option == "1":
                 # Aca se crea el lote
                 lote = lt.info_lote()
-                lt.crear_lote(con, lote)
+                lt.crear_lote(lote)
             elif option == "2":
                 # Aca se consulta el lote
-                lt.consultar_lote(con)
+                lt.consultar_lote()
             elif option == "3":
                 return
             else:
                 input("\nNo has pulsado ninguna opción correcta...\npulsa una tecla para continuar")
+
 
     def menuvac(self):
         while True:
@@ -89,14 +88,15 @@ class Menu(Conexion):
             option = input("Seleccione una opcion: ")
             if option == '1':
                 # Aca se crea el plan
-                plv.recibirPlan(con)
+                plv.recibirPlan()
             elif option == '2':
                 # Aca se consulta el plan
-                plv.consultaplan(con)
+                plv.consultaplan()
             elif option == "3":
                 return
             else:
                 input("\nNo has pulsado ninguna opción correcta...\npulsa una tecla para continuar")
+
 
     def provac(self):
         while True:
@@ -110,40 +110,44 @@ class Menu(Conexion):
             option = input("Seleccione una opcion: ")
             if option == '1':
                 # Aca se crea la agendacion de citas
-                prg.infoCita(con)
+                prg.infoCita()
 
             elif option == '2':
                 # Aca se consulta la agenda completa
-                prg.agenda(con)
+                prg.agenda()
                 
             elif option == "3":
                 # Aca se consulta la cita por identificacion del afiliado
-                prg.consulta_individual(con)
+                prg.consulta_individual()
             elif option == "4":
                 return
             else:
                 input("\nNo has pulsado ninguna opción correcta...\npulsa una tecla para continuar")
+                
 
     def mainmenu(self):
         """ Se crean todas las tablas necesarias de la base de datos para su
             manipulacion dentro del programa"""
         
-        op = Menu()
+        op = menu()
+        
         global con
         global lt
         global prg
         global afi
         global plv
+        
         con = op.sql_conexion()
-        lt = lv.Lotes()
-        prg = prgva.Agenda()
+        lt = lv.Lotes(con)
+        prg = prgva.Agenda(con)
         afi = af.Afiliado()
-        plv = pl.Plan()
+        plv = pl.Plan(con)
         
         afi.tabla_afiliados(con)
-        lt.tabla_vacunas(con)
-        plv.tabla_plan(con)
-        prg.tabla_prog(con)
+        lt.tabla_vacunas()
+        plv.tabla_plan()
+        prg.tabla_prog()
+        
         """
         este es el menu principal apartir de este  se despliegan los submenus de cada modulo
         """
@@ -174,6 +178,5 @@ class Menu(Conexion):
             else:
                 input("\nNo has pulsado ninguna opción correcta...\npulsa una tecla para continuar")
 
-
-mn = Menu()
+mn = menu()
 mn.mainmenu()
