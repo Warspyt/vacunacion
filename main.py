@@ -4,7 +4,7 @@ from sqlite3 import Error
 import afiliacion as af
 import lote_vacunas as lv
 import plan_vacunacion as pl
-import ProgramacionVacunas as prgva
+import programacionvacunas as prgva
 
 """cada modulo tiene su propio menu, afiliacion, lote de vacunas,vacunacion y programacion vacunacion"""
 class Conexion:
@@ -39,13 +39,13 @@ class Menu(Conexion):
                 afi.insertar_tabla(con, afiliado)
             elif option == "2":
                 # Aca se se vacuna a la gente
-                afi.vacunar(con)
+                afi.vacunar()
             elif option == "3":
                 # Aca se consulta el afiliado
-                afi.consulta(con)
+                afi.consulta()
             elif option == "4":
                 # Aca se desafilia el afiliado y queda con la fecha del momento
-                afi.desafiliar(con)
+                afi.desafiliar()
             elif option == "5":
                 return
             else:
@@ -135,10 +135,10 @@ class Menu(Conexion):
         con = self.sql_conexion()
         lt = lv.Lotes(con)
         prg = prgva.Agenda(con)
-        afi = af.Afiliado()
+        afi = af.Afiliado(con)
         plv = pl.Plan(con)
         
-        afi.tabla_afiliados(con)
+        afi.tabla_afiliados()
         lt._Lotes__tabla_vacunas()
         plv._Plan__tabla_plan()
         prg._Agenda__tabla_prog()

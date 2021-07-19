@@ -14,7 +14,7 @@ class LoteVacunas:
         self.__cantidadrecibida = 0
         self.__cantidadusada = 0
         self.__dosisnecesarias = "informacion no disponible"
-        self.__temperatura =  "informacion no disponible"
+        self.__temperatura = "informacion no disponible"
         self.__efectividad = "informacion no disponible"
         self.__tiempoproteccion = "informacion no disponible"
         self.__fechavencimiento = "informacion no disponible"
@@ -107,10 +107,11 @@ class LoteVacunas:
     def getreserva(self):
         return self.__reserva
 
+
 class Lotes(LoteVacunas):
 
-    ''' Funcion para crear la tabla de los lotes de vacunas dentro de la base de datos del
-        programa, la cual toma como parametro la conexion de la misma'''
+    """ Funcion para crear la tabla de los lotes de vacunas dentro de la base de datos del
+        programa, la cual toma como parametro la conexion de la misma"""
         
     def __tabla_vacunas(self):
         """ Se crea una tabla para el lote de vacunas verificando que no exista aun, haciendo uso del objeto cursor
@@ -122,7 +123,6 @@ class Lotes(LoteVacunas):
         
         self.getconexion().commit()
 
-
     ''' Funcion para guardar la informacion que se le solicita al usuario
         sobre un lote de vacunas que se creara'''
 
@@ -132,7 +132,6 @@ class Lotes(LoteVacunas):
             sea menor a 13 digitos"""
         print("Ingrese la informacion del lote:\n")
 
-        
         self.setnolote(vl.Dato(input("Numero de lote: ")))
 
         while not self.getnolote().TipoDatoNum() or not self.getnolote().longitud(12):
@@ -215,7 +214,6 @@ class Lotes(LoteVacunas):
         while not self.getcantidadrecibida().TipoDatoNum() or not self.getcantidadrecibida().longitud(6):
             self.setcantidadrecibida(vl.Dato(input("Ingrese una cantidad valida: ")))
 
-
         ''' Se pide la fecha de vencimiento por medio de un bucle que se rompe cuando se verifica que la fecha
             ingresada sea mayor a la fecha actual'''
         while True:
@@ -264,7 +262,6 @@ class Lotes(LoteVacunas):
         except:
             print("\nVerifique la informacion y el numero de lote ingresado.\n")
 
-
     ''' Funcion para crear un nuevo lote de vacunas, que toma como parametro la conexion a la
         base de datos y el contenedor tupla que almacena la informacion del nuevo lote'''
 
@@ -277,7 +274,6 @@ class Lotes(LoteVacunas):
                           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""", lote)
         
         self.getconexion().commit()
-
 
     ''' Funcion para consultar la informacion de los lotes vigentes a la fecha, que toma como
         parametro la conexion con la base de datos del programa'''

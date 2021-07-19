@@ -2,13 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="31656571-185a-4cde-8de1-7d5e1041d094" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_7_10_2021_6_29_p__m__[Default_Changelist]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_7_10_2021_6_29_p__m___Default_Changelist_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_7_10_2021_6_49_p__m__[Default_Changelist]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_7_10_2021_6_49_p__m___Default_Changelist_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/afiliacion.py" beforeDir="false" afterPath="$PROJECT_DIR$/afiliacion.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/programacionacunas.py" beforeDir="false" afterPath="$PROJECT_DIR$/programacionvacunas.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lote_vacunas.py" beforeDir="false" afterPath="$PROJECT_DIR$/lote_vacunas.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sisgenvac.db" beforeDir="false" afterPath="$PROJECT_DIR$/sisgenvac.db" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -187,13 +184,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1618686272546</updated>
-    </task>
-    <task id="LOCAL-00001" summary="cambio  desafiliacion">
-      <created>1619761229720</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1619761229720</updated>
     </task>
     <task id="LOCAL-00002" summary="cambio  desafiliacion&#10;menu  corregido">
       <created>1619761304664</created>
@@ -531,7 +521,14 @@
       <option name="project" value="LOCAL" />
       <updated>1626132968360</updated>
     </task>
-    <option name="localTasksCounter" value="50" />
+    <task id="LOCAL-00050" summary="set y get afiliado">
+      <created>1626662650722</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1626662650723</updated>
+    </task>
+    <option name="localTasksCounter" value="51" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -548,7 +545,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Observacion de plan de vacunacion" />
     <MESSAGE value="rescate  viernes" />
     <MESSAGE value="update validacion y errores peques" />
     <MESSAGE value="validaciones" />
@@ -573,6 +569,7 @@
     <MESSAGE value="plan vacunacion update&#10;se cambia la  fecha de comparacion de 2020 a una dinamica usando now" />
     <MESSAGE value="plan de vacunacion finalizado" />
     <MESSAGE value="fix espacios y otros" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix espacios y otros" />
+    <MESSAGE value="set y get afiliado" />
+    <option name="LAST_COMMIT_MESSAGE" value="set y get afiliado" />
   </component>
 </project>

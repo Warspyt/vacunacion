@@ -15,8 +15,9 @@ import re
 
 
 class Afiliado:
-    def __init__(self):
-
+    def __init__(self, con):
+        self.__conexion = con
+        self.__cursorObj = con.cursor()
         self.__ident = ""
         self.__nombre = ""
         self.__apellido = ""
@@ -285,38 +286,38 @@ class Afiliado:
             objeto cursor y el metodo execute que utiliza el INSERT INTO dentro de los parametros
             """
 
-        cursorobj = con.cursor()
+
         try:
-            cursorobj.execute('''INSERT INTO afiliados (id ,nombre,apellidos ,direccion,telefono ,email, ciudad ,nacimiento,
+            self.getcursorObj().execute('''INSERT INTO afiliados (id ,nombre,apellidos ,direccion,telefono ,email, ciudad ,nacimiento,
             afiliacion,desafiliacion,vacunado) VALUES(?, ?, ?, ?, ?,?,?, ?, ?, ?,?)''', datos)
-            con.commit()
+            self.getconexion().commit()
         except OperationalError:
             print("\nVerifique la informacion ingresada.")
             return
 
-    def tabla_afiliados(self, con):
+    def tabla_afiliados(self):
         """
                  Se crea el objeto de conexión.
                  El objeto cursor se crea utilizando el objeto de conexión
                  se ejecuta el método execute con la consulta CREATE TABLE como parámetro         """
-        cursorobj = con.cursor()
-        cursorobj.execute("CREATE TABLE IF NOT EXISTS afiliados(id integer PRIMARY KEY,nombre text,apellidos text,"
+
+        self.getcursorObj().execute("CREATE TABLE IF NOT EXISTS afiliados(id integer PRIMARY KEY,nombre text,apellidos text,"
                           "direccion text,telefono integer,email text, ciudad text,nacimiento text,afiliacion text,"
                           "desafiliacion text,vacunado text)")
-        con.commit()
+        self.getconexion().commit()
     """
              por medio del modulo re busca  concidencias de expresiones regulares para validar los caracteres  
              y formato del  correo         """
 
-    def vacunar(self, con):
+    def vacunar(self):
         """ Funcion que se utiliza para operar en la base de datos"""
-        cursorobj = con.cursor()
+
         try:
             ''' se selecciona en la  DB los registros que  no estan vacunadosy no estan desafiliados
                 en caso de no encontrar  que los afiliados esten vacunados y desafiliados nos indicara que no hay 
                 a quien vacunar'''
-            cursorobj.execute('SELECT * FROM afiliados where vacunado = "N" AND desafiliacion = " "')
-            cursorobj.fetchall()[0]
+            self.getcursorObj().execute('SELECT * FROM afiliados where vacunado = "N" AND desafiliacion = " "')
+            self.getcursorObj().fetchall()[0]
         except IndexError:
             print("\nNo hay usuarios que no se encuentren vacunados en este momento.")
             return
@@ -326,8 +327,8 @@ class Afiliado:
         while True:
             if ident.isdigit() and len(ident) < 13:
                 buscar = 'SELECT * FROM afiliados where id= ' + ident + ' AND desafiliacion = " "'
-                cursorobj.execute(buscar)
-                afil_b = cursorobj.fetchall()
+                self.getcursorObj().execute(buscar)
+                afil_b = self.getcursorObj().fetchall()
                 if len(afil_b) != 0:
                     # Verificar que el afiliado no este vacunado
                     if afil_b[0][10] == 'S':
@@ -350,15 +351,15 @@ class Afiliado:
         if option == '1':
             # se hace el update del afiliado en el campo vacunado con un print informando
             sql = 'SELECT vacunado FROM afiliados WHERE id =' + vacunado
-            cursorobj.execute(sql)
-            registros = cursorobj.fetchall()
+            self.getcursorObj().execute(sql)
+            registros = self.getcursorObj().fetchall()
 
             if 'S' not in registros[0]:
                 actualizar = 'update afiliados SET vacunado = "S" where id =' + vacunado
 
-                cursorobj.execute(actualizar)
+                self.getcursorObj().execute(actualizar)
                 print("El afiliado ", vacunado, "fue vacunado")
-                con.commit()
+                self.getconexion().commit()
 
             else:
                 print(" El afiliado ya se encuentra vacunado")
@@ -369,14 +370,14 @@ class Afiliado:
             print("")
             input("No has pulsado ninguna opción correcta...\npulsa una tecla para continuar")
 
-    def desafiliar(self, con):
+    def desafiliar(self):
         """ Funcion que se utiliza para operar en la base de datos"""
-        cursorobj = con.cursor()
+
 
         try:
             # recorremos la DB  en busqueda de registros sin desafiliacion
-            cursorobj.execute('SELECT * FROM afiliados where desafiliacion = " "')
-            cursorobj.fetchall()[0]
+            self.getcursorObj().execute('SELECT * FROM afiliados where desafiliacion = " "')
+            self.getcursorObj().fetchall()[0]
         except IndexError:
             print("\nNo hay usuarios registrados en este momento.")
             return
@@ -386,8 +387,8 @@ class Afiliado:
         while True:
             if desafiliado.isdigit() and len(desafiliado) < 13:
                 buscar = 'SELECT * FROM afiliados where id= ' + desafiliado + ' AND desafiliacion = " "'
-                cursorobj.execute(buscar)
-                afil_b = cursorobj.fetchall()
+                self.getcursorObj().execute(buscar)
+                afil_b = self.getcursorObj().fetchall()
                 if len(afil_b) != 0:
                     break
                 else:
@@ -404,9 +405,9 @@ class Afiliado:
         desafiliacion = dia + "/" + mes + "/" + ano
         print("la fecha de desafiliacion es: ", desafiliacion)
         actualizar = 'update afiliados SET desafiliacion = (?)  where id=(?)'
-        cursorobj.execute(actualizar, (desafiliacion, desafiliado))
+        self.getcursorObj().execute(actualizar, (desafiliacion, desafiliado))
         print("El afiliado ", desafiliado, "fue desafiliado")
-        con.commit()
+        self.getconexion().commit()
 
     ''' Funcion para consultar la informacion de los afiliados,
         la cual toma como parametro la conexion con la base de datos del programa'''
