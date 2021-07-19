@@ -412,12 +412,12 @@ class Afiliado:
     ''' Funcion para consultar la informacion de los afiliados,
         la cual toma como parametro la conexion con la base de datos del programa'''
 
-    def consulta(self, con):
-        cursorobj = con.cursor()
+    def consulta(self):
+
         try:
             # recorre la DB para verificar que no este vacia
-            cursorobj.execute('SELECT * FROM afiliados')
-            cursorobj.fetchall()[0]
+            self.getcursorObj().execute('SELECT * FROM afiliados')
+            self.getcursorObj().fetchall()[0]
         except IndexError:
 
             print("\nNo hay usuarios registrados en este momento.")
@@ -433,8 +433,8 @@ class Afiliado:
         while True:
             if ident.isdigit():
                 buscar = 'SELECT * FROM afiliados where id= ' + ident
-                cursorobj.execute(buscar)
-                afil_b = cursorobj.fetchall()
+                self.getcursorObj().execute(buscar)
+                afil_b = self.getcursorObj().fetchall()
                 if len(afil_b) != 0:
                     break
                 else:
@@ -474,7 +474,7 @@ class Afiliado:
                                                                                                                  "", "", "",
                                                                                                                  "", "", "",
                                                                                                                  "", ""))
-        con.commit()
+        self.getconexion().commit()
 
     def es_correo_valido(self, email):
         # funcion valida el formato del correo
