@@ -1,12 +1,15 @@
-""" Se importan los dintintos modulos que componene nuestro programa"""
+""" Se importan los dintintos modulos que componene nuestro programa, que son afiliacion, lote de vacunas,
+    plan de vacunacion y programacion. Y se importa la libreria sqlite3 para trabajar con la base de datos"""
 import sqlite3
 from sqlite3 import Error
 import afiliacion as af
 import lote_vacunas as lv
 import plan_vacunacion as pl
-import programacionvacunas as prgva
+import ProgramacionVacunas as prgva
 
 """cada modulo tiene su propio menu, afiliacion, lote de vacunas,vacunacion y programacion vacunacion"""
+
+"""Clase para manejar una conexion con la base de datos"""
 class Conexion:
     
     def sql_conexion(self):
@@ -18,6 +21,7 @@ class Conexion:
         except Error:
             print(Error)
 
+"""Clase para el manejo del modulo menu, que hereda de la clase conexxion"""
 class Menu(Conexion):
     def __init__(self):
         pass
@@ -124,8 +128,9 @@ class Menu(Conexion):
 
     def mainmenu(self):
         """ Se crean todas las tablas necesarias de la base de datos para su
-            manipulacion dentro del programa"""
-        
+            manipulacion dentro del programa a partir de los objetos de cada modulo
+            (afiliados, lotes, planes y programacion)"""
+
         global con
         global lt
         global prg
@@ -173,5 +178,6 @@ class Menu(Conexion):
             else:
                 input("\nNo has pulsado ninguna opción correcta...\npulsa una tecla para continuar")
 
+"""Se crea un objeto del modulo menu y se inicia"""
 mn = Menu()
 mn.mainmenu()
