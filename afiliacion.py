@@ -17,17 +17,107 @@ import re
 class Afiliado:
     def __init__(self):
 
-        self.ident = ""
-        self.nombre = ""
-        self.apellido = ""
-        self.direccion = ""
-        self.telefono = ""
-        self.email = ""
-        self.ciudad = ""
-        self.nacimiento = ""
-        self.afiliacion = ""
-        self.desafiliacion = ""
-        self.vacunado = ""
+        self.__ident = ""
+        self.__nombre = ""
+        self.__apellido = ""
+        self.__direccion = ""
+        self.__telefono = ""
+        self.__email = ""
+        self.__ciudad = ""
+        self.__nacimiento = ""
+        self.__afiliacion = ""
+        self.__desafiliacion = ""
+        self.__vacunado = ""
+
+    """ Acceso privado al cursor de la db"""
+
+    def getcursorObj(self):
+        return self.__cursorObj
+    def getconexion(self):
+        return self.__conexion
+    """ Acceso privado al numero de identificacion"""
+    def setident(self, ident):
+        self.__ident = ident
+
+    def getident(self):
+        return self.__ident
+    """ Acceso privado al nombre"""
+    def setnombre(self, nombre):
+        self.__nombre = nombre
+
+    def getnombre(self):
+        return self.__nombre
+
+    """ Acceso privado al apellido"""
+    def getapellido(self):
+        return self.__apellido
+
+    def getapellido(self):
+        return self.__apellido
+
+    """ Acceso privado al direccion"""
+
+    def setdireccion(self, direccion):
+        self.__direccion = direccion
+
+    def getdireccion(self):
+        return self.__direccion
+
+    """ Acceso privado al telefono"""
+
+    def settelefono(self, telefono):
+        self.__telefono = telefono
+
+    def gettelefono(self):
+        return self.__telefono
+
+    """ Acceso privado al email"""
+
+    def setemail(self, email):
+        self.__email = email
+
+    def getemail(self):
+        return self.__email
+
+    """ Acceso privado ciudad"""
+
+    def setciudad(self, ciudad):
+        self.__ciudad = ciudad
+
+    def getciudad(self):
+        return self.__ciudad
+
+    """ Acceso privado al nacimiento"""
+
+    def setnacimiento(self, nacimiento):
+        self.__nacimiento = nacimiento
+
+    def getnacimiento(self):
+        return self.__nacimiento
+
+    """ Acceso privado al afiliacion"""
+
+    def setafiliacion(self, afiliacion):
+        self.__afiliacion = afiliacion
+
+    def getafiliacion(self):
+        return self.__afiliacion
+    """ Acceso privado al desafiliacion"""
+
+    def setdesafiliacion(self, desafiliacion):
+        self.__desafiliacion = desafiliacion
+
+    def getdesafiliacion(self):
+        return self.__desafiliacion
+    """ Acceso privado al vacunado"""
+
+    def setvacunado(self, vacunado):
+        self.__vacunado = vacunado
+
+    def getvacunado(self):
+        return self.__vacunado
+
+
 
     def leer_info(self):
 
