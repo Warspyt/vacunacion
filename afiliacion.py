@@ -6,7 +6,6 @@ import sqlite3
 from sqlite3 import Error
 import re
 
-
 """def VerTipDatoAlpha(self):
     if dato.isalpha() == false:
         tipo = "alfabetico"
@@ -37,13 +36,17 @@ class Afiliado:
 
     def getconexion(self):
         return self.__conexion
+
     """ Acceso privado al numero de identificacion"""
+
     def setident(self, ident):
         self.__ident = ident
 
     def getident(self):
         return self.__ident
+
     """ Acceso privado al nombre"""
+
     def setnombre(self, nombre):
         self.__nombre = nombre
 
@@ -51,7 +54,8 @@ class Afiliado:
         return self.__nombre
 
     """ Acceso privado al apellido"""
-    def setapellido(self):
+
+    def setapellido(self, apellido):
         return self.__apellido
 
     def getapellido(self):
@@ -104,6 +108,7 @@ class Afiliado:
 
     def getafiliacion(self):
         return self.__afiliacion
+
     """ Acceso privado al desafiliacion"""
 
     def setdesafiliacion(self, desafiliacion):
@@ -111,6 +116,7 @@ class Afiliado:
 
     def getdesafiliacion(self):
         return self.__desafiliacion
+
     """ Acceso privado al vacunado"""
 
     def setvacunado(self, vacunado):
@@ -128,8 +134,8 @@ class Afiliado:
             """ Por medio de un bucle se verifica que el dato ingresado para la identificacion sea valor numerico
                     y una longitud  max de de 13 caracteres"""
             try:
-                ident = int(input("Número de identificación: "))
-                lenid = str(ident)
+                self.setident(int(input("Número de identificación: ")))
+                lenid = str(self.getident())
 
                 if len(lenid) > 13:
                     print("El numero de identificacion no puede tener mas de 12  digitos.")
@@ -145,9 +151,9 @@ class Afiliado:
             ''' Por medio de un bucle se verifica que el dato ingresado para el nombre sea valor un caracter alfabetico
                             y una longitud  max de de 20 caracteres'''
             # mensaje para que el usuario sepa que le solicitamos el nombre
-            nombre = (input("Nombre: "))
-            name = (nombre.replace(" ", "")).isalpha()
-            nombre = nombre.ljust(20)
+            self.setnombre(input("Nombre: "))
+            name = (self.getnombre().replace(" ", "")).isalpha()
+            nombre = self.getnombre().ljust(20)
             if not name or len(nombre) > 20:
                 name = False
                 print("\nEscriba un Nombre Valido")
@@ -158,9 +164,9 @@ class Afiliado:
             ''' Por medio de un bucle se verifica que el dato ingresado para el apellido sea valor un caracter alfabetico
                                     y una longitud  max de de 20 caracteres'''
             # mensaje para que el usuario sepa que le solicitamos el apellido
-            apellido = (input("Apellido: "))
-            lastname = (apellido.replace(" ", "")).isalpha()
-            apellido = apellido.ljust(20)
+            self.setapellido(input("Apellido: "))
+            lastname = (self.getapellido().replace(" ", "")).isalpha()
+            apellido = self.getapellido().ljust(20)
             if not lastname or len(apellido) > 20:
                 lastname = False
                 print("\nEscriba un Apellido Valido")
@@ -172,12 +178,12 @@ class Afiliado:
                                     y una longitud  max de de 20 caracteres, se usa un diccionario para remplazar
                                     los  simbolos y poder realizar la verificacion de la cadena'''
             # mensaje para que el usuario sepa que le solicitamos la direccion y validamso sea alfa numerica isalmun
-            direccion = (input("Direccion: "))
+            self.setdireccion(input("Direccion: "))
             # adress = (direccion.replace(" ", "")).isalnum()
             dictionary = {'#': "", ' ': '', '/': "", '-': ""}
-            transtable = direccion.maketrans(dictionary)
-            adress = direccion.translate(transtable)
-            direccion = direccion.ljust(20)
+            transtable = self.getdireccion().maketrans(dictionary)
+            adress = self.getdireccion().translate(transtable)
+            direccion = self.getdireccion().ljust(20)
             if not adress or len(direccion) > 20:
                 adress = False
                 print("\nEscriba una Direccion Valida")
@@ -186,8 +192,8 @@ class Afiliado:
             try:
                 ''' Por medio de un bucle se verifica que el dato ingresado para el telefono sea valor un numero
                                                 y una longitud  max de 12 caracteres'''
-                telefono = int(input("Telefono: "))
-                lentel = str(telefono)
+                self.settelefono(int(input("Telefono: ")))
+                lentel = str(self.gettelefono())
 
                 if len(lentel) > 13:
                     print("El numero de telefono no puede tener mas de 12  digitos.")
@@ -202,10 +208,10 @@ class Afiliado:
         # bucle para pedir el valor
         while not valido or len(email) > 20:
             # mensaje para que el usuario sepa que le solicitamos un correo
-            email = (input("Correo electronico: "))
+            self.setemail(input("Correo electronico: "))
             # validacion por medio de la  funcion con regex
 
-            valido = self.es_correo_valido(email)
+            valido = self.es_correo_valido(self.getemail())
             if not valido:
                 print("\nescriba un correo valido: ")
 
@@ -275,7 +281,8 @@ class Afiliado:
         self.__vacunado = "N"
 
         datos = (
-            self.getident(), self.getnombre(), self.getapellido(), self.getdireccion(), self.gettelefono(), self.getemail(), self.getciudad(),
+            self.getident(), self.getnombre(), self.getapellido(), self.getdireccion(), self.gettelefono(),
+            self.getemail(), self.getciudad(),
             self.getnacimiento(), self.getafiliacion(), self.getdesafiliacion(),
             self.getvacunado())
         return datos
@@ -284,7 +291,6 @@ class Afiliado:
         """ Se crea un nuevo afiliado con la informacion recolectada del usuario, haciendo uso del
             objeto cursor y el metodo execute que utiliza el INSERT INTO dentro de los parametros
             """
-
 
         try:
             self.getcursorObj().execute('''INSERT INTO afiliados (id ,nombre,apellidos ,direccion,telefono ,email, ciudad ,nacimiento,
@@ -300,10 +306,12 @@ class Afiliado:
                  El objeto cursor se crea utilizando el objeto de conexión
                  se ejecuta el método execute con la consulta CREATE TABLE como parámetro         """
 
-        self.getcursorObj().execute("CREATE TABLE IF NOT EXISTS afiliados(id integer PRIMARY KEY,nombre text,apellidos text,"
-                          "direccion text,telefono integer,email text, ciudad text,nacimiento text,afiliacion text,"
-                          "desafiliacion text,vacunado text)")
+        self.getcursorObj().execute(
+            "CREATE TABLE IF NOT EXISTS afiliados(id integer PRIMARY KEY,nombre text,apellidos text,"
+            "direccion text,telefono integer,email text, ciudad text,nacimiento text,afiliacion text,"
+            "desafiliacion text,vacunado text)")
         self.getconexion().commit()
+
     """
              por medio del modulo re busca  concidencias de expresiones regulares para validar los caracteres  
              y formato del  correo         """
@@ -372,7 +380,6 @@ class Afiliado:
     def desafiliar(self):
         """ Funcion que se utiliza para operar en la base de datos"""
 
-
         try:
             # recorremos la DB  en busqueda de registros sin desafiliacion
             self.getcursorObj().execute('SELECT * FROM afiliados where desafiliacion = " "')
@@ -392,7 +399,8 @@ class Afiliado:
                     break
                 else:
                     print(
-                        "El id " + str(desafiliado) + " no se encuentra en la base de datos o ya se encuentra desafiliado")
+                        "El id " + str(
+                            desafiliado) + " no se encuentra en la base de datos o ya se encuentra desafiliado")
                 return
             if len(desafiliado) > 13:
                 print("El numero de identificacion no puede tener mas de 12 digitos.")
@@ -442,37 +450,52 @@ class Afiliado:
 
         # muestra la informacion del afiliado consultado
 
-        print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<12}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "",
-                                                                                                                 "", "", "",
-                                                                                                                 "", "", "",
-                                                                                                                 "", ""))
-        print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^12}|{:^25}|{:^20}|{:^10}|{:^10}|{:^15}|{:^10}|".format("Documento", "Nombre",
+        print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<12}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "",
+                                                                                                                 "",
+                                                                                                                 "", "",
+                                                                                                                 "",
+                                                                                                                 "", "",
+                                                                                                                 "",
+                                                                                                                 "",
+                                                                                                                 ""))
+        print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^12}|{:^25}|{:^20}|{:^10}|{:^10}|{:^15}|{:^10}|".format("Documento",
+                                                                                                      "Nombre",
                                                                                                       "Apellido",
                                                                                                       "Direccion",
-                                                                                                      "Telefono", "Email",
+                                                                                                      "Telefono",
+                                                                                                      "Email",
                                                                                                       "Ciudad",
                                                                                                       "Nacimiento",
                                                                                                       "Afiliacion",
                                                                                                       "Desafiliacion",
                                                                                                       "Vacunado"))
-        print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<12}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "",
-                                                                                                                 "", "", "",
-                                                                                                                 "", "", "",
-                                                                                                                 "", ""))
+        print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<12}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "",
+                                                                                                                 "",
+                                                                                                                 "", "",
+                                                                                                                 "",
+                                                                                                                 "", "",
+                                                                                                                 "",
+                                                                                                                 "",
+                                                                                                                 ""))
         for idaf, nombre, apellido, direccion, telefono, email, ciudad, nacimiento, afiliacion, desafiliacion, vacunado in afil_b:
             print("|{:^12}|{:^20}|{:^20}|{:^30}|{:^12}|{:^25}|{:^20}|{:^10}|{:^10}|{:^15}|{:^10}|".format(idaf, nombre,
                                                                                                           apellido,
                                                                                                           direccion,
-                                                                                                          telefono, email,
+                                                                                                          telefono,
+                                                                                                          email,
                                                                                                           ciudad,
                                                                                                           nacimiento,
                                                                                                           afiliacion,
                                                                                                           desafiliacion,
                                                                                                           vacunado))
-        print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<12}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "", "",
-                                                                                                                 "", "", "",
-                                                                                                                 "", "", "",
-                                                                                                                 "", ""))
+        print("+{:-<12}+{:-<20}+{:-<20}+{:-<30}+{:-<12}+{:-<25}+{:-<20}+{:-<10}+{:-<10}+{:-<15}+{:-<10}+".format("", "",
+                                                                                                                 "",
+                                                                                                                 "", "",
+                                                                                                                 "",
+                                                                                                                 "", "",
+                                                                                                                 "",
+                                                                                                                 "",
+                                                                                                                 ""))
         self.getconexion().commit()
 
     def es_correo_valido(self, email):
@@ -482,7 +505,7 @@ class Afiliado:
         return mailvalido
 
 # def cerrar_db(con):
-    # con.close()
+# con.close()
 
 # def main():
 # con = sql_afiliado()

@@ -36,7 +36,7 @@ class Menu(Conexion):
             if option == '1':
                 print('\n')
                 afiliado = afi.leer_info()
-                afi.insertar_tabla(con, afiliado)
+                afi.insertar_tabla(afiliado)
             elif option == "2":
                 # Aca se se vacuna a la gente
                 afi.vacunar()
