@@ -1,6 +1,10 @@
+""" Se importa la libreria datatime para el manejo,
+    transformacion y extraccion de las de las fechas"""
 from datetime import datetime
 from datetime import date
 
+"""Clase para la creacion de objetos dato, para hacerles
+    las validaciones pertinentes reutilizando codigo"""
 class Dato:
     def __init__(self, Variable):
         self.variable = Variable
@@ -27,7 +31,7 @@ class Dato:
         return long
     
     def rango(self, tope):
-        if 1 < int(self.variable) <= tope:
+        if 1 <= int(self.variable) <= tope:
             dentro = True
         else:
             dentro = False
