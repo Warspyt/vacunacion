@@ -1,5 +1,6 @@
-""" Se importan las librerias para el manejo de las bases de datos, las fechas, envio de correos
-    electronicos"""
+""" Se importa el modulo de validaciones y las librerias datatime para el manejo,
+    transformacion y extraccion de las de las fechas y email.mime  y smtplib para el manejo
+    y creacion de constructores para el envio de correos electronicos"""
 import validaciones as vl
 from datetime import datetime
 from datetime import date
@@ -8,6 +9,9 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import smtplib
 
+"""Clase para la manipulacion del modulo de programacion de vacunas, que encapsula todas las
+    funciones de manera privada al igual que las variables para conectar con la base de datos,
+    las cuales tienen un get para extraer la informacion encapsulada"""
 class Agenda:
     def __init__(self, con):
         self.__conexion = con
