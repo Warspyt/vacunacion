@@ -85,10 +85,10 @@ class Menu(Conexion):
             option = input("Seleccione una opcion: ")
             if option == '1':
                 # Aca se crea el plan
-                plv.recibirPlan()
+                plv._Plan__recibirPlan()
             elif option == '2':
                 # Aca se consulta el plan
-                plv.consultaplan()
+                plv._Plan__consultaplan()
             elif option == "3":
                 return
             else:
@@ -107,15 +107,15 @@ class Menu(Conexion):
             option = input("Seleccione una opcion: ")
             if option == '1':
                 # Aca se crea la agendacion de citas
-                prg.infoCita()
+                prg._Agenda__infoCita()
 
             elif option == '2':
                 # Aca se consulta la agenda completa
-                prg.agenda()
+                prg._Agenda__agenda()
                 
             elif option == "3":
                 # Aca se consulta la cita por identificacion del afiliado
-                prg.consulta_individual()
+                prg._Agenda__consulta_individual()
             elif option == "4":
                 return
             else:
@@ -140,8 +140,8 @@ class Menu(Conexion):
         
         afi.tabla_afiliados(con)
         lt._Lotes__tabla_vacunas()
-        plv.tabla_plan()
-        prg.tabla_prog()
+        plv._Plan__tabla_plan()
+        prg._Agenda__tabla_prog()
 
         """
         este es el menu principal apartir de este  se despliegan los submenus de cada modulo
