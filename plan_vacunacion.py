@@ -6,38 +6,77 @@ from sqlite3 import Error
 from datetime import datetime
 from datetime import date
 
-
-class Plan:
+class PlanVacunacion:
     def __init__(self, con):
-        self.conexion = con
-        self.cursorObj = con.cursor()
-        self.emin = ""
-        self.emax = ""
+        self.__conexion = con
+        self.__cursorObj = con.cursor()
+        self.__emin = "informacion no disponible"
+        self.__emax = "informacion no disponible"
+        self.__fini = "informacion no disponible"
+        self.__ffin = "informacion no disponible"
 
-        
+    """ Acceso privado a la conexion"""
+    def getconexion(self):
+        return self.__conexion
+
+    """ Acceso privado al cursor de la db"""
+    def getcursorObj(self):
+        return self.__cursorObj
+
+    """ Acceso privado a la edad minima"""
+    def setemin(self, emin):
+        self.__emin = emin
+
+    def getemin(self):
+        return self.__emin
+
+    """ Acceso privado a la edad maxima"""
+    def setemax(self, emax):
+        self.__emax = emax
+
+    def getemax(self):
+        return self.__emax
+
+    """ Acceso privado a la fecha de inicio"""
+    def setfini(self, fini):
+        self.__fini = fini
+
+    def getfini(self):
+        return self.__fini
+
+    """ Acceso privado a la fecha de finalizacion"""
+    def setffin(self, ffin):
+        self.__ffin = ffin
+
+    def getffin(self):
+        return self.__ffin
+
+
+class Plan(PlanVacunacion):
+
     ''' Funcion para crear la tabla de los planes de vacunacion dentro de la base de datos del
         programa, la cual toma como parametro la conexion de la misma'''
 
-    def tabla_plan(self):
+    def __tabla_plan(self):
 
         """ Se crea una tabla para los planes de vacunacion verificando que no exista aun, haciendo uso del objeto cursor
             y el metodo execute que utiliza el CREATE TABLE dentro de los parametros"""
 
-        self.cursorObj.execute("""CREATE TABLE IF NOT EXISTS PlanVacunacion(idplan integer PRIMARY KEY AUTOINCREMENT, edadmin text,
+        self.getcursorObj().execute("""CREATE TABLE IF NOT EXISTS PlanVacunacion(idplan integer PRIMARY KEY AUTOINCREMENT, edadmin text,
                           edadmax text, fechainicioplan text, fechafinalplan text)""")
-        self.conexion.commit()
+        self.getconexion().commit()
 
 
     ''' Funcion para consultar la informacion de los planes de vacunacion activos a la fecha,
         la cual toma como parametro la conexion con la base de datos del programa'''
 
-    def consultaplan(self):
+    def __consultaplan(self):
 
         ''' Se extraen todos los planes de vacunacion de la base de datos del programa, con el objeto cursor y el
             metodo execute que utiliza el SELECT como parametro '''
         compara = 'SELECT *FROM PlanVacunacion  '
-        self.cursorObj.execute(compara)
-        listado = self.cursorObj.fetchall()
+        self.getcursorObj().execute(compara)
+        listado = self.getcursorObj().fetchall()
 
         ''' Con el iterador for a partir de una serie de condiciones se filtran los planes de vacunacion activos cuya
             fecha de inicio y fin abarca la fecha actual'''
@@ -97,12 +136,12 @@ class Plan:
         else:
             print("No hay mas planes de vacunacion en este momento.")
 
-        self.conexion.commit()
+        self.getconexion().commit()
 
     ''' Funcion para guardar la informacion que se le solicita al usuario
         sobre un plan de vacunacion que se creara'''
 
-    def recibirPlan(self):
+    def __recibirPlan(self):
 
         """Se solicita al usuario la edad minima y maxima del plan de vacunacion con un bucle que termina cuando
          la informacion es valida, donde se verifica que la edad minima sea menor a la maxima"""
@@ -111,34 +150,34 @@ class Plan:
 
             ''' Por medio de un bucle se verifica que el dato ingresado para la edad minima sea un valor numerico
                 mayor a cero'''
-            emin = vl.Dato(input("Escriba la edad minima del plan: "))
+            self.setemin(vl.Dato(input("Escriba la edad minima del plan: ")))
 
-            while not emin.TipoDatoNum() or not emin.longitud(3) or not emin.rango(120):
+            while not self.getemin().TipoDatoNum() or not self.getemin().longitud(3) or not self.getemin().rango(120):
                 print("Ingrese un valor numerico: ")
-                emin = vl.Dato(input("Escriba la edad minima del plan: "))
+                self.setemin(vl.Dato(input("Escriba la edad minima del plan: ")))
 
             ''' Por medio de un bucle se verifica que el dato ingresado para la edad maxima sea un valor numerico
                 mayor a cero'''
-            emax = vl.Dato(input("Escriba la edad maxima del plan: "))
+            self.setemax(vl.Dato(input("Escriba la edad maxima del plan: ")))
 
-            while not emax.TipoDatoNum() or not emax.longitud(3) or not emax.rango(120):
+            while not self.getemax().TipoDatoNum() or not self.getemax().longitud(3) or not self.getemax().rango(120):
                 print("Ingrese un valor numerico: ")
-                emax = vl.Dato(input("Escriba la edad maxima del plan: "))
+                self.setemax(vl.Dato(input("Escriba la edad maxima del plan: ")))
                 
-            if int(emin.variable) > int(emax.variable):
+            if int(self.getemin().variable) > int(self.getemax().variable):
                 print("ERROR: la edad minima debe ser mayor a la maxima ingrese datos validos.")
-            elif int(emin.variable) <= 0:
+            elif int(self.getemin().variable) <= 0:
                 print("ERROR: la edad minima debe ser mayor a cero ingrese datos validos.")
-            elif int(emax.variable) <= 0:
+            elif int(self.getemax().variable) <= 0:
                 print("ERROR: la edad maxima debe ser mayor a cero ingrese datos validos.")
             else:
                 break
 
-        self.cursorObj.execute('SELECT * FROM PlanVacunacion')
-        Pexistentes = self.cursorObj.fetchall()
+        self.getcursorObj().execute('SELECT * FROM PlanVacunacion')
+        Pexistentes = self.getcursorObj().fetchall()
 
         for ver in Pexistentes:
-            if int(ver[1]) <= int(emin.variable) <= int(ver[2]) or int(ver[1]) <= int(emax.variable) <= int(ver[2]):
+            if int(ver[1]) <= int(self.getemin().variable) <= int(ver[2]) or int(ver[1]) <= int(self.getemax().variable) <= int(ver[2]):
                 print("\nEl rango de edad ingresado o parte de el ya se encuentra dentro del plan de vacunacion numero",
                       ver[0], "que abarca el rango de edad entre los",
                       ver[1], "y los", ver[2], "años.\n")
@@ -168,11 +207,11 @@ class Plan:
             fini1 = vl.Dato(datetime(int(aini.variable), int(mini.variable), int(dini.variable)).strftime("%Y/%m/%d"))
 
             if fini1.fecha(">="):
-                fini = datetime(int(aini.variable), int(mini.variable), int(dini.variable)).strftime("%d/%m/%Y")
+                self.setfini(datetime(int(aini.variable), int(mini.variable), int(dini.variable)).strftime("%d/%m/%Y"))
                 break
             else:
                 print("La fecha de inicio no es valida: ")
-        print("Fecha de inicio ingresada: " + fini)
+        print("Fecha de inicio ingresada: " + self.getfini())
 
 
         ''' Se pide la fecha de fin del plan por medio de un bucle que se rompe cuando se verifica que la fecha
@@ -199,30 +238,30 @@ class Plan:
             ffin = vl.Dato(datetime(int(afin.variable), int(mfin.variable), int(dfin.variable)).strftime("%Y/%m/%d"))
 
             if ffin.fecha(">") and ffin.variable > fini1.variable:
-                ffin = datetime(int(afin.variable), int(mfin.variable), int(dfin.variable)).strftime("%d/%m/%Y")
+                self.setffin(datetime(int(afin.variable), int(mfin.variable), int(dfin.variable)).strftime("%d/%m/%Y"))
                 break
             else:
                 print("La fecha de finalizacion no es valida: ")
-        print("Fecha de finalizacion ingresada: " + ffin)
+        print("Fecha de finalizacion ingresada: " + self.getffin())
 
 
         ''' Se guardan los datos del plan de vacunacion a crear en un contenedor de tipo tupla para su
             posterior uso'''
-        infoplan = (emin.variable, emax.variable, fini, ffin)
+        infoplan = (self.getemin().variable, self.getemax().variable, self.getfini(), self.getffin())
 
         ''' Con el llamado a la funcion asignarvacuna se agenda la cita del paciente sobre el cual se esta iterando'''
-        self.insertar_Plan(infoplan)
+        self.__insertar_Plan(infoplan)
 
-        self.conexion.commit()
+        self.getconexion().commit()
 
 
     ''' Funcion para crear un nuevo lote de vacunas, que toma como parametro la conexion a la
         base de datos y el contenedor tupla que almacena la informacion del nuevo plan de vacunacion'''
 
-    def insertar_Plan(self, datosplan):
+    def __insertar_Plan(self, datosplan):
 
         """ Se crea un nuevo plan de vacunacion con la informacion recolectada del usuario, haciendo uso del
             objeto cursor y el metodo execute que utiliza el INSERT INTO dentro de los parametros"""
-        self.cursorObj.execute("""INSERT INTO PlanVacunacion( edadmin, edadmax,
+        self.getcursorObj().execute("""INSERT INTO PlanVacunacion( edadmin, edadmax,
                           fechainicioplan, fechafinalplan)VALUES ( ?, ?, ?, ?)""", datosplan)
-        self.conexion.commit()
+        self.getconexion().commit()
