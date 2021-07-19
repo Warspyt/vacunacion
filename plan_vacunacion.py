@@ -1,12 +1,17 @@
-""" Se importan las librerias para el manejo de las bases de datos
-    y de las fechas"""
+""" Se importa el modulo de validaciones y las librerias sqlite 3 para el manejo y conexion
+    de las bases de datos y datetime para el manejo, transformacion y extraccion de las de
+    las fechas"""
 import validaciones as vl
 import sqlite3
 from sqlite3 import Error
 from datetime import datetime
 from datetime import date
 
+"""Clase para la creacion de un nuevo plan de vacunacion"""
 class PlanVacunacion:
+    """ Se guardan de manera privada todas las variables necesarias para crear una conexion o
+        un nuevo plan de vacunacion y se crean las funciones set para cambiar su valor y get para
+        extraerlo"""
     def __init__(self, con):
         self.__conexion = con
         self.__cursorObj = con.cursor()
@@ -51,7 +56,8 @@ class PlanVacunacion:
     def getffin(self):
         return self.__ffin
 
-
+"""Clase para la manipulacion del modulo de planes de vacunacion, que hereda de la clase PlanVacunacion
+    y encapsula todas las funciones de manera privada"""
 class Plan(PlanVacunacion):
 
     ''' Funcion para crear la tabla de los planes de vacunacion dentro de la base de datos del
