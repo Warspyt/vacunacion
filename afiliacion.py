@@ -56,7 +56,7 @@ class Afiliado:
     """ Acceso privado al apellido"""
 
     def setapellido(self, apellido):
-        return self.__apellido
+        self.__apellido = apellido
 
     def getapellido(self):
         return self.__apellido
@@ -206,7 +206,7 @@ class Afiliado:
         # inicialmente no lo es
         valido = False
         # bucle para pedir el valor
-        while not valido or len(email) > 20:
+        while not valido or len(self.getemail()) > 20:
             # mensaje para que el usuario sepa que le solicitamos un correo
             self.setemail(input("Correo electronico: "))
             # validacion por medio de la  funcion con regex
@@ -221,9 +221,9 @@ class Afiliado:
             ''' Por medio de un bucle se verifica que el dato ingresado para el ciudad sea valor un caracter  alfabetico
                                                         y una longitud  max de 20 caracteres'''
             # mensaje para que el usuario sepa que le solicitamos la ciudad
-            ciudad = (input("Ciudad: "))
-            city = (ciudad.replace(" ", "")).isalpha()
-            if not city or len(ciudad) > 21:
+            self.setciudad(input("Ciudad: "))
+            city = (self.getciudad().replace(" ", "")).isalpha()
+            if not city or len(self.getciudad()) > 21:
                 # variable que indica si el valor es válido
                 # inicialmente no lo es
                 city = False
@@ -259,23 +259,23 @@ class Afiliado:
                 else:
                     anosnac = input("Escriba el año de nacimiento en numeros AAAA: ")
             # Se guardan los datos de la fecha en formato (DD/MM/AAAA)
-            nacimiento = datetime(int(anosnac), int(mesnac), int(dianac)).strftime("%Y/%m/%d")
+            self.setnacimiento(datetime(int(anosnac), int(mesnac), int(dianac)).strftime("%Y/%m/%d"))
             factual = datetime.now().strftime("%Y/%m/%d")
             # nacimiento = dianac+"/"+mesnac+"/"+anosnac
-            if nacimiento < factual:
-                nacimiento = datetime(int(anosnac), int(mesnac), int(dianac)).strftime("%d/%m/%Y")
+            if self.getnacimiento() < factual:
+                self.setnacimiento(datetime(int(anosnac), int(mesnac), int(dianac)).strftime("%d/%m/%Y"))
                 break
             else:
                 print("La fecha de nacimiento no es valida: ")
-        print("Fecha ingresada: " + nacimiento)
+        print("Fecha ingresada: " + self.getnacimiento())
 
         # se actualiza la fecha de afiliacion automaticamente
         f = datetime.now()
         dia = str(f.day).rjust(2, "0")
         mes = str(f.month).rjust(2, "0")
         ano = str(f.year).rjust(2, "0")
-        afiliacion = dia + "/" + mes + "/" + ano
-        print("la fecha de afiliacion es: ", afiliacion)
+        self.setafiliacion(dia + "/" + mes + "/" + ano)
+        print("la fecha de afiliacion es: ", self.getafiliacion())
         self.__desafiliacion = " "
         # Por defecto el usuario  ingresa como no  vacunado
         self.__vacunado = "N"
