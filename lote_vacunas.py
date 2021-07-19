@@ -4,7 +4,6 @@ import validaciones as vl
 from datetime import datetime
 from datetime import date
 
-
 class LoteVacunas:
     def __init__(self, con):
         self.__conexion = con
