@@ -34,6 +34,7 @@ class Afiliado:
 
     def getcursorObj(self):
         return self.__cursorObj
+
     def getconexion(self):
         return self.__conexion
     """ Acceso privado al numero de identificacion"""
@@ -50,7 +51,7 @@ class Afiliado:
         return self.__nombre
 
     """ Acceso privado al apellido"""
-    def getapellido(self):
+    def setapellido(self):
         return self.__apellido
 
     def getapellido(self):
@@ -117,8 +118,6 @@ class Afiliado:
 
     def getvacunado(self):
         return self.__vacunado
-
-
 
     def leer_info(self):
 
@@ -271,17 +270,17 @@ class Afiliado:
         ano = str(f.year).rjust(2, "0")
         afiliacion = dia + "/" + mes + "/" + ano
         print("la fecha de afiliacion es: ", afiliacion)
-        desafiliacion = " "
+        self.__desafiliacion = " "
         # Por defecto el usuario  ingresa como no  vacunado
-        vacunado = "N"
+        self.__vacunado = "N"
 
         datos = (
-            ident, nombre, apellido, direccion, telefono, email, ciudad,
-            nacimiento, afiliacion, desafiliacion,
-            vacunado)
+            self.getident(), self.getnombre(), self.getapellido(), self.getdireccion(), self.gettelefono(), self.getemail(), self.getciudad(),
+            self.getnacimiento(), self.getafiliacion(), self.getdesafiliacion(),
+            self.getvacunado())
         return datos
 
-    def insertar_tabla(self, con, datos):
+    def insertar_tabla(self, datos):
         """ Se crea un nuevo afiliado con la informacion recolectada del usuario, haciendo uso del
             objeto cursor y el metodo execute que utiliza el INSERT INTO dentro de los parametros
             """
