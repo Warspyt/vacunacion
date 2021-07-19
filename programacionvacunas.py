@@ -8,47 +8,56 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import smtplib
 
-
 class Agenda:
     def __init__(self, con):
-        self.conexion = con
-        self.cursorObj = con.cursor()
+        self.__conexion = con
+        self.__cursorObj = con.cursor()
+
+        """ Acceso privado a la conexion"""
+    def getconexion(self):
+        return self.__conexion
+
+    """ Acceso privado al cursor de la db"""
+    def getcursorObj(self):
+        return self.__cursorObj
 
     ''' Funcion para crear la tabla de la programacion de vacunas dentro de la base de datos del
         programa, la cual toma como parametro la conexion de la misma'''
 
-    def tabla_prog(self):
+    def __tabla_prog(self):
         """ Se crea una tabla para la programacion de vacunas verificando que no exista aun, haciendo uso del objeto cursor
             y el metodo execute que utiliza el CREATE TABLE dentro de los parametros"""
 
-        self.cursorObj.execute("""CREATE TABLE IF NOT EXISTS ProgramacionVacunas(noid integer, nombre text,
+        self.getcursorObj().execute("""CREATE TABLE IF NOT EXISTS ProgramacionVacunas(noid integer, nombre text,
                           apellido text, ciudadvacunacion text,direccion text, telefono integer, email text,
                           nolote integer, fabricante text, fechaprogramada text, horaprogramada text, fechaorden text)""")
         
-        self.conexion.commit()
+        self.getconexion().commit()
+
 
     ''' Funcion para guardar una cita asignada a un paciente en la base de datos, la cual toma
         como parametros la conexion con la base de datos y la informacion del paciente'''
 
-    def asignarvacuna(self, info):
+    def __asignarvacuna(self, info):
         """ Se guarda la cita asignada con la informacion recolectada sobre el paciente, haciendo uso del
             objeto cursor y el metodo execute que utiliza el INSERT INTO dentro de los parametros"""
 
-        self.cursorObj.execute("""INSERT INTO ProgramacionVacunas(noid, nombre, apellido,
+        self.getcursorObj().execute("""INSERT INTO ProgramacionVacunas(noid, nombre, apellido,
                           ciudadvacunacion, direccion, telefono, email, nolote, fabricante,
                           fechaprogramada, horaprogramada, fechaorden)
                           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""", info)
-        self.conexion.commit()
+        self.getconexion().commit()
+
 
     ''' Funcion para generar la agendacion de citas a partir de una fecha y hora ingresadas
         por el usuario, la cual toma como parametro la conexion con la base de datos'''
 
-    def infoCita(self):
+    def __infoCita(self):
         """ Se guarda la ultima fecha y hora asignada en la agenda de citas con el metodo strftime de la libreria
             datetime y usando el objeto cursor y el metodo execute que utiliza el SELECT como parametro"""
 
-        self.cursorObj.execute('SELECT * FROM ProgramacionVacunas')
-        ultimoregistro = self.cursorObj.fetchall()
+        self.getcursorObj().execute('SELECT * FROM ProgramacionVacunas')
+        ultimoregistro = self.getcursorObj().fetchall()
         if len(ultimoregistro) != 0:
             ultimoregistro = ultimoregistro[-1]
             ultfechares = ultimoregistro[9]
@@ -104,8 +113,8 @@ class Agenda:
 
         ''' Se extraen los lotes existentes en la base de datos, haciendo uso del objeto cursor y el metodo execute que
             utiliza el SELECT dentro de los parametros'''
-        self.cursorObj.execute('SELECT * FROM LoteVacunas ORDER BY fechavencimiento')
-        listado = self.cursorObj.fetchall()
+        self.getcursorObj().execute('SELECT * FROM LoteVacunas ORDER BY fechavencimiento')
+        listado = self.getcursorObj().fetchall()
 
         ''' Se filtran los lotes de vacunas que se encuentren vigentes a la fecha en la que se iniciara la asignacion
             de citas, asiendo uso de un for para iterar sobre cada lote'''
@@ -132,8 +141,8 @@ class Agenda:
 
         ''' Se extraen los planes de vacunacion existentes en la base de datos, haciendo uso del objeto cursor
             y el metodo execute que utiliza el SELECT dentro de los parametros'''
-        self.cursorObj.execute('SELECT * FROM PlanVacunacion')
-        listado = self.cursorObj.fetchall()
+        self.getcursorObj().execute('SELECT * FROM PlanVacunacion')
+        listado = self.getcursorObj().fetchall()
         planesvigentes = []
 
         ''' Se filtran los planes de vacunacion que se encuentren vigentes a la fecha en la que se iniciara la asignacion
@@ -155,8 +164,8 @@ class Agenda:
 
         ''' Se extraen los pacientes que ya tienen cita asignada, haciendo uso del objeto cursor
             y el metodo execute que utiliza el SELECT dentro de los parametros'''
-        self.cursorObj.execute("SELECT * FROM ProgramacionVacunas")
-        inscritos = self.cursorObj.fetchall()
+        self.getcursorObj().execute("SELECT * FROM ProgramacionVacunas")
+        inscritos = self.getcursorObj().fetchall()
         agendaExistente = []
 
         for ins in inscritos:
@@ -171,15 +180,15 @@ class Agenda:
 
                 ''' Se extrae la edad minima y maxima de cada plan de vacunacion, haciendo uso del objeto cursor
                     y el metodo execute que utiliza el SELECT dentro de los parametros'''
-                self.cursorObj.execute('SELECT * FROM PlanVacunacion where idplan= ' + str(rec[0]))
-                planselect = self.cursorObj.fetchall()
+                self.getcursorObj().execute('SELECT * FROM PlanVacunacion where idplan= ' + str(rec[0]))
+                planselect = self.getcursorObj().fetchall()
                 eminplan = int(planselect[0][1])
                 emaxplan = int(planselect[0][2])
 
                 ''' Se extraen los pacientes afiliados que aun no estan vacunados, haciendo uso del objeto cursor
                     y el metodo execute que utiliza el SELECT dentro de los parametros'''
-                self.cursorObj.execute("SELECT * FROM afiliados where vacunado= 'N' AND desafiliacion = ' '")
-                novacunados = self.cursorObj.fetchall()
+                self.getcursorObj().execute("SELECT * FROM afiliados where vacunado= 'N' AND desafiliacion = ' '")
+                novacunados = self.getcursorObj().fetchall()
 
                 ''' Se filtran los pacientes cuya edad se encuentre dentro del rango del plan de vacunacion
                     sobre el que se esta iterando'''
@@ -212,8 +221,7 @@ class Agenda:
         ''' Se verifica que hayan afiliados existentes que cumplan los requisitos para vacunarse, en caso contrario
             la funcion se termina y se notifica al usuario'''
         if not any(candporplan):
-            print(
-                "No hay afiliados que cumplan los requisitos dentro de los planes vigentes y que se encuentren sin cita de vacunacion a la fecha")
+            print("No hay afiliados que cumplan los requisitos dentro de los planes vigentes y que se encuentren sin cita de vacunacion a la fecha")
             return
 
         ''' Se establece la variable con la primera fecha que se asignara y que ira cambiando con cada
@@ -235,8 +243,8 @@ class Agenda:
 
                         ''' Se extrae la informacion de contacto del paciente a vacunar, haciendo uso del objeto cursor
                             y el metodo execute que utiliza el SELECT dentro de los parametros'''
-                        self.cursorObj.execute("SELECT * FROM afiliados where id= " + str(cita))
-                        af = self.cursorObj.fetchall()[0]
+                        self.getcursorObj().execute("SELECT * FROM afiliados where id= " + str(cita))
+                        af = self.getcursorObj().fetchall()[0]
 
                         noid = af[0]
                         nombre = af[1]
@@ -258,8 +266,8 @@ class Agenda:
                             y el metodo execute que utiliza el SELECT dentro de los parametros'''
                         while True:
                             if ultimafecha < lotesvigentes[0][1] and lotesvigentes[0][2] > 0:
-                                self.cursorObj.execute("SELECT * FROM LoteVacunas where nolote= " + str(lotesvigentes[0][0]))
-                                lot = self.cursorObj.fetchall()[0]
+                                self.getcursorObj().execute("SELECT * FROM LoteVacunas where nolote= " + str(lotesvigentes[0][0]))
+                                lot = self.getcursorObj().fetchall()[0]
                                 nolote = lotesvigentes[0][0]
                                 fabricante = lot[1]
                                 lotesvigentes[0][2] -= 1
@@ -268,7 +276,7 @@ class Agenda:
 
                                 ''' Se reserva la vacuna extraida actualizando el valor de las reservas en la base de datos de los lotes,
                                     haciendo uso del objeto cursor y el metodo execute que utiliza el UPDATE dentro de los parametros'''
-                                self.cursorObj.execute('update LoteVacunas SET reserva = ' + resv + ' where nolote = ' + str(
+                                self.getcursorObj().execute('update LoteVacunas SET reserva = ' + resv + ' where nolote = ' + str(
                                     lotesvigentes[0][0]))
                                 break
                             else:
@@ -277,12 +285,11 @@ class Agenda:
                                 break
 
                         ''' Se guardan los datos del paciente y la cita a agendar en un contenedor de tipo tupla para su posterior uso'''
-                        infcita = (
-                            noid, nombre, apellido, ciudad, direccion, telefono, email, nolote, fabricante, fechaprogramada,
-                            horaprogramada, fechaorden)
+                        infcita = (noid, nombre, apellido, ciudad, direccion, telefono, email, nolote, fabricante, fechaprogramada,
+                                    horaprogramada, fechaorden)
 
                         ''' Con el llamado a la funcion asignarvacuna se agenda la cita del paciente sobre el cual se esta iterando'''
-                        self.asignarvacuna(infcita)
+                        self.__asignarvacuna(infcita)
 
                         ''' Funcion para enviar un correo electronico al paciente, notificandolo sobre la fecha y hora de
                             su cita para vacunarse, haciendo uso de la libreria smtplib'''
@@ -309,6 +316,8 @@ class Agenda:
 
                         server.quit()
 
+
+
                     else:
                         # Se sigue con los afiliados del siguiente plan
                         break
@@ -316,18 +325,19 @@ class Agenda:
                 break
         print("\nLa agendacion se citas se genero con exito!!\n")
         
-        self.conexion.commit()
+        self.getconexion().commit()
+
 
     ''' Funcion para consultar la cita de un paciente en especifico, que toma como
         parametro la conexion con la base de datos del programa'''
 
-    def consulta_individual(self):
+    def __consulta_individual(self):
         """ Se verifica que existan usuarios con cita agendada, en caso contrario se
             termina la funcion y se notifica al usuario"""
 
         try:
-            self.cursorObj.execute('SELECT * FROM ProgramacionVacunas')
-            self.cursorObj.fetchall()[0]
+            self.getcursorObj().execute('SELECT * FROM ProgramacionVacunas')
+            self.getcursorObj().fetchall()[0]
         except IndexError:
             print("\nNo hay usuarios con citas asignadas en este momento.")
             return
@@ -342,8 +352,8 @@ class Agenda:
                 ''' Se extrae la informacion de la cita del paciente, haciendo uso del objeto cursor
                     y el metodo execute que utiliza el SELECT dentro de los parametros'''
                 buscar = 'SELECT * FROM ProgramacionVacunas where noid= ' + conafi
-                self.cursorObj.execute(buscar)
-                afil_b = self.cursorObj.fetchall()
+                self.getcursorObj().execute(buscar)
+                afil_b = self.getcursorObj().fetchall()
                 if len(afil_b) != 0:
                     afil_b = afil_b[0]
                     break
@@ -364,18 +374,19 @@ class Agenda:
         print("➸ Vacuna:", afil_b[8])
         print("➸ Fecha y hora programada:", afil_b[9], "a las", afil_b[10])
 
-        self.conexion.commit()
+        self.getconexion().commit()
+
 
     ''' Funcion para consultar la agenda de citas ordenada por algun campo a eleccion, que toma como
         parametro la conexion con la base de datos del programa'''
 
-    def agenda(self):
+    def __agenda(self):
         """ Se verifica que existan usuarios con cita agendada, en caso contrario se
             termina la funcion y se notifica al usuario"""
 
         try:
-            self.cursorObj.execute('SELECT * FROM ProgramacionVacunas')
-            self.cursorObj.fetchall()[0]
+            self.getcursorObj().execute('SELECT * FROM ProgramacionVacunas')
+            self.getcursorObj().fetchall()[0]
         except IndexError:
             print("\nAGENDACION DE CITAS\n\nNo hay usuarios con citas asignadas en este momento.")
             return
@@ -431,8 +442,8 @@ class Agenda:
 
         ''' Se reordena la agenda de citas existente en la base de datos, haciendo uso del objeto cursor
             y el metodo execute que utiliza el SELECT y el ORDER BY dentro de los parametros'''
-        self.cursorObj.execute('SELECT * FROM ProgramacionVacunas ORDER BY ' + order + ' ASC')
-        mostrar = self.cursorObj.fetchall()
+        self.getcursorObj().execute('SELECT * FROM ProgramacionVacunas ORDER BY ' + order + ' ASC')
+        mostrar = self.getcursorObj().fetchall()
 
         ''' Se muestra en pantalla la agenda de citas en un formato de tabla hecho con simbolos a partir del
             metodo format'''
@@ -477,4 +488,4 @@ class Agenda:
                                                                                                                  "", "",
                                                                                                                  "", ""))
 
-        self.conexion.commit()
+        self.getconexion().commit()
