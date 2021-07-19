@@ -4,15 +4,11 @@ from sqlite3 import Error
 import afiliacion as af
 import lote_vacunas as lv
 import plan_vacunacion as pl
-import programacionacunas as prgva
+import ProgramacionVacunas as prgva
 
 """cada modulo tiene su propio menu, afiliacion, lote de vacunas,vacunacion y programacion vacunacion"""
-
-
 class Conexion:
-    def __init__(self):
-        pass
-
+    
     def sql_conexion(self):
         """ Se crea la conexion a la base de datos usando el metodo connect, creando el archivo en caso de que no exista y se verifica que
             no ocurra ningun error a partir de un try - except"""
@@ -22,11 +18,10 @@ class Conexion:
         except Error:
             print(Error)
 
-
 class Menu(Conexion):
     def __init__(self):
         pass
-
+    
     def menuafi(self):
         """Por medio de un bucle se verifica  la opcion seleccionada y en caso de no elegir una valida se le informara """
         while True:
@@ -57,6 +52,7 @@ class Menu(Conexion):
                 print("")
                 input("No has pulsado ninguna opción correcta...\npulsa una tecla para continuar")
 
+
     def menulote(self):
         while True:
             """Por medio de un bucle se verifica  la opcion seleccionada y en caso de no elegir una valida se le informara """
@@ -68,15 +64,15 @@ class Menu(Conexion):
             option = input("Seleccione una opcion: ")
             if option == "1":
                 # Aca se crea el lote
-                lote = lt.info_lote()
-                lt.crear_lote(lote)
+                lt._Lotes__info_lote()
             elif option == "2":
                 # Aca se consulta el lote
-                lt.consultar_lote()
+                lt._Lotes__consultar_lote()
             elif option == "3":
                 return
             else:
                 input("\nNo has pulsado ninguna opción correcta...\npulsa una tecla para continuar")
+
 
     def menuvac(self):
         while True:
@@ -98,6 +94,7 @@ class Menu(Conexion):
             else:
                 input("\nNo has pulsado ninguna opción correcta...\npulsa una tecla para continuar")
 
+
     def provac(self):
         while True:
             # Mostramos el menu
@@ -115,7 +112,7 @@ class Menu(Conexion):
             elif option == '2':
                 # Aca se consulta la agenda completa
                 prg.agenda()
-
+                
             elif option == "3":
                 # Aca se consulta la cita por identificacion del afiliado
                 prg.consulta_individual()
@@ -123,27 +120,26 @@ class Menu(Conexion):
                 return
             else:
                 input("\nNo has pulsado ninguna opción correcta...\npulsa una tecla para continuar")
+                
 
     def mainmenu(self):
         """ Se crean todas las tablas necesarias de la base de datos para su
             manipulacion dentro del programa"""
-
-        op = Menu()
-
+        
         global con
         global lt
         global prg
         global afi
         global plv
-
-        con = op.sql_conexion()
+        
+        con = self.sql_conexion()
         lt = lv.Lotes(con)
         prg = prgva.Agenda(con)
         afi = af.Afiliado()
         plv = pl.Plan(con)
-
+        
         afi.tabla_afiliados(con)
-        lt.tabla_vacunas()
+        lt._Lotes__tabla_vacunas()
         plv.tabla_plan()
         prg.tabla_prog()
 
@@ -164,19 +160,18 @@ class Menu(Conexion):
             opcionmenu = input("Seleccione una opcion:  ")
 
             if opcionmenu == "1":
-                op.menuafi()
+                self.menuafi()
             elif opcionmenu == "2":
-                op.menulote()
+                self.menulote()
             elif opcionmenu == "3":
-                op.menuvac()
+                self.menuvac()
             elif opcionmenu == "4":
-                op.provac()
+                self.provac()
             elif opcionmenu == "5":
                 con.close()
                 break
             else:
                 input("\nNo has pulsado ninguna opción correcta...\npulsa una tecla para continuar")
-
 
 mn = Menu()
 mn.mainmenu()
