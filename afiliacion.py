@@ -1,19 +1,17 @@
-""" Se importan las librerias para el manejo de las bases de datos, las fechas, envio de correos
-    electronicos y las conexiones con los modulos de afiliacion y lotes de vacunas"""
+""" Se importan las libreria datatime para el manejo, transformacion y extraccion de las de las fechas,
+    sqlite 3 para el manejo y conexion de las bases de datos y re para extraer el regex que valida las
+    cadenas de un mail"""
 from datetime import datetime
 from datetime import date
 import sqlite3
 from sqlite3 import Error
 import re
 
-"""def VerTipDatoAlpha(self):
-    if dato.isalpha() == false:
-        tipo = "alfabetico"
-        sel
-        """
-
-
-class Afiliado:
+"""Clase para la creacion de un nuevo afiliado"""
+class NuevoAfiliado:
+    """ Se guardan de manera privada todas las variables necesarias para crear una conexion o
+        un nuevo afiliado y se crean las funciones set para cambiar su valor y get para
+        extraerlo"""
     def __init__(self, con):
         self.__conexion = con
         self.__cursorObj = con.cursor()
@@ -124,6 +122,10 @@ class Afiliado:
 
     def getvacunado(self):
         return self.__vacunado
+
+"""Clase para la manipulacion del modulo de afiliados, que hereda de la clase NuevoAfiliado
+    y encapsula todas las funciones de manera privada"""
+class Afiliado(NuevoAfiliado):
 
     def leer_info(self):
 
@@ -504,14 +506,3 @@ class Afiliado:
         mailvalido = (re.search(regex, email))
         return mailvalido
 
-# def cerrar_db(con):
-# con.close()
-
-# def main():
-# con = sql_afiliado()
-# tabla_afiliados(con)
-# afiliado = leer_info()
-# insertar_tabla(con, afiliado)
-# consulta(con)
-# cerrar_db(con)
-# main()
