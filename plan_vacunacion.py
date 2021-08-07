@@ -179,15 +179,6 @@ class Plan(PlanVacunacion):
             else:
                 break
 
-        self.getcursorObj().execute('SELECT * FROM PlanVacunacion')
-        Pexistentes = self.getcursorObj().fetchall()
-
-        for ver in Pexistentes:
-            if int(ver[1]) <= int(self.getemin().variable) <= int(ver[2]) or int(ver[1]) <= int(self.getemax().variable) <= int(ver[2]):
-                print("\nEl rango de edad ingresado o parte de el ya se encuentra dentro del plan de vacunacion numero",
-                      ver[0], "que abarca el rango de edad entre los",
-                      ver[1], "y los", ver[2], "años.\n")
-                return
 
         ''' Se pide la fecha de inicio del plan por medio de un bucle que se rompe cuando se verifica que la fecha
             ingresada sea mayor a la fecha actual'''
@@ -227,7 +218,7 @@ class Plan(PlanVacunacion):
 
             ''' Se solicita individualmente el dia, mes y año, verificando a partir de un bucle que los datos sean
                 numericos y existan dentro del calendario'''
-            dfin = vl.Dato(input("Fecha de finalizacion:\n\n- Dia de inicio: "))
+            dfin = vl.Dato(input("Fecha de finalizacion:\n\n- Dia de finalizacion: "))
             while not dfin.dia():
                 dfin = vl.Dato(input("Escriba el dia de finalizacion en dos digitos: "))
                 
@@ -241,15 +232,28 @@ class Plan(PlanVacunacion):
 
             ''' Usando el metodo strftime de la libreria datetime se guardan los valores ingresados por el
                 usuario en formato de fecha (DD/MM/AAAA)'''
-            ffin = vl.Dato(datetime(int(afin.variable), int(mfin.variable), int(dfin.variable)).strftime("%Y/%m/%d"))
+            ffin1 = vl.Dato(datetime(int(afin.variable), int(mfin.variable), int(dfin.variable)).strftime("%Y/%m/%d"))
 
-            if ffin.fecha(">") and ffin.variable > fini1.variable:
+            if ffin1.fecha(">") and ffin1.variable > fini1.variable:
                 self.setffin(datetime(int(afin.variable), int(mfin.variable), int(dfin.variable)).strftime("%d/%m/%Y"))
                 break
             else:
                 print("La fecha de finalizacion no es valida: ")
         print("Fecha de finalizacion ingresada: " + self.getffin())
 
+        self.getcursorObj().execute('SELECT * FROM PlanVacunacion')
+        Pexistentes = self.getcursorObj().fetchall()
+
+        for ver in Pexistentes:
+            if int(ver[1]) <= int(self.getemin().variable) <= int(ver[2]) or int(ver[1]) <= int(self.getemax().variable) <= int(ver[2]):
+
+                compini = ver[3][6:10] + ver[3][2:6] + ver[3][:2]
+                compfin = ver[4][6:10] + ver[4][2:6] + ver[4][:2]
+                if compini <= fini1.variable <= compfin or compini <= ffin1.variable <= compfin:
+                    print("\nDentro de la fecha estipulada, el rango de edad ingresado o parte de el, ya se encuentra dentro del plan de vacunacion numero",
+                          ver[0], "que abarca el rango de edad entre los", ver[1], "y los", ver[2], "años, para las fechas entre el", ver[3], "y el",
+                          ver[4], "\n")
+                    return
 
         ''' Se guardan los datos del plan de vacunacion a crear en un contenedor de tipo tupla para su
             posterior uso'''
